@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        tools:ignore="MissingConstraints">
+    <RelativeLayout
+        android:id="@+id/rl_info_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/font_bold"
+            android:gravity="center"
+            android:text="Информация"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_count_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_info"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle_rounded_all_11"
+            android:backgroundTint="@color/white_black"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_score_smile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/font_bold"
+                    android:text="♥ 4.75"
+                    android:textColor="@color/black"
+                    android:textSize="19.3sp"
+                    tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tv_count_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    android:fontFamily="@font/font_semi_bold"
+                    android:text="135789"
+                    android:textColor="@color/grey_text"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_views_smile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_bold"
+                    android:text="♥"
+                    android:textColor="@color/black"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/tv_count_views"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    android:fontFamily="@font/font_semi_bold"
+                    android:text="135789"
+                    android:textColor="@color/grey_text"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_likes_smile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_bold"
+                    android:text="♥"
+                    android:textColor="@color/black"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/tv_count_likes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    android:fontFamily="@font/font_semi_bold"
+                    android:text="135789"
+                    android:textColor="@color/grey_text"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="21dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_comments_smile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_bold"
+                    android:text="♥"
+                    android:textColor="@color/black"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/tv_count_comments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    android:fontFamily="@font/font_semi_bold"
+                    android:text="135789"
+                    android:textColor="@color/grey_text"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_local_stats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_count_info"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:paddingStart="16dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:src="@drawable/ic_arrow_circle" />
+
+                <TextView
+                    android:id="@+id/tv_count_load_local"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/font_bold"
+                    android:gravity="end"
+                    android:paddingEnd="16dp"
+                    android:text="1351/1700"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_count_load_local"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/font_regular"
+                    android:gravity="end"
+                    android:paddingEnd="16dp"
+                    android:text="Загруженно"
+                    android:textColor="@color/grey_text"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:paddingStart="16dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:src="@drawable/ic_eye_circle" />
+
+                <TextView
+                    android:id="@+id/tv_count_views_local"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/font_bold"
+                    android:gravity="end"
+                    android:paddingEnd="16dp"
+                    android:text="1351/1700"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_count_views_local"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/font_regular"
+                    android:gravity="end"
+                    android:paddingEnd="16dp"
+                    android:text="Прочитанно"
+                    android:textColor="@color/grey_text"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_local_stats"
+            android:layout_marginTop="10dp"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp">
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Тип"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_type_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="Манга"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_type_data"
+                android:layout_marginTop="12dp"
+                android:background="@color/line_chapter_item" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_jenres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_type"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_jenres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Жанры"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_jenres_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="Манга"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_jenres_data"
+                android:layout_marginTop="12dp"
+                android:background="@color/line_chapter_item" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_jenres"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp">
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Автор"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_author_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="Kusaka Aki"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_author_data"
+                android:layout_marginTop="12dp"
+                android:background="@color/line_chapter_item" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_art"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_author"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp">
+
+            <TextView
+                android:id="@+id/tv_art"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Художник"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_art_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="Kusaka Aki"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_art_data"
+                android:layout_marginTop="12dp"
+                android:background="@color/line_chapter_item" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_publisher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_art"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp">
+
+            <TextView
+                android:id="@+id/tv_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Издатель"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_publisher_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="Shueisha"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_publisher_data"
+                android:layout_marginTop="12dp"
+                android:background="@color/line_chapter_item" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_state_translate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_publisher"
+            android:layout_marginTop="10dp"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp">
+
+            <TextView
+                android:id="@+id/tv_state_translate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Статус перевода"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_state_translate_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="Прододжается"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_state_translate_data"
+                android:layout_marginTop="12dp"
+                android:background="@color/line_chapter_item" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_state_manga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_state_translate"
+            android:layout_marginTop="10dp"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp">
+
+            <TextView
+                android:id="@+id/tv_state_manga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Статус тайтла"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_state_manga_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="Онгоинг"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_state_manga_data"
+                android:layout_marginTop="12dp"
+                android:background="@color/line_chapter_item" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_date_relised"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_state_manga"
+            android:layout_marginTop="10dp"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp">
+
+            <TextView
+                android:id="@+id/tv_date_relised"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Дата релиза"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_date_relised_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="22.02.16"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_date_relised_data"
+                android:layout_marginTop="12dp"
+                android:background="@color/line_chapter_item" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_translators"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_date_relised"
+            android:layout_marginTop="10dp"
+            android:paddingStart="16sp"
+            android:paddingEnd="16sp">
+
+            <TextView
+                android:id="@+id/tv_translators"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_semi_bold"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:text="Переводчики"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_translators_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_rounded_all_11"
+                android:backgroundTint="@color/white_black"
+                android:fontFamily="@font/font_medium"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="7dp"
+                android:text="Shiza Project"
+                android:textColor="@color/blue"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_translators_data"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="60dp"
+                android:background="@color/line_chapter_item" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

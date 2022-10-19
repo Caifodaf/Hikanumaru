@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#9F9FD5</color>
+    <color name="colorPrimaryDark">#9F9FD5</color>
+    <color name="colorAccent">#9F9FD5</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    // Bottom Navigation Menu
+    <color name="grey_navbar">#EAEDF9</color>
+    <color name="blue_navbar">#1389FF</color>
+    // Start Page
+    <color name="welcome_sp">#000000</color>
+    <color name="button_txt_sp">#FFFFFF</color>
+    <color name="button_login_back_sp">#007AFF</color>
+    <color name="button_reg_back_sp">#000000</color>
+    <color name="button_vk_sp">#2B7DDC</color>
+    <color name="button_facebook_sp">#1D4EB1</color>
+    <color name="button_twitter_sp">#3DA4FF</color>
+    <color name="button_shikimori_sp">#161616</color>
+    // Login Registration Page
+    <color name="button_back_login">#4B4B57</color>
+    <color name="txt_login">#C2C2E1</color>
+    <color name="txt_linked_login">#007AFF</color>
+    <color name="button_unselected_login">#E1E1FC</color>
+    <color name="item_checked_true_login">#007AFF</color>
+    <color name="item_checked_false_login">#FF3B30</color>
+    <color name="image_checker_login">#FF3B30</color>
+    <color name="image_icon_login">#D5D5F2</color>
+    <color name="edit_text_account_reg">#0A84FF</color>
+    <color name="edit_image_preview_reg">#EDEDF9</color>
+    <color name="txt_selector_reg">#0A84FF</color>
+    <color name="button_selected_login">#007AFF</color>
+    <color name="info_block">#9F9FD5</color>
+    <color name="back_button_rs">#4B4B57</color>
+    <color name="checkbox_user">#E1E1FC</color>
+
+
+    // Default
+    <color name="light_purple">#EDEDF9</color>
+    <color name="light_purple_text">#9F9FD5</color>
+    <color name="light_blue">#3DA4FF</color>
+    <color name="white_blue">#ECF5FF</color>
+    <color name="light_red">#FF544A</color>
+    <color name="red">#FF3B30</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="grey_news_hint">#DEDEDE</color>
+    <color name="light_black">#4B4B57</color>
+    <color name="light_black_text">#4B4B57</color>
+    <color name="blue">#007AFF</color>
+    <color name="light_blue_text">#1389FF</color>
+    <color name="grey">#767680</color>
+    <color name="light_grey">#CACAF5</color>
+    <color name="light_grey_text">#C2C2E1</color>
+    <color name="grey_icon">#BBBBBB</color>
+    <color name="black_news_text">#5A5A5A</color>
+    <color name="fon_profile">#F6F6FC</color>
+    <color name="line_chapter_item">#B9B9EF</color>
+    <color name="green">#34C759</color>
+
+    <color name="black_back">#24242A</color>
+    <color name="black_back_text">#5F5F6E</color>
+
+    <color name="white_black">#F5F5F5</color>
+    <color name="grey_text">#8D8D8D</color>
+    <color name="grey_text_40">#B0B1B8</color>
+    <color name="grey_text_200">#F4F4F5</color>
+    <color name="grey_500">#ADADBD</color>
+    <color name="light_grey_5">#AEAEB2</color>
+
+    <color name="grey_light_alternative">#D1D1D1</color>
+    <color name="grey_light_alternative_0">#FAFAFA</color>
+    <color name="grey_light_alternative_1">#F5F5F5</color>
+    <color name="grey_light_alternative_2">#E0E0E0</color>
+    <color name="grey_light_alternative_3">#D1D1D6</color>
+    <color name="grey_light_alternative_4">#B2B2B2</color>
+    <color name="grey_light_alternative_5">#595959</color>
+    <color name="grey_light_alternative_6">#2D2D2D</color>
+    <color name="grey_light_alternative_7">#0E0E0E</color>
+
+    <color name="blue_light_alternative_0">#F0F7FF</color>
+
+    <!--    <color name="grey_light_alternative_4">#B2B2B2</color>-->
+
+
+
+    <color name="text_input" tools:ovveride="true">#007AFF</color>
+
+
+
+
+    <color name="transparent_dark">#98000000</color>
+    <color name="transparent_dark_back">#9824242A</color>
+    <color name="yellow">#FFCC00</color>
+
+
+</resources>

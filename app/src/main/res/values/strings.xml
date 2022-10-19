@@ -1,0 +1,207 @@
+<resources>
+    <string name="app_name">Hikanumaru v2</string>
+    <string name="title_home">Home</string>
+    <string name="title_news">News</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_radio">Radio</string>
+    <string name="title_settings">Settings</string>
+
+    // Old
+
+    <string name="lbl_set_profile_photo">Загрузить изображение</string>
+    <string name="lbl_take_camera_picture">Сделать фото</string>
+    <string name="lbl_choose_from_gallery">Выбрать из галерии</string>
+    <string name="toast_image_intent_null">Image picker option is missing!</string>
+    <string name="dialog_permission_title">Grant Permissions</string>
+    <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="go_to_settings">GOTO SETTINGS</string>
+
+    //Start Page
+    <string name="welcome_start_page">Добро пожаловать\nв Hikanumaru!</string>
+    <string name="login_start_page">Вход</string>
+    <string name="reg_start_page">Регистрация</string>
+    <string name="email_or_login">Почта или логин</string>
+    <string name="password_login">Пароль</string>
+    <string name="button_back_login">Назад</string>
+    <string name="button_login">Войти</string>
+    <string name="button_registration_reg">Зарегистрироваться</string>
+    <string name="enter_login_reg">Ваше имя</string>
+    <string name="password_check_reg">Пароль ещё раз</string>
+    <string name="password_reg">Пароль</string>
+    <string name="edit_email_reg">Почта</string>
+    <string name="regions_reg">Регион:</string>
+    <string name="select_map_reg">Выбрать</string>
+    <string name="sources_reg">Источник:</string>
+    <string name="checkbox_i_agree_user_agreement_reg">Я принимаю условия </string>
+    <string name="txt_link_user_agreement_reg">пользовательского соглашения</string>
+    <string name="debug_login">Debug Login</string>
+    <string name="loading_text">Загрузка</string>
+    <string name="text_error">Error</string>
+    <string name="background_profile_edit">Изменение заднего фона профиля</string>
+    <string name="image_login_activity">Картинка приветсвия</string>
+    <string name="more_news_btn">Ещё новости</string>
+    <string name="debug_test">DEBUG TEST</string>
+    <string name="recommendation">Рекомендации</string>
+    <string name="seeall">См. все</string>
+    <string name="new_news">Новое</string>
+    <string name="news">Новости</string>
+    <string name="groups">Группы</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email">Почта</string>
+    <string name="include_email">Укажите почту</string>
+    <string name="proceed">Продолжить</string>
+    <string name="back">Назад</string>
+    <string name="confirmation_code">Код потверждения</string>
+    <string name="info_code_rp">Мы отправили на указанную почту шестизначый код впишите его в поле выше для того чтобы мы удостоверились, что вы - это вы.</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="password">Пароль</string>
+    <string name="password_again">Пароль повторно</string>
+    <string name="info_new_pass_block">Придумайте новый пароль</string>
+    <string name="reset_password">Забыли пароль</string>
+    <string name="login">Вход</string>
+    <string name="info_finish_reg_block">Вы успешно зарегистрировались в Hikanumaru теперь у вас есть возможность читать мангу и ранобэ слушать подкасты и радио, а также загружать всё что понравиться на ваше устройство и многое другое!</string>
+    <string name="welcome_finish">Добро пожаловать!</string>
+    <string name="info_reg_block">Нажмите на шапку или фотографию профиля для того чтобы загрузить фото</string>
+    <string name="region">Регион:</string>
+    <string name="date_6">Дата:</string>
+    <string name="sex_6">Пол:</string>
+    <string name="registrationed">Зарегистрироваться</string>
+    <string name="preferences">Предпочтения</string>
+    <string name="search">Поиск</string>
+    <string name="vertical_stick">|</string>
+    <string name="podcasts">Подкасты</string>
+    <string name="ranobe">Ранобэ</string>
+    <string name="manga">Манга</string>
+    <string name="see_more">См. все</string>
+    <string name="recomendations">Рекомендации</string>
+    <string name="history">Вы читали</string>
+    <string name="genres">Жанры</string>
+    <string name="special_for_you">Специально для вас</string>
+    <string name="magazines">Журналы</string>
+    <string name="new_manga">Новое</string>
+    <string name="popular">Популярное</string>
+    <string name="in_working">В разработке</string>
+    <string name="space_likes_news_item">лайков</string>
+    <string name="space_comm_min_news_item">комм...</string>
+    <string name="big_text_debug">Недавно авторы экранизации Персиковый мальчик, пришедший с другого побережья, представили трейлер. Данный сериал является адаптацией одноимённой манги, за авторством писателя Кулкё Синдзя с иллюстрациями Ёханэ.</string>
+    <string name="author_large_manga_main_item">Автор: </string>
+    <string name="tom_chapter_item">Том: </string>
+    <string name="today">Сегодня</string>
+    <string name="news_and_actuality">Новое и актуальное</string>
+    <string name="history_user_news">Истории</string>
+    <string name="news_and_announcement">Анонсы и трейлеры</string>
+
+
+    <string name="chapter_tom">Том</string>
+    <string name="chapter_number">Глава</string>
+    <string name="chapterCountStart">Всего глав:</string>
+    <string name="prev_chapter">Предыдущая глава</string>
+    <string name="next_chapter">Следующая глава</string>
+
+    <string name="toast_reader_start_page">Вы на первой главе</string>
+    <string name="toast_reader_last_page">Вы на последней главе</string>
+    <string name="cancel">Отмена</string>
+    <string name="registration">Регистрация</string>
+    <string name="login_start_pade">Войти</string>
+    <string name="date_birthday">Дата рождения</string>
+    <string name="chouse_sex">Выберите</string>
+    <string name="acceprt_user_agrement_part1">Нажимая кнопку «продолжить» </string>
+    <string name="acceprt_user_agrement_part2">вы принимаете условия </string>
+    <string name="acceprt_user_agrement_part3">пользовательского соглашения</string>
+    <string name="reg_step2_info_for_profile_custom">Выберите фото для профиля и шапки - это может быть ваше изображение или картинка из нашей библиотеки</string>
+    <string name="more_info_rating_manga_page">Тогда вы можете\nпорекомендовать его\nдругим и не забудьте\nпоставить оценку.</string>
+    <string name="skip">Пропустить</string>
+    <string name="contines">Продолжить</string>
+    <string name="start_page_welcome">Добро пожаловать в Hikanumaru!</string>
+    <string name="simple_reg_start_page">Простая регистрация. Полный доступ.</string>
+    <string name="new_main_page">Новое</string>
+    <string name="error_load">Ошибка загрузки</string>
+    <string name="title_home_top_one">Поиск нового</string>
+    <string name="title_home_top_two">чтение знакомого</string>
+
+    // New
+
+    <string name="status_read_reading_manga_item">Читаю</string>
+    <string name="status_read_plans_manga_item">В ппланах</string>
+    <string name="status_read_dropped_manga_item">Брошенно</string>
+
+    <string name="error_message_load_page">Ошибка загрузки. Проверте подключение к сети и повторите попытку</string>
+    <string name="again_load_error">Повторить попытку</string>
+
+    <string name="type_manga_text_item">Тип: Манга</string>
+    <string name="type_manhya_text_item">Тип: Маньхуа</string>
+    <string name="type_manhva_text_item">Тип: Манхва</string>
+    <string name="type_web_text_item">Тип: Веб-Манга</string>
+    <string name="type_comics_text_item">Тип: Комикс</string>
+    <string name="type_rumanga_text_item">Тип: Руманга</string>
+
+    <string name="status_anons_text_item">Статус: Анонс</string>
+    <string name="status_ongoing_text_item">Статус: Онгоинг</string>
+    <string name="status_paused_text_item">Статус: Приостоновлена</string>
+    <string name="status_ended_text_item">Статус: Завершен</string>
+
+    <string name="status_translate_anons_text_item">Статус перевода: Анонс</string>
+    <string name="status_translate_ongoing_text_item">Статус перевода: Онгоинг</string>
+    <string name="status_translate_paused_text_item">Статус перевода: Приостоновлена</string>
+    <string name="status_translate_ended_text_item">Статус перевода: Завершен</string>
+
+    <string name="year_text_item">Год:</string>
+    <string name="author_text_item">Автор:</string>
+    <string name="read_more_manga_page">Подробнее</string>
+    <string name="collapse_manga_page">Свернуть</string>
+
+    <string name="description_nan_chapter_manga_page_item">Описание нет</string>
+    <string name="tom_chapter_manga_page_item">Том</string>
+    <string name="chapter_chapter_manga_page_item">Глава</string>
+    <string name="all_chapter_count_chapters_page">Всего глав:</string>
+    <string name="load__chapter_page">Загрузка...</string>
+
+    <string name="title_chapter_page_manga_page">ChapterPage</string>
+    <string name="title_news_page">NewsPage</string>
+    <string name="title_application_settings">ApplicationSettings</string>
+    <string name="title_notification_settings">NotificationSettings</string>
+    <string name="title_profile_settings">ProfileSettings</string>
+    <string name="title_storage_settings">StorageSettings</string>
+    <string name="title_mangapage">MangaPage</string>
+    <string name="title_startpage">StartPage</string>
+
+    <string name="manga_text">Манга</string>
+    <string name="manhya_text">Маньхуа</string>
+    <string name="manhva_text">Манхва</string>
+    <string name="web_text">Веб-Манга</string>
+    <string name="comics_text">Комикс</string>
+    <string name="rumanga_text">Руманга</string>
+
+    <string name="anons_text">Анонс</string>
+    <string name="ongoing_text">Онгоинг</string>
+    <string name="paused_text">Приостоновлена</string>
+    <string name="ended_text">Завершен</string>
+    <string name="titile_mangapage_more_info_sheet_panel">MoreInfoMangaPageSheetPanel</string>
+    <string name="or_text">или</string>
+    <string name="login_guest_text">Войти как гость</string>
+    <string name="title_hello_page">HelloPage</string>
+    <string name="title_login">LoginFragmnet</string>
+    <string name="title_registration">RegistrationFragment</string>
+    <string name="your_email">Ваша почта</string>
+    <string name="mail_login_text">Почта/Логин</string>
+    <string name="forgot_your_password">Забыли пароль?</string>
+    <string name="log_in">Войти</string>
+    <string name="login_text">Логин</string>
+    <string name="password_hint_reg">Сложнее чем 123</string>
+    <string name="password_again_hint_reg">Повтори для\nбезопастности</string>
+    <string name="request_pass_text">Требования к паролю</string>
+    <string name="nickname_text">Никнейм</string>
+    <string name="your_name_text">Имя на сервисе</string>
+    <string name="example_login_reg">\@xxxxxx</string>
+    <string name="title_registration_two">RegistrationStateTwoFragment</string>
+
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_back_journal_item"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/rectangle_rounded_all_11"
+    android:backgroundTint="@color/grey_light_alternative_1">
+
+    <TextView
+        android:id="@+id/tv_emoji_journal_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:maxLines="1"
+        android:textColor="@color/grey_light_alternative_6"
+        android:text="⚡"
+        style="@style/Text.Headline_5"/>
+
+    <TextView
+        android:id="@+id/tv_title_journal_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="18dp"
+        android:layout_toEndOf="@+id/tv_emoji_journal_item"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Shonen Jump"
+        android:textColor="@color/grey_light_alternative_6"
+        style="@style/Text.Headline_5"/>
+</RelativeLayout>

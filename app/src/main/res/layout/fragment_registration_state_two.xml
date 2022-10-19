@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.auth.login.LoginFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Text.Callout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="90dp"
+            android:text="@string/nickname_text"
+            android:textColor="@color/grey_light_alternative_5"
+            />
+
+        <EditText
+            android:id="@+id/et_name_reg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Text.Headline_1"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_name"
+            app:layout_constraintEnd_toStartOf="@+id/iv_btn_clear_name"
+            android:autofillHints="username"
+            android:gravity="start"
+            android:layout_marginTop="8dp"
+            android:inputType="textPersonName"
+            android:maxEms="40"
+            android:maxLines="1"
+            android:hint="@string/your_name_text"
+            android:textColorHint="@color/grey_light_alternative_2"
+            android:textColor="@color/grey_light_alternative_7"
+            />
+
+        <ImageView
+            android:id="@+id/iv_check_name"
+            android:layout_width="16dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_sucess_cirlce"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_title_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_title_name"
+            app:layout_constraintTop_toTopOf="@id/tv_title_name" />
+
+        <ImageView
+            android:id="@+id/iv_btn_clear_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/ic_cancel_fill"
+            app:layout_constraintBottom_toBottomOf="@+id/et_name_reg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_name_reg" />
+
+        <TextView
+            android:id="@+id/tv_title_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Text.Callout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_name_reg"
+            android:layout_marginTop="48dp"
+            android:text="@string/login_text"
+            android:textColor="@color/grey_light_alternative_5"
+            />
+
+        <EditText
+            android:id="@+id/et_login_reg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Text.Headline_1"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_login"
+            app:layout_constraintEnd_toStartOf="@+id/iv_eye_pass"
+            android:autofillHints="username"
+            android:gravity="start"
+            android:layout_marginTop="8dp"
+            android:inputType="textPersonName"
+            android:hint="@string/example_login_reg"
+            android:maxEms="30"
+            android:maxLines="1"
+            android:textColorHint="@color/grey_light_alternative_2"
+            android:textColor="@color/grey_light_alternative_7"
+            />
+
+        <ImageView
+            android:id="@+id/iv_check_login"
+            android:layout_width="16dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_sucess_cirlce"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_title_login"
+            app:layout_constraintStart_toEndOf="@+id/tv_title_login"
+            app:layout_constraintTop_toTopOf="@id/tv_title_login" />
+
+        <ImageView
+            android:id="@+id/iv_btn_clear_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/et_login_reg"
+            app:layout_constraintTop_toTopOf="@id/et_login_reg"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/ic_cancel_fill" />
+
+        <ImageView
+            android:id="@+id/iv_eye_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/et_login_reg"
+            app:layout_constraintTop_toTopOf="@id/et_login_reg"
+            app:layout_constraintEnd_toStartOf="@id/iv_btn_clear_login"
+            android:paddingVertical="8dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:src="@drawable/ic_eye_hide"
+            android:visibility="invisible" />
+
+        <ProgressBar
+            android:id="@+id/progress_auth_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_btn_login"
+            app:layout_constraintBottom_toBottomOf="@id/tv_btn_login"
+            android:elevation="2dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/acceprt_user_agrement_part1"
+            style="@style/Text.FootNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/acceprt_user_agrement_part2"
+            android:layout_marginTop="10dp"
+            android:text="@string/acceprt_user_agrement_part1" />
+
+        <LinearLayout
+            android:id="@+id/acceprt_user_agrement_part2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_next_stage_reg"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:layout_above="@+id/tv_next_stage_reg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_medium"
+                android:text="@string/acceprt_user_agrement_part2"
+                style="@style/Text.FootNote" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:textColor="@color/blue"
+                android:text="@string/acceprt_user_agrement_part3"
+                android:maxLines="1"
+                android:ellipsize="end"
+                style="@style/Text.FootNote"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_next_stage_reg"
+            style="@style/Text.Headline_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rectangle_rounded_all"
+            android:backgroundTint="@color/grey_light_alternative_0"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tv_btn_back_reg"
+            android:text="@string/log_in"
+            android:textColor="@color/grey_light_alternative_3" />
+
+        <TextView
+            android:id="@+id/tv_btn_back_reg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:layout_marginBottom="38dp"
+            style="@style/Text.Headline_5"
+            android:textColor="@color/grey_light_alternative_5"
+            android:text="@string/back" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

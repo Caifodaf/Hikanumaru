@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_block_chapter_manga_page_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="6dp"
+    android:orientation="horizontal"
+    android:background="@drawable/rectangle_rounded_all_13_reg">
+
+    <RelativeLayout
+        android:id="@+id/rl_btn_check_read_chapter_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-30dp"
+        android:layout_alignTop="@+id/ll_name_block_chapter_item"
+        android:layout_alignBottom="@+id/ll_name_block_chapter_item"
+        android:layout_toStartOf="@+id/ll_name_block_chapter_item">
+
+        <ImageView
+            android:id="@+id/iv_check_read_chapter_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="9dp"
+            app:srcCompat="@drawable/ic_circle"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_name_block_chapter_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/tv_date_publisher_chapter_manga_page_item"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_chapter_number_manga_page_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_semi_bold"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:lines="1"
+            android:text="Том 1 — Глава 1" />
+
+        <TextView
+            android:id="@+id/tv_chapter_description_manga_page_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_regular"
+            android:layout_marginTop="4dp"
+            android:textSize="13sp"
+            android:maxLines="1"
+            android:lines="1"
+            android:textColor="@color/grey_text"
+            android:text="Описания нет"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_date_publisher_chapter_manga_page_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/ll_name_block_chapter_item"
+        android:layout_marginEnd="68dp"
+        android:textColor="@color/grey_text"
+        android:textSize="13sp"
+        android:fontFamily="@font/font_regular"
+        android:text="14.03.2021"/>
+
+    <ImageView
+        android:id="@+id/iv_status_download_chapter_manga_page_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:srcCompat="@drawable/ic_arrow_bottom_circle"
+        android:visibility="gone"
+        app:tint="@color/black" />
+
+</RelativeLayout>

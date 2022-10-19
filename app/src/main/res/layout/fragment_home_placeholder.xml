@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/frame_home_page_ph"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingConstraints"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:scrollbars="none"
+                tools:ignore="MissingConstraints">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_home_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="60dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="40dp"
+                        app:shimmer_auto_start="true"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="60dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="40dp"
+                            android:visibility="visible">
+
+                            <TextView
+                                android:id="@+id/tv_today_home_ph"
+                                android:layout_width="208dp"
+                                android:layout_height="36dp"
+                                android:layout_alignParentTop="true"
+                                android:background="@drawable/rectangle_rounded_all"
+                                android:backgroundTint="@color/grey_light_alternative_1" />
+
+                            <TextView
+                                android:id="@+id/tv_news_second_news_ph"
+                                android:layout_width="289dp"
+                                android:layout_height="36dp"
+                                android:layout_below="@+id/tv_today_home_ph"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/rectangle_rounded_all"
+                                android:backgroundTint="@color/grey_light_alternative_1" />
+                        </RelativeLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <RelativeLayout
+                            android:id="@+id/ll_recommendation_block_ph"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+                            <TextView
+                                android:id="@+id/tv_rec_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="16dp"
+                                android:clickable="false"
+                                android:fontFamily="@font/font_bold"
+                                android:letterSpacing="-0.02"
+                                android:text="@string/recomendations"
+                                android:textColor="@color/grey_light_alternative_6"
+                                android:textSize="20sp" />
+                            <TextView
+                                android:id="@+id/tv_see_more_rec_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tv_rec_home_ph"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:clickable="false"
+                                android:gravity="end"
+                                android:text="@string/see_more"
+                                android:fontFamily="@font/font_medium"
+                                android:textColor="@color/blue"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/ll_history_block_ph"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_history_home_ph"
+                                style="@style/Text.Headline_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="16dp"
+                                android:clickable="false"
+                                android:text="@string/history"
+                                android:textColor="@color/grey_light_alternative_6" />
+                            <TextView
+                                android:id="@+id/tv_see_more_history_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tv_history_home_ph"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:clickable="false"
+                                android:gravity="end"
+                                android:text="@string/see_more"
+                                android:textColor="@color/blue"
+                                style="@style/Text.Callout" />
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_home_history"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/tv_history_home_ph"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="14dp"
+                                app:shimmer_auto_start="true"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:orientation="horizontal">
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                </LinearLayout>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/ll_genres_block_ph"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_genres_home_ph"
+                                style="@style/Text.Headline_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="16dp"
+                                android:clickable="false"
+                                android:text="@string/genres"
+                                android:textColor="@color/grey_light_alternative_6" />
+                            <TextView
+                                android:id="@+id/tv_see_more_genres_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tv_genres_home_ph"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:clickable="false"
+                                android:gravity="end"
+                                android:text="@string/see_more"
+                                android:textColor="@color/blue"
+                                style="@style/Text.Callout"/>
+
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_home_genres"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/tv_see_more_genres_home_ph"
+                                android:layout_gravity="center"
+                                app:shimmer_auto_start="true"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="14dp"
+                                    android:orientation="horizontal">
+
+                                    <include
+                                        layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="109dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="8dp"/>
+
+                                    <include
+                                        layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="196dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="8dp" />
+
+                                    <include
+                                        layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="109dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="8dp" />
+
+                                    <include
+                                        layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="50dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="8dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="60dp"
+                                    android:orientation="horizontal">
+
+                                    <include
+                                        layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="145dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="8dp" />
+
+                                    <include
+                                        layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="128dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="8dp" />
+
+                                    <include
+                                        layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="109dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="8dp" />
+
+                                    <include
+                                        layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="145dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="8dp" />
+                                </LinearLayout>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/ll_special_block_ph"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_special_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="16dp"
+                                android:clickable="false"
+                                android:text="@string/special_for_you"
+                                android:textColor="@color/grey_light_alternative_6"
+                                style="@style/Text.Headline_3"/>
+                            <TextView
+                                android:id="@+id/tv_see_more_special_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tv_special_home_ph"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:clickable="false"
+                                android:gravity="end"
+                                android:text="@string/see_more"
+                                android:textColor="@color/blue"
+                                style="@style/Text.Callout" />
+
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_home_special"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/tv_see_more_special_home_ph"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="14dp"
+                                app:shimmer_auto_start="true"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:orientation="horizontal">
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                </LinearLayout>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/ll_journal_block_ph"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_journal_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="16dp"
+                                android:clickable="false"
+                                android:text="@string/magazines"
+                                android:textColor="@color/grey_light_alternative_6"
+                                style="@style/Text.Headline_3"/>
+                            <TextView
+                                android:id="@+id/tv_see_more_journal_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tv_journal_home_ph"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:clickable="false"
+                                android:gravity="end"
+                                android:text="@string/see_more"
+                                android:textColor="@color/blue"
+                                style="@style/Text.Callout" />
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_home_journal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/tv_see_more_journal_home_ph"
+                                android:layout_gravity="center"
+                                app:shimmer_auto_start="true"
+                                android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="14dp"
+                                android:layout_marginStart="16dp"
+                                android:orientation="horizontal">
+                                <include layout="@layout/fragment_home_block_placeholder_item"
+                                    android:layout_width="160dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginEnd="8dp"/>
+                                <include layout="@layout/fragment_home_block_placeholder_item"
+                                    android:layout_width="160dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginEnd="8dp"/>
+                                <include layout="@layout/fragment_home_block_placeholder_item"
+                                    android:layout_width="160dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginEnd="8dp"/>
+                            </LinearLayout>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/ll_new_block_ph"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_new_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="16dp"
+                                android:clickable="false"
+                                android:text="Новое"
+                                android:textColor="@color/grey_light_alternative_6"
+                                style="@style/Text.Headline_3"/>
+                            <TextView
+                                android:id="@+id/tv_see_more_new_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tv_new_home_ph"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:clickable="false"
+                                android:gravity="end"
+                                android:text="@string/see_more"
+                                android:textColor="@color/blue"
+                                style="@style/Text.Callout" />
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_home_new"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/tv_see_more_new_home_ph"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="14dp"
+                                app:shimmer_auto_start="true"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:orientation="horizontal">
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                </LinearLayout>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/ll_popular_block_ph"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_popular_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:clickable="false"
+                                android:layout_marginStart="16dp"
+                                android:text="@string/popular"
+                                android:textColor="@color/grey_light_alternative_6"
+                                style="@style/Text.Headline_3"/>
+                            <TextView
+                                android:id="@+id/tv_see_more_popular_home"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tv_popular_home_ph"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:clickable="false"
+                                android:gravity="end"
+                                android:text="@string/see_more"
+                                android:textColor="@color/blue"
+                                style="@style/Text.Callout"/>
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_home_popular"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/tv_see_more_popular_home"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="14dp"
+                                app:shimmer_auto_start="true"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:orientation="horizontal">
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                    <include layout="@layout/fragment_home_manga_vertical_placeholder_item" />
+                                </LinearLayout>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/ll_latest_block_ph"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_latest_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:clickable="false"
+                                android:layout_marginStart="16dp"
+                                android:text="Последние обновления"
+                                android:textColor="@color/grey_light_alternative_6"
+                                style="@style/Text.Headline_3"/>
+                            <TextView
+                                android:id="@+id/tv_see_more_latest_home_ph"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tv_latest_home_ph"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:clickable="false"
+                                android:gravity="end"
+                                android:text="@string/see_more"
+                                android:textColor="@color/blue"
+                                style="@style/Text.Callout" />
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_home_latest"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/tv_see_more_latest_home_ph"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="14dp"
+                                app:shimmer_auto_start="true"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="40dp"
+                                    android:orientation="vertical">
+                                    <include layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="190dp"
+                                        android:layout_marginBottom="10dp" />
+                                    <include layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="190dp"
+                                        android:layout_marginBottom="10dp" />
+                                    <include layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="190dp"
+                                        android:layout_marginBottom="10dp" />
+                                    <include layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="190dp"
+                                        android:layout_marginBottom="10dp" />
+                                    <include layout="@layout/fragment_home_block_placeholder_item"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="190dp"
+                                        android:layout_marginBottom="10dp" />
+                                </LinearLayout>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+</FrameLayout>

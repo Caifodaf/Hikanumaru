@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="ru.android.hikanumaruapp.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_mangapage"
+            app:destination="@id/navigation_mangapage" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="ru.android.hikanumaruapp.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="ru.android.hikanumaruapp.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_profile_settings"
+            app:destination="@id/navigation_profile_settings" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_storage_settings"
+            app:destination="@id/navigation_storage_settings" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_application_settings"
+            app:destination="@id/navigation_application_settings" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_notification_settings"
+            app:destination="@id/navigation_notification_settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_news"
+        android:name="ru.android.hikanumaruapp.ui.news.NewsFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_navigation_news_to_navigation_news_page"
+            app:destination="@id/navigation_news_page" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_radio"
+        android:name="ru.android.hikanumaruapp.ui.radio.RadioFragment"
+        android:label="@string/title_radio"
+        tools:layout="@layout/fragment_radio" />
+    <fragment
+        android:id="@+id/navigation_hello_page"
+        android:name="ru.android.hikanumaruapp.ui.hellopage.HelloPageFragment"
+        android:label="@string/title_hello_page"
+        tools:layout="@layout/fragment_hello_page" >
+        <action
+            android:id="@+id/action_navigation_hello_page_to_navigation_start_page"
+            app:destination="@id/navigation_start_page" />
+        <action
+            android:id="@+id/action_navigation_hello_page_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_hello_page_to_navigation_radio"
+            app:destination="@id/navigation_radio" />
+        <action
+            android:id="@+id/action_navigation_hello_page_to_navigation_news"
+            app:destination="@id/navigation_news" />
+        <action
+            android:id="@+id/action_navigation_hello_page_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_navigation_hello_page_to_navigation_settings"
+            app:destination="@id/navigation_settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_mangapage"
+        android:name="ru.android.hikanumaruapp.ui.mangapage.MangaPageFragment"
+        android:label="@string/title_mangapage"
+        tools:layout="@layout/fragment_manga_page">
+        <action
+            android:id="@+id/action_navigation_mangapage_to_navigation_chapters_page"
+            app:destination="@id/navigation_chapters_page" />
+        <action
+            android:id="@+id/action_navigation_mangapage_to_fragmentMangaPageBottomSheetPanel"
+            app:destination="@id/navigation_mangapage_more_info_sheet_panel" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_chapters_page"
+        android:name="ru.android.hikanumaruapp.ui.mangapage.chapterspage.ChaptersPageFragment"
+        android:label="@string/title_chapter_page_manga_page"
+        tools:layout="@layout/fragment_chapters_page" />
+    <fragment
+        android:id="@+id/navigation_news_page"
+        android:name="ru.android.hikanumaruapp.ui.news.page.NewsPageFragment"
+        android:label="@string/title_news_page"
+        tools:layout="@layout/fragment_news_page" />
+    <fragment
+        android:id="@+id/navigation_application_settings"
+        android:name="ru.android.hikanumaruapp.ui.settings.application.ApplicationSettingsFragment"
+        android:label="@string/title_application_settings"
+        tools:layout="@layout/fragment_application_settings" />
+    <fragment
+        android:id="@+id/navigation_notification_settings"
+        android:name="ru.android.hikanumaruapp.ui.settings.notification.NotificationSettingsFragment"
+        android:label="@string/title_notification_settings"
+        tools:layout="@layout/fragment_notification_settings" />
+    <fragment
+        android:id="@+id/navigation_profile_settings"
+        android:name="ru.android.hikanumaruapp.ui.settings.profile.ProfileSettingsFragment"
+        android:label="@string/title_profile_settings"
+        tools:layout="@layout/fragment_profile_settings" />
+    <fragment
+        android:id="@+id/navigation_storage_settings"
+        android:name="ru.android.hikanumaruapp.ui.settings.storage.StorageSettingsFragment"
+        android:label="@string/title_storage_settings"
+        tools:layout="@layout/fragment_storage_settings" />
+    <dialog
+        android:id="@+id/navigation_mangapage_more_info_sheet_panel"
+        android:name="ru.android.hikanumaruapp.ui.mangapage.moredata.sheetdialog.FragmentMangaPageBottomSheetPanel"
+        android:label="@string/titile_mangapage_more_info_sheet_panel"
+        tools:layout="@layout/bottom_sheet_manga_page"/>
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="ru.android.hikanumaruapp.ui.auth.login.LoginFragment"
+        android:label="@string/title_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/navigation_start_page"
+        android:name="ru.android.hikanumaruapp.ui.auth.startpage.StartPageFragment"
+        android:label="@string/title_startpage"
+        tools:layout="@layout/fragment_start_page" >
+        <action
+            android:id="@+id/action_navigation_start_page_to_navigation_login"
+            app:destination="@id/navigation_login" />
+        <action
+            android:id="@+id/action_navigation_start_page_to_navigation_registration"
+            app:destination="@id/navigation_registration" />
+        <action
+            android:id="@+id/action_navigation_start_page_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_registration"
+        android:name="ru.android.hikanumaruapp.ui.auth.registration.RegistrationFragment"
+        android:label="@string/title_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_navigation_registration_to_navigation_registration_two"
+            app:destination="@id/navigation_registration_two" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_registration_two"
+        android:name="ru.android.hikanumaruapp.ui.auth.registration.state.two.RegistrationStateTwoFragment"
+        android:label="@string/title_registration_two"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_navigation_registration_two_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+</navigation>

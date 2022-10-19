@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_block_popular_manga_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="11dp"
+    android:layout_marginEnd="20dp"
+    android:paddingBottom="22dp"
+    android:paddingStart="8dp"
+    android:orientation="horizontal"
+    tools:ignore="RtlSymmetry">
+
+    <ImageView
+        android:id="@+id/iv_popular_manga_item"
+        android:layout_width="98dp"
+        android:layout_height="154dp"
+        android:scaleType="fitXY"
+        android:elevation="40dp"
+        android:layout_marginEnd="18dp"
+        android:src="@drawable/user_logo"/>
+
+    <TextView
+        android:id="@+id/tv_title_popular_manga_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/iv_popular_manga_item"
+        android:fontFamily="@font/font_bold"
+        android:inputType="textMultiLine"
+        android:maxLines="1"
+        android:text="Клинок, Клинок, Клинок, Клинок, Клинок, рассекающий демонов"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:ignore="TextViewEdits" />
+
+    <LinearLayout
+        android:id="@+id/ll_author_block_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title_popular_manga_item"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/iv_popular_manga_item"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_regular"
+            android:text="@string/author_large_manga_main_item"
+            android:textColor="@color/light_grey_text"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/tv_author_popular_manga_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_regular"
+            android:text="Коёхару Готоге"
+            android:textColor="@color/light_blue_text"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:id="@+id/ratingbar_item"
+        style="@android:style/Widget.Material.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_author_block_item"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/iv_popular_manga_item"
+        android:minHeight="10dp"
+        android:numStars="5"
+        android:rating="3.5"
+        android:stepSize="0.5"
+        app:mrb_progressBackgroundTint="#C2C2E1"
+        app:mrb_progressTint="@color/yellow" />
+
+    <TextView
+        android:id="@+id/tv_type_manga_main_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_author_block_item"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/ratingbar_item"
+        android:fontFamily="@font/font_medium"
+        android:text="Манга"
+        android:textColor="@color/red"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/tv_description_popular_manga_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ratingbar_item"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/iv_popular_manga_item"
+        android:fontFamily="@font/font_regular"
+        android:maxLines="4"
+        android:text="Танджиро - старший сын в семье, потерявшей кормильца. Однажды он уходит в другой город, чтобы продать древесный уголь, но в конце концов... остаётся на ночь...в чужом доме, вместо того, чтобы идти домой. А всё из-за слухов о демоне, который разгуливает в горах под покровом темноты. Утром парень вернётся домой живым и невредимым... Но его ждут ужасные известия."
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+</RelativeLayout>
