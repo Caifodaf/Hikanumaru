@@ -23,9 +23,9 @@ class MangaPageChapterAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.rlBlockChapterMangaPageItem.setOnClickListener {
+        holder.binding.ccMainBlock.setOnClickListener {
             listenerClick.onRecyclerViewItemClick(
-                holder.binding.rlBlockChapterMangaPageItem,
+                holder.binding.ccMainBlock,
                 itemViewModels[position]
             )
         }

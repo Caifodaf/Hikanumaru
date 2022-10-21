@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.ui.home.adapters
+package ru.android.hikanumaruapp.ui.home.page.adapters
 
 import android.util.Log
 import android.view.LayoutInflater

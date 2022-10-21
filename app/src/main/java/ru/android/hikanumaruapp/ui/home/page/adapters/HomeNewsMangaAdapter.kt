@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.ui.home.adapters
+package ru.android.hikanumaruapp.ui.home.page.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +13,10 @@ import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.MangaMainItemBinding
 import ru.android.hikanumaruapp.model.MangaMainModel
 
-class HomeSpecialMangaAdapter(
+class HomeNewsMangaAdapter(
     private val listenerClick: RecyclerViewClickListener
-    ): RecyclerView.Adapter<HomeSpecialMangaAdapter.ViewHolder>()
+    ): RecyclerView.Adapter<HomeNewsMangaAdapter.ViewHolder>()
 {
-
     private val itemViewModels = mutableListOf<MangaMainModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,19 +56,19 @@ class HomeSpecialMangaAdapter(
                     binding.tvMangaStateMainItem.visibility = GONE
                 }
                 "Read"->{
-                     binding.tvMangaStateMainItem.visibility = VISIBLE
-                     binding.tvMangaStateMainItem.text =
-                         itemView.context.getString(R.string.status_read_reading_manga_item)
+                    binding.tvMangaStateMainItem.visibility = VISIBLE
+                    binding.tvMangaStateMainItem.text =
+                        itemView.context.getString(R.string.status_read_reading_manga_item)
                 }
                 "In plans"->{
-                     binding.tvMangaStateMainItem.visibility = VISIBLE
-                     binding.tvMangaStateMainItem.text =
-                         itemView.context.getString(R.string.status_read_plans_manga_item)
+                    binding.tvMangaStateMainItem.visibility = VISIBLE
+                    binding.tvMangaStateMainItem.text =
+                        itemView.context.getString(R.string.status_read_plans_manga_item)
                 }
                 "Drop"->{
-                     binding.tvMangaStateMainItem.visibility = VISIBLE
-                     binding.tvMangaStateMainItem.text =
-                         itemView.context.getString(R.string.status_read_dropped_manga_item)
+                    binding.tvMangaStateMainItem.visibility = VISIBLE
+                    binding.tvMangaStateMainItem.text =
+                        itemView.context.getString(R.string.status_read_dropped_manga_item)
                 }
                 else->{
                     binding.tvMangaStateMainItem.visibility = GONE

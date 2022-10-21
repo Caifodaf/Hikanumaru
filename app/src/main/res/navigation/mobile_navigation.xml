@@ -7,19 +7,26 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="ru.android.hikanumaruapp.ui.home.HomeFragment"
+        android:name="ru.android.hikanumaruapp.ui.home.page.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_navigation_mangapage"
             app:destination="@id/navigation_mangapage" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_reader"
+            app:destination="@id/navigation_reader" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="ru.android.hikanumaruapp.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_reader"
+            app:destination="@id/navigation_reader" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
@@ -88,12 +95,19 @@
         <action
             android:id="@+id/action_navigation_mangapage_to_fragmentMangaPageBottomSheetPanel"
             app:destination="@id/navigation_mangapage_more_info_sheet_panel" />
+        <action
+            android:id="@+id/action_navigation_mangapage_to_navigation_reader"
+            app:destination="@id/navigation_reader" />
     </fragment>
     <fragment
         android:id="@+id/navigation_chapters_page"
         android:name="ru.android.hikanumaruapp.ui.mangapage.chapterspage.ChaptersPageFragment"
         android:label="@string/title_chapter_page_manga_page"
-        tools:layout="@layout/fragment_chapters_page" />
+        tools:layout="@layout/fragment_chapters_page" >
+        <action
+            android:id="@+id/action_navigation_chapters_page_to_navigation_reader"
+            app:destination="@id/navigation_reader" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_news_page"
         android:name="ru.android.hikanumaruapp.ui.news.page.NewsPageFragment"
@@ -128,7 +142,14 @@
         android:id="@+id/navigation_login"
         android:name="ru.android.hikanumaruapp.ui.auth.login.LoginFragment"
         android:label="@string/title_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_reset_password_stage_three"
+            app:destination="@id/navigation_reset_password_stage_three" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_start_page"
         android:name="ru.android.hikanumaruapp.ui.auth.startpage.StartPageFragment"
@@ -162,4 +183,36 @@
             android:id="@+id/action_navigation_registration_two_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_reset_password_stage_one"
+        android:name="ru.android.hikanumaruapp.ui.auth.reset.password.ResetPasswordStageOneFragment"
+        android:label="@string/title_reset_password_stage_one"
+        tools:layout="@layout/fragment_reset_password_stage_one" >
+        <action
+            android:id="@+id/action_navigation_reset_password_stage_one_to_navigation_login"
+            app:destination="@id/navigation_login" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_reset_password_stage_two"
+        android:name="ru.android.hikanumaruapp.ui.auth.reset.password.ResetPasswordStageTwoFragment"
+        android:label="@string/title_reset_password_stage_two"
+        tools:layout="@layout/fragment_reset_password_stage_two">
+        <action
+            android:id="@+id/action_navigation_reset_password_stage_two_to_navigation_reset_password_stage_one"
+            app:destination="@id/navigation_reset_password_stage_one" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_reset_password_stage_three"
+        android:name="ru.android.hikanumaruapp.ui.auth.reset.password.ResetPasswordStageThreeFragment"
+        android:label="@string/title_reset_password_stage_three"
+        tools:layout="@layout/fragment_reset_password_stage_three">
+        <action
+            android:id="@+id/action_navigation_reset_password_stage_three_to_navigation_reset_password_stage_two"
+            app:destination="@id/navigation_reset_password_stage_two" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_reader"
+        android:name="ru.android.hikanumaruapp.ui.reader.ReaderFragment"
+        android:label="@string/navigation_reader_fragment"
+        tools:layout="@layout/fragment_reader" />
 </navigation>

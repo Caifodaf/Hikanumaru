@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.ui.home
+package ru.android.hikanumaruapp.ui.home.page
 
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +15,7 @@ import ru.android.hikanumaruapp.utilits.SpaceItemDecoration
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.data.debug.DataSetDebug
 import ru.android.hikanumaruapp.model.*
-import ru.android.hikanumaruapp.ui.home.adapters.*
+import ru.android.hikanumaruapp.ui.home.page.adapters.*
 import ru.android.hikanumaruapp.utilits.Coroutines
 import ru.android.hikanumaruapp.utilits.Events
 import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel

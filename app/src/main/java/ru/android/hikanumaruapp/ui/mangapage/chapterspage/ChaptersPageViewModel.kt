@@ -113,7 +113,7 @@ class ChaptersPageViewModel @Inject constructor() : ViewModel(), RecyclerViewCli
 
     override fun onRecyclerViewItemClick(view: View, list: Any?) {
         when (view.id) {
-            R.id.rl_block_chapter_manga_page_item -> {
+            R.id.cc_main_block -> {
                 //val toInfoReader: Intent = Intent(activity, ReaderActivity::class.java)
                 //toInfoReader.putExtra("url",url)
                 //toInfoReader.putExtra("title",nameTitle)

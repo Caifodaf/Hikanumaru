@@ -203,5 +203,36 @@
     <string name="your_name_text">Имя на сервисе</string>
     <string name="example_login_reg">\@xxxxxx</string>
     <string name="title_registration_two">RegistrationStateTwoFragment</string>
+    <string name="description_reset_password_stage_one">На вашу почту мы выслали код \nподтверждения, напишите его \nв приложении</string>
+    <string name="reset_password_title_one">Востановление \nпароля</string>
+    <string name="stage_one_in_three">Шаг 1 из 3</string>
+    <string name="stage_two_in_three">Шаг 2 из 3</string>
+    <string name="stage_three_in_three">Шаг 3 из 3</string>
+    <string name="reset_password_title_three">Новый пароль</string>
+    <string name="description_reset_password_stage_three">Напишите новый пароль и постарайтесь \nзапомнить его =)</string>
+    <string name="password_hint_reset_password">Новый пароль</string>
+    <string name="password_again_hint_reset_password">Новый пароль \nповторно</string>
+    <string name="reset_password_title_two">Код подтверждения</string>
+    <string name="reset_password_code_hint">XXX-XXX</string>
+    <string name="title_reset_password_stage_one">ResetPasswordStageOneFragment</string>
+    <string name="title_reset_password_stage_two">ResetPasswordStageTwoFragment</string>
+    <string name="title_reset_password_stage_three">ResetPasswordStageThreeFragment</string>
+    <string name="translators_text">Переводчики</string>
+    <string name="read_mode_reader_menu">Режим чтения</string>
+    <string name="autoplay_active_text">Автоплей включен</string>
+    <string name="all_chapter_in_chapter_list_reader">Все главы</string>
+    <string name="closed_text">Закрыть</string>
+    <string name="settings_reader_text">Настройки читалки</string>
+    <string name="settings_reader_theme_text">Тема ридера</string>
+    <string name="light_theme_text_reader">Светлая</string>
+    <string name="dark_theme_text_reader">Тёмная</string>
+    <string name="system_theme_text_reader">Системная</string>
+    <string name="folder_save_screenshot_text">Папка сохранения</string>
+    <string name="select_folder_reader_settings_text">Указать</string>
+    <string name="settings_reader_screen_text">Экран</string>
+    <string name="keep_screen_on_setting_reader_text">Держать экран включенным</string>
+    <string name="night_shift_setting_reader_text">Night shift</string>
+    <string name="night_shift_description_setting_reader_text">Технология изменения цвета белого, для более комфортного чтения, особенно в ночное время</string>
+    <string name="navigation_reader_fragment">ReaderFragment</string>
 
 </resources>

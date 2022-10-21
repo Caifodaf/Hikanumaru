@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.ui.home.adapters
+package ru.android.hikanumaruapp.ui.home.page.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,30 +7,30 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.android.hikanumaruapp.utilits.RecyclerViewClickListener
 import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.databinding.GenresMainItemBinding
-import ru.android.hikanumaruapp.model.GenresMainModel
+import ru.android.hikanumaruapp.databinding.JournalsMainItemBinding
+import ru.android.hikanumaruapp.model.JournalMainModel
 
-class HomeGenresMangaAdapter(
+class HomeJournalMangaAdapter(
     private val listenerClick: RecyclerViewClickListener
-    ): RecyclerView.Adapter<HomeGenresMangaAdapter.ViewHolder>()
+    ): RecyclerView.Adapter<HomeJournalMangaAdapter.ViewHolder>()
 {
-    private val itemViewModels = mutableListOf<GenresMainModel>()
+    private val itemViewModels = mutableListOf<JournalMainModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = GenresMainItemBinding
+        val binding = JournalsMainItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.rlBackGenresItem.setOnClickListener {
-            listenerClick.onRecyclerViewItemClick(holder.binding.rlBackGenresItem,
+        holder.binding.rlBackJournalItem.setOnClickListener {
+            listenerClick.onRecyclerViewItemClick(holder.binding.rlBackJournalItem,
                 itemViewModels[position])
         }
         holder.bind()
     }
 
-    fun setMain(list: List<GenresMainModel>) {
+    fun setMain(list: List<JournalMainModel>) {
         itemViewModels.clear()
         itemViewModels.addAll(list)
         notifyDataSetChanged()
@@ -38,16 +38,15 @@ class HomeGenresMangaAdapter(
 
     override fun getItemCount(): Int = itemViewModels.size
 
-    inner class ViewHolder(val binding: GenresMainItemBinding) :
+    inner class ViewHolder(val binding: JournalsMainItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
-            Log.d("ListT", "Load in bind holder history - ${itemViewModels[absoluteAdapterPosition]}")
+            Log.d("ListT", "Load in bind holder history - $itemViewModels")
             val model = itemViewModels[absoluteAdapterPosition]
 
-            binding.tvTitleGenresItem.text = model.title
-
-            binding.rlBackGenresItem.background = when (model.typeColor) {
+            binding.tvTitleJournalItem.text = model.title
+            binding.rlBackJournalItem.background = when (model.typeColor) {
                 "1" -> (ContextCompat.getDrawable(itemView.context, R.drawable.gradient_blue))
                 "2" -> (ContextCompat.getDrawable(itemView.context, R.drawable.gradient_green))
                 "3" -> (ContextCompat.getDrawable(itemView.context, R.drawable.gradient_orange))

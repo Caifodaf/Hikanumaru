@@ -3,18 +3,18 @@
 
     <item android:id="@android:id/background">
             <shape android:shape="rectangle">
-                <stroke android:color="#17171C" android:width="7dp"/>
+                <stroke android:color="#000000" android:width="7dp"/>
                 <corners android:radius="20dp" />
-                <solid android:color="#4B4B57" />
+                <solid android:color="#2D2D2D" />
             </shape>
     </item>
 
     <item android:id="@android:id/progress">
         <clip>
         <shape android:shape="rectangle">
-            <stroke android:color="#17171C" android:width="7dp"/>
+            <stroke android:color="#000000" android:width="7dp"/>
             <corners android:radius="20dp" />
-            <solid android:color="#0A84FF" />
+            <solid android:color="#ffffff" />
         </shape>
     </clip>
     </item>

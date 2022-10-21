@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:state_checked="false"
+        android:trackTint="#595959">
+        <shape
+            android:tint="#595959"
+            android:shape="rectangle">
+            <corners android:radius="100sp"/>
+            <size android:width="48dp"
+                android:height="30dp"/>
+        </shape>
+    </item>
+
+    <item android:state_checked="true">
+        <shape
+            android:tint="@color/blue"
+            android:shape="rectangle">
+            <solid android:color="@color/blue"/>
+            <corners android:radius="100sp"/>
+            <size android:width="48dp"
+                android:height="30dp"/>
+        </shape>
+    </item>
+
+</selector>

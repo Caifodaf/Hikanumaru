@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +17,14 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationBinding
+import ru.android.hikanumaruapp.utilits.Events
+import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
 import ru.android.hikanumaruapp.utilits.UIUtils
 
+@AndroidEntryPoint
 class RegistrationFragment : Fragment(),UIUtils {
 
     companion object{
@@ -39,6 +44,12 @@ class RegistrationFragment : Fragment(),UIUtils {
 
     private var isShowPass: Boolean = false
     private var isCheckMail: Boolean = false
+
+    private val navigationEventsObserver = Events.EventObserver { event ->
+        when (event) {
+            is NavigationFragmentinViewModel.NavigationFrag -> navigateNav(event.navigation, event.bundle)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,14 +77,13 @@ class RegistrationFragment : Fragment(),UIUtils {
     }
 
     private fun edEmailListener() {
-        binding.etEmailReg.doOnTextChanged { text, start, count, after ->
+        binding.etEmail.doOnTextChanged { text, start, count, after ->
             binding.ivCheckMail.visibility = View.VISIBLE
-            lReqMail = if (binding.etEmailReg.text.toString().length in 3..40) {
-                binding.ivCheckMail.setImageResource(R.drawable.ic_sucess_cirlce)
-                true
-            } else {
-                binding.ivCheckMail.setImageResource(R.drawable.ic_info_circle_error)
-                false
+            lReqMail = Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text.toString()).matches()
+
+            when (lReqPass) {
+                true ->  binding.ivCheckMail.setImageResource(R.drawable.ic_sucess_cirlce)
+                false ->  binding.ivCheckMail.setImageResource(R.drawable.ic_info_circle_error)
             }
             checkFillingEditTextToLogin()
         }
@@ -150,7 +160,7 @@ class RegistrationFragment : Fragment(),UIUtils {
             btnNextStageView(LOADING_BUTTON_VIEW)
 
             viewModel.postCheckEmail(
-                email = binding.etEmailReg.text.toString(),
+                email = binding.etEmail.text.toString(),
                 pass = binding.etPassReg.text.toString()
             )
         }
@@ -176,12 +186,6 @@ class RegistrationFragment : Fragment(),UIUtils {
                     changeCheckImage(false)
                     btnNextStageView(DEFAULT_BUTTON_VIEW)
 
-                }
-                else->{
-                    // todo disable pop
-                    //errorPop("Ошибка отправки. Код: ${response.code()}",errorLayout,inflater)
-                    changeCheckImage(false)
-                    btnNextStageView(DEFAULT_BUTTON_VIEW)
                 }
             }
         })
@@ -232,7 +236,7 @@ class RegistrationFragment : Fragment(),UIUtils {
 
     private fun initBtnClear(){
         binding.ivBtnClearMail.setOnClickListener{
-            binding.etEmailReg.text = null
+            binding.etEmail.text = null
         }
         binding.ivBtnClearPass.setOnClickListener{
             binding.etPassReg.text = null

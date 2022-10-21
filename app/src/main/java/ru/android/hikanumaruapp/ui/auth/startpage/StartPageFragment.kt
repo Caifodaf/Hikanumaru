@@ -2,10 +2,8 @@ package ru.android.hikanumaruapp.ui.auth.startpage
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,14 +14,14 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.databinding.FragmentHomeBinding
 import ru.android.hikanumaruapp.databinding.FragmentStartPageBinding
-import ru.android.hikanumaruapp.ui.home.HomeViewModel
 import ru.android.hikanumaruapp.utilits.UIUtils
 import java.util.*
 
+@AndroidEntryPoint
 class StartPageFragment : BaseFragment(),UIUtils {
 
     private var _binding: FragmentStartPageBinding? = null
@@ -49,6 +47,7 @@ class StartPageFragment : BaseFragment(),UIUtils {
 
     private fun errorCheck(){
         // todo post refactor
+        // todo getstring after error create user
         // error = arguments?.getString("error").toString()
         //errorLayout = requireView().ll_error_block
         //inflater = layoutInflater

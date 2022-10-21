@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -162,16 +164,73 @@ class MangaPageViewModel @Inject constructor() : ViewModel(), RecyclerViewClickL
         }
     }
 
+    fun openReaderPageFastRead(page:Int? = null) {
+        val list = listPage.value!![0]
+        val toInfoReader = Bundle()
+
+        // todo add last load reading page
+        val urlChapter = if (page != null)
+            list.chapter!![page].url.toString()
+        else
+            list.chapter!!.last().url.toString()
+
+
+            toInfoReader.putString("url",urlChapter)
+            toInfoReader.putString("title",list.name)
+            toInfoReader.putString("type",list.type.toString())
+            if(!list.chapter.isNullOrEmpty()) {
+                val str = Gson().toJson(list.chapter!!)
+                toInfoReader.putString("list", str)
+            }
+            toInfoReader.putString("urlPage", urlPage)
+            toInfoReader.putString("count", (list.chapterCount?.minus(1)).toString())
+
+        emitter.emitAndExecute(
+            NavigationFragmentinViewModel.NavigationFrag(
+                R.id.navigation_reader, toInfoReader))
+
+    }
+
+    private fun openReaderPageChapter(listHolder: Any?) {
+        val toInfoReader = Bundle()
+
+        val listManga = listPage.value!![0]
+        val list: MutableList<Chapter> = listHolder as MutableList<Chapter>
+
+        val urlChapter = list[0].url.toString()
+
+
+
+        toInfoReader.putString("url",urlChapter)
+        toInfoReader.putString("title",listManga.name)
+        toInfoReader.putString("type",listManga.type.toString())
+        if(!listManga.chapter.isNullOrEmpty()) {
+            val str = Gson().toJson(listManga.chapter!!)
+            toInfoReader.putString("list", str)
+        }
+        toInfoReader.putString("urlPage", urlPage)
+        toInfoReader.putString("count", (listManga.chapterCount?.minus(1)).toString())
+
+        emitter.emitAndExecute(
+            NavigationFragmentinViewModel.NavigationFrag(
+                R.id.navigation_reader, toInfoReader))
+
+    }
+
     override fun onRecyclerViewItemClick(view: View, list: Any?) {
         val bundle = Bundle()
 
         when (view.id) {
-            R.id.rl_block_manga_main_item -> {
-                //bundle.putString("url", (list as MangaMainModel).linkPage)
-                emitter.emitAndExecute(
-                    NavigationFragmentinViewModel.NavigationFrag(
-                    R.id.navigation_mangapage, bundle))
+            R.id.cc_main_block -> {
+                timerDoubleBtn(view as ConstraintLayout)
+                openReaderPageChapter(list)
             }
+//            R.id.rl_block_manga_main_item -> {
+//                //bundle.putString("url", (list as MangaMainModel).linkPage)
+//                emitter.emitAndExecute(
+//                    NavigationFragmentinViewModel.NavigationFrag(
+//                    R.id.navigation_mangapage, bundle))
+//            }
         }
     }
 

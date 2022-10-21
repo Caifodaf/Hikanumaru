@@ -1,7 +1,5 @@
-package ru.android.hikanumaruapp.ui.home.adapters
+package ru.android.hikanumaruapp.ui.home.page.adapters
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View.GONE
@@ -10,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
-import com.commit451.coiltransformations.BlurTransformation
 import ru.android.hikanumaruapp.utilits.RecyclerViewClickListener
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.MangaMainItemBinding

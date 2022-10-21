@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -23,9 +27,10 @@ import ru.android.hikanumaruapp.model.Manga
 import ru.android.hikanumaruapp.model.MangaPageTextDate
 import ru.android.hikanumaruapp.utilits.Events
 import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.UIUtils
 
 @AndroidEntryPoint
-class MangaPageFragment : Fragment() {
+class MangaPageFragment : Fragment(),UIUtils {
 
     private var _binding: FragmentMangaPageBinding? = null
     private val binding get() = _binding!!
@@ -318,9 +323,11 @@ class MangaPageFragment : Fragment() {
             //todo add fun
         }
         binding.ivBtnReadMangaPage.setOnClickListener(){
-            //todo add fun
+            timerDoubleBtn(binding.ivBtnReadMangaPage)
+            viewModel.openReaderPageFastRead(binding.ivBtnReadMangaPage)
         }
         binding.ivBtnOpenMoreInfo.setOnClickListener(){
+            timerDoubleBtn(binding.ivBtnOpenMoreInfo)
             lifecycleScope.launchWhenResumed {
                 val bundle = Bundle()
                 val str = Gson().toJson(listPage)

@@ -1,19 +1,15 @@
 package ru.android.hikanumaruapp
 
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.databinding.ActivityMainBinding
-import ru.android.hikanumaruapp.ui.home.HomeFragment
+import ru.android.hikanumaruapp.ui.home.page.HomeFragment
 import ru.android.hikanumaruapp.ui.radio.RadioFragment
 import ru.android.hikanumaruapp.ui.news.NewsFragment
 import ru.android.hikanumaruapp.ui.profile.ProfileFragment

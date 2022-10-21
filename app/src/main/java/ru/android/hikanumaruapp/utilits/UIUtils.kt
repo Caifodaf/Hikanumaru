@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import ru.android.hikanumaruapp.R
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -28,6 +29,16 @@ interface UIUtils {
  }
 
  fun timerDoubleBtn(view: LinearLayout, time:Long = 1000) {
+  val timer = object: CountDownTimer(time, time) {
+   override fun onTick(millisUntilFinished: Long) {
+    view.isClickable = false}
+   override fun onFinish() {
+    view.isClickable = true}
+  }
+  timer.start()
+ }
+
+ fun timerDoubleBtn(view: ConstraintLayout, time:Long = 1000) {
   val timer = object: CountDownTimer(time, time) {
    override fun onTick(millisUntilFinished: Long) {
     view.isClickable = false}
