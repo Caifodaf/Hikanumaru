@@ -1,4 +1,6 @@
-package ru.android.hikanumaruapp.reader
+package ru.android.hikanumaruapp.ui.reader.model
+
+import java.io.InputStream
 
 data class ViewerChapters(
     var currChapter: MutableList<ReaderChapter>,

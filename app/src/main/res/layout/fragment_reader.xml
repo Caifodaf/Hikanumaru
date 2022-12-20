@@ -33,7 +33,7 @@
 
         <!--   ERROR    -->
 
-        <!--   NEXT     -->
+        <!--   Transitor     -->
 
         <!--   AutoPlay    -->
         <FrameLayout
@@ -168,7 +168,7 @@
             android:id="@+id/reader_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -180,7 +180,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.0713" />
+                    app:layout_constraintGuide_begin="64dp" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline_top_horizontal_rm_bottom"
@@ -928,22 +928,75 @@
 
         <!--   VIEWPAGER     -->
 
+        <FrameLayout
+            android:id="@+id/reader_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="2dp">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager_reader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+        <!-- OverScrool -->
+        <ImageView
+            android:id="@+id/iv_back_loader_reader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="30dp"
+            android:alpha=".50"
+            android:visibility="gone"
+            android:background="@color/black"
+            tools:ignore="ContentDescription" />
+
+        <FrameLayout
+            android:id="@+id/overscrollFrame_reader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_dark"
+            android:clickable="true"
+            android:elevation="8dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView_title_reader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/iv_arrow_reader"
+                    android:layout_marginBottom="64dp"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:padding="12dp"
+                    android:text=""
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:lines="3"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textColor="@android:color/white" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow_reader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
+        </FrameLayout>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -3,6 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/reader_thumb_cirle_white.xml" value="0.2565" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_registration_edit_name.xml" value="0.2565" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_registration_error_edit_name.xml" value="0.2565" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_rounded_all_11.xml" value="0.2555" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/selector_list_bottom_navigation.xml" value="0.2565" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/reader_setting_track_switch.xml" value="0.2565" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/reader_setting_track_switch_m3.xml" value="0.2565" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/selector_bnv.xml" value="0.2565" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/activity_main.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/bottom_sheet_manga_page.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/chapter_manga_page_item.xml" value="0.2907225309961522" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_home.xml" value="0.26808834729626807" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_login.xml" value="0.4548952543822146" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_manga_page.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_manga_page_placeholder.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_reader.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_registration.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/journals_main_item.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/manga_main_item.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/manga_page_text_item.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/view_page_reader_item.xml" value="0.4548952543822146" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/menu/layout_dropdown_item.xml" value="0.3009833262077811" />
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_reader_back_arrow.xml" value="0.3855" />
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_reader_list_chapter.xml" value="0.3855" />
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_settings.xml" value="0.318" />
@@ -65,7 +88,7 @@
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/layout/fragment_notifications.xml" value="0.4265625" />
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/layout/fragment_profile.xml" value="0.4473958333333333" />
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/layout/fragment_radio.xml" value="0.4473958333333333" />
-        <entry key="..\:/HikanumaruApp_v2/app/src/main/res/layout/fragment_reader.xml" value="0.75" />
+        <entry key="..\:/HikanumaruApp_v2/app/src/main/res/layout/fragment_reader.xml" value="0.6066134549600912" />
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/layout/fragment_registration.xml" value="0.5541666666666667" />
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/layout/fragment_registration_state_two.xml" value="0.4548952543822146" />
         <entry key="..\:/HikanumaruApp_v2/app/src/main/res/layout/fragment_reset_password_stage_one.xml" value="0.4548952543822146" />

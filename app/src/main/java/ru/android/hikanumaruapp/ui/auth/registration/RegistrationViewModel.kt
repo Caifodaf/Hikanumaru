@@ -1,15 +1,11 @@
 package ru.android.hikanumaruapp.ui.auth.registration
 
-import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,6 +19,7 @@ import ru.android.hikanumaruapp.utilits.Events
 import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
 import ru.android.hikanumaruapp.utilits.UIUtils
 import javax.inject.Inject
+
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(private val repository: Repository) : ViewModel(),
@@ -70,9 +67,15 @@ class RegistrationViewModel @Inject constructor(private val repository: Reposito
         this.userName = userName
     }
 
-    fun postCheckEmail(email: String, pass: String) {
+
+
+
+
+
+        fun postCheckEmail(email: String, pass: String) {
         if (checkMail == email && email.isNotBlank() && isCheckMail) {
             setDataStageOne(checkMail, pass)
+
             // todo fast
         }else{
             setDataStageOne(email, pass)

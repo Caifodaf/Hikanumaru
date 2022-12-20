@@ -29,10 +29,9 @@ import ru.android.hikanumaruapp.utilits.*
 import javax.inject.Inject
 
 @HiltViewModel
-class MangaPageViewModel @Inject constructor() : ViewModel(), RecyclerViewClickListener, UIUtils {
+class MangaPageViewModel @Inject constructor(private val provider:Provider) : ViewModel(), RecyclerViewClickListener, UIUtils {
 
     private lateinit var job: Job
-    private val provider = Provider()
     val emitter = Events.Emitter()
 
     private var isReversedList = false
@@ -195,18 +194,24 @@ class MangaPageViewModel @Inject constructor() : ViewModel(), RecyclerViewClickL
         val toInfoReader = Bundle()
 
         val listManga = listPage.value!![0]
-        val list: MutableList<Chapter> = listHolder as MutableList<Chapter>
+        val list: Chapter = listHolder as Chapter
 
-        val urlChapter = list[0].url.toString()
-
+        val urlChapter = list.url.toString()
 
 
         toInfoReader.putString("url",urlChapter)
         toInfoReader.putString("title",listManga.name)
-        toInfoReader.putString("type",listManga.type.toString())
+        toInfoReader.putInt("type",listManga.type!!.toInt())
         if(!listManga.chapter.isNullOrEmpty()) {
-            val str = Gson().toJson(listManga.chapter!!)
-            toInfoReader.putString("list", str)
+            if (isReversedList){
+                val str = Gson().toJson(listManga.chapter!!)
+                toInfoReader.putString("list", str)
+            }else{
+                var list = listManga.chapter!!
+                list = list.reversed() as MutableList<Chapter>
+                val str = Gson().toJson(list)
+                toInfoReader.putString("list", str)
+            }
         }
         toInfoReader.putString("urlPage", urlPage)
         toInfoReader.putString("count", (listManga.chapterCount?.minus(1)).toString())
@@ -218,8 +223,6 @@ class MangaPageViewModel @Inject constructor() : ViewModel(), RecyclerViewClickL
     }
 
     override fun onRecyclerViewItemClick(view: View, list: Any?) {
-        val bundle = Bundle()
-
         when (view.id) {
             R.id.cc_main_block -> {
                 timerDoubleBtn(view as ConstraintLayout)

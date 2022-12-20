@@ -324,7 +324,7 @@ class MangaPageFragment : Fragment(),UIUtils {
         }
         binding.ivBtnReadMangaPage.setOnClickListener(){
             timerDoubleBtn(binding.ivBtnReadMangaPage)
-            viewModel.openReaderPageFastRead(binding.ivBtnReadMangaPage)
+            //viewModel.openReaderPageFastRead(binding.ivBtnReadMangaPage)
         }
         binding.ivBtnOpenMoreInfo.setOnClickListener(){
             timerDoubleBtn(binding.ivBtnOpenMoreInfo)
