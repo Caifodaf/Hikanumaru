@@ -14,8 +14,7 @@ class SnappyRecyclerView : RecyclerView {
         context!!,
         attrs,
         defStyle
-    ) {
-    }
+    ) {}
 
     override fun fling(velocityX: Int, velocityY: Int): Boolean {
         val lm = layoutManager

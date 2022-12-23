@@ -10,6 +10,7 @@ import org.jsoup.select.Elements
 import ru.android.hikanumaruapp.model.Chapter
 import ru.android.hikanumaruapp.model.Manga
 import ru.android.hikanumaruapp.model.MangaInfo
+import ru.android.hikanumaruapp.provider.ReadMangaParser.Reader.ReaderRMP
 import ru.android.hikanumaruapp.ui.reader.model.ReaderChapter
 import ru.android.hikanumaruapp.ui.reader.model.ReaderChapterPage
 import java.io.IOException
@@ -26,7 +27,7 @@ data class MangaPageInfoModel(
     //var genres: Array<String>?
 )
 
-class ReadMangaParser {
+class ReadMangaParserProvider {
     private val userAgent: String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
             "AppleWebKit/537.36 (KHTML, like Gecko) " +
             "Chrome/81.0.4044.138 Safari/537.36";
@@ -579,229 +580,81 @@ class ReadMangaParser {
     }
 
 
-    fun getDataMangaChapterReader(url:String,listPage: MutableList<ReaderChapter>): Flow<MutableList<ReaderChapter>> {
-        downloadDocument(url)
-        try {
-            val element: Elements = document!!.select("script")
-            var s: String = element.html();
-            val urlU = url
-            var start: Int = 0
-            var nextLink = ""
-            var prevLink: String = ""
-            var prevId: String = ""
-            var prevTitle: String = ""
-            var nextId: String = ""
-            var nextTitle: String = ""
-            var tran: Int = 1
-            val count: Int = 1
-            val pages: MutableList<String> = mutableListOf()
-            val num: String = url.substringAfterLast("/")
-            var tom: String = url.substringAfterLast("/vol")
-            tom = tom.substringBefore("/$num")
-            if (tom == "https:readmanga.io/")
-                tom = "1"
-
-            //https://readmanga.io/nachalo_posle_konca/vol4/12
-            val mangaUrl: String = document!!.select("h1").select("a").attr("href")
-            //var nameUrl:String = ""
-            //nameUrl = urlU.substringAfter("https:readmanga.io/")
-            //nameUrl = nameUrl.substringBefore("/")
-            //val mangaUrl: String = "https:readmanga.io/$nameUrl"
-
-            val title = document!!.select("h1").select("a").text()
-            val description = (document!!.select("h1").text()).substringAfterLast(num)
-
-                start = s.indexOf("nextChapterLink = \"")
-                if (start != -1) {
-                    val p: Int = s.lastIndexOf("\";") + 1
-                    nextLink = s.substring(start)
-                    nextLink = nextLink.substringBefore("\";")
-                    nextLink = nextLink.substringAfter("\"/")
-
-                    nextId = "${nextLink.substringAfterLast("/vol").substringBefore("/")} " +
-                            nextLink.substringAfterLast("/").substringBefore("\"")
-                    val docNext = document!!.select("select[id=chapterSelectorSelect]").toString()
-                    var nextTemp = docNext.substringAfter("$nextLink\">")
-                    nextTemp = nextTemp.substringBefore("</option>")
-
-                    nextTitle = nextTemp.substringAfter("${nextLink.substringAfterLast("/vol").substringBefore("/")} " +
-                            "- ${nextLink.substringAfterLast("/").substringBefore("\"")} ")
-
-                    nextLink = "https://readmanga.io/$nextLink"
-                    tran = when (nextLink == "finish") {
-                        true -> 2
-                        false -> 1
-                    }
-                }
-
-            prevLink = "https://readmanga.io${
-                document!!.select("a[class=hide prevChapLink]")
-                    .attr("href")}"
-
-            if(prevLink == "https://readmanga.io$mangaUrl") {
-                prevLink = "Is start page"
-                prevId = "-/-"
-                prevTitle = "Is start page"
-            }else{
-                val prevTempAll:String = "<option value=\"${document!!.select("a[class=hide prevChapLink]")
-                    .attr("href")}\">"
-
-                prevId = prevTempAll.substringAfterLast("/vol").substringBefore("/") + " " +
-                    prevTempAll.substringAfterLast("/").substringBefore("\"")
-
-                val docPrev = document!!.select("select[id=chapterSelectorSelect]").toString()
-                var prevTemp = docPrev.substringAfterLast(prevTempAll)
-
-                prevTemp = prevTemp.substringBefore("</option>")
-                prevTitle = prevTemp.substringAfter("${prevTempAll.substringAfterLast("/vol").substringBefore("/")}" +
-                        " - ${prevTempAll.substringAfterLast("/").substringBefore("\"")} ")
-
-            }
+    fun getDataMangaChapterReader(url:String): Flow<Any>  =
+        ReaderRMP().getChapter(downloadDocument(url),url)
 
 
-
-            val translator = document!!.select("h5").select("a").text()
-
-            //Pages
-            start = s.indexOf("rm_h.initReader( [")
-            if (start != -1) {
-                start += 10
-                val p: Int = s.lastIndexOf("]") + 1
-                s = s.substring(start, p)
-            }
-            s = s.replace("','',\"","")
-            s = s.substringAfter('[')
-
-            var temp:String = ""
-            val dwx:Boolean = true
-            s = s.substringAfter("rm_h.initReader( [2,3], [")
-            while(dwx) {
-
-                try {
-                    temp = s.substring(s.indexOf('\'') + 1, s.indexOf('\"'))
-                }catch (e:RuntimeException){
-                    break
-                }
-
-                if (temp.indexOf("],[") != -1){ break} //stop
-                pages.add(temp)
-                s = s.replace("\'$temp\"","")
-            }
-
-            listPage.clear()
-            listPage.add(ReaderChapter(
-                idChapter = "$tom/$num",
-                url = url,
-                selectType = tran,
-                tom = tom,
-                number = num,
-                title = title,
-                description = description,
-                linkPageManga = mangaUrl,
-                linkPagePrev = prevLink,
-                pagePrevId = prevId,
-                pagePrevTitle = prevTitle,
-                linkPageNext = nextLink,
-                pageNextId = nextId,
-                pageNextTitle = nextTitle,
-                translater = translator,
-                pages = pages))
-            Log.d("dadadadwa", "loadpages idChapter - ${listPage[0].idChapter}")
-            Log.d("dadadadwa", "loadpages url - ${listPage[0].url}")
-            Log.d("dadadadwa", "loadpages selectType - ${listPage[0].selectType}")
-            Log.d("dadadadwa", "loadpages tom - ${listPage[0].tom}")
-            Log.d("dadadadwa", "loadpages number - ${listPage[0].number}")
-            Log.d("dadadadwa", "loadpages title - ${listPage[0].title}")
-            Log.d("dadadadwa", "loadpages description - ${listPage[0].description}")
-            Log.d("dadadadwa", "loadpages linkPageManga - ${listPage[0].linkPageManga}")
-            Log.d("dadadadwa", "loadpages linkPagePrev - ${listPage[0].linkPagePrev}")
-            Log.d("dadadadwa", "loadpages pagePrevId - ${listPage[0].pagePrevId}")
-            Log.d("dadadadwa", "loadpages pagePrevTitle - ${listPage[0].pagePrevTitle}")
-            Log.d("dadadadwa", "loadpages linkPageNext - ${listPage[0].linkPageNext}")
-            Log.d("dadadadwa", "loadpages pageNextId - ${listPage[0].pageNextId}")
-            Log.d("dadadadwa", "loadpages pageNextTitle - ${listPage[0].pageNextTitle}")
-            Log.d("dadadadwa", "loadpages translater - ${listPage[0].translater}")
-            Log.d("dadadadwa", "loadpages pages - ${listPage[0].pages}")
-
-            return  flow { emit(listPage) }
-        }catch (e: IOException) {
-            Log.e("Error", "Error RCV Download News items ")
-            e.printStackTrace();
-            return  flow { emit(listPage) }
-        }
-    }
-
-    fun getDataMangaChapterReaderPage(url:String,listPage: MutableList<ReaderChapterPage>): MutableList<ReaderChapterPage> {
-        downloadDocument(url)
-        try {
-            val element: Elements = document!!.select("script")
-            var s: String = element.html();
-            var start: Int = 0
-            var nextLink = ""
-            var prevLink: String = ""
-            val pages: MutableList<String> = mutableListOf()
-            val num: String = url.substringAfterLast("/")
-            var tom: String = url.substringAfterLast("/vol")
-            tom = tom.substringBefore("/$num")
-            if (tom == "https:readmanga.io/")
-                tom = "1"
-
-            val mangaUrl: String = document!!.select("h1").select("a").attr("href")
-
-            start = s.indexOf("nextChapterLink = \"")
-            if (start != -1) {
-                val p: Int = s.lastIndexOf("\";") + 1
-                nextLink = s.substring(start)
-                nextLink = nextLink.substringBefore("\";")
-                nextLink = nextLink.substringAfter("\"/")
-                nextLink = "https://readmanga.io/$nextLink"
-            }
-
-            prevLink = "https://readmanga.io${
-                document!!.select("a[class=hide prevChapLink]")
-                    .attr("href")
-            }"
+//    fun getDataMangaChapterReaderPage(url:String,listPage: MutableList<ReaderChapterPage>): MutableList<ReaderChapterPage> {
+//        downloadDocument(url)
+//        try {
+//            val element: Elements = document!!.select("script")
+//            var s: String = element.html();
+//            var start: Int = 0
+//            var nextLink = ""
+//            var prevLink: String = ""
+//            val pages: MutableList<String> = mutableListOf()
+//            val num: String = url.substringAfterLast("/")
+//            var tom: String = url.substringAfterLast("/vol")
+//            tom = tom.substringBefore("/$num")
+//            if (tom == "https:readmanga.io/")
+//                tom = "1"
+//
+//            val mangaUrl: String = document!!.select("h1").select("a").attr("href")
+//
+//            start = s.indexOf("nextChapterLink = \"")
+//            if (start != -1) {
+//                val p: Int = s.lastIndexOf("\";") + 1
+//                nextLink = s.substring(start)
+//                nextLink = nextLink.substringBefore("\";")
+//                nextLink = nextLink.substringAfter("\"/")
+//                nextLink = "https://readmanga.io/$nextLink"
+//            }
+//
+//            prevLink = "https://readmanga.io${
+//                document!!.select("a[class=hide prevChapLink]")
+//                    .attr("href")
+//            }"
+//
+//
+//            if(prevLink == "https://readmanga.io$mangaUrl")
+//                prevLink = "Is start page"
+//
+//
+//            //Pages
+//            start = s.indexOf("rm_h.init(")
+//            if (start != -1) {
+//                start += 10
+//                val p: Int = s.lastIndexOf("]") + 1
+//                s = s.substring(start, p)
+//            }
+//            s = s.replace("','',\"", "")
+//            s = s.substringAfter('[')
+//
+//            var temp: String = ""
+//            val dwx: Boolean = true
+//            while (dwx) {
+//                temp = s.substring(s.indexOf('\'') + 1, s.indexOf('\"'))
+//                if (temp.indexOf("],[") != -1) {
+//                    break
+//                }
+//                pages.add(temp)
+//                s = s.replace("\'$temp\"", "")
+//            }
+//
+//            for (i in 0 until pages.size)
+//                listPage.add(ReaderChapterPage(i, "$tom/$num", prevLink, nextLink, pages[i]))
+//            Log.d("Adapter1", " items - $listPage")
+//
+//            return listPage
+//        }catch (e: IOException) {
+//            Log.e("Error", "Error RCV Download News items ")
+//            e.printStackTrace();
+//            return listPage
+//        }
+//    }
 
 
-            if(prevLink == "https://readmanga.io$mangaUrl")
-                prevLink = "Is start page"
-
-
-            //Pages
-            start = s.indexOf("rm_h.init(")
-            if (start != -1) {
-                start += 10
-                val p: Int = s.lastIndexOf("]") + 1
-                s = s.substring(start, p)
-            }
-            s = s.replace("','',\"", "")
-            s = s.substringAfter('[')
-
-            var temp: String = ""
-            val dwx: Boolean = true
-            while (dwx) {
-                temp = s.substring(s.indexOf('\'') + 1, s.indexOf('\"'))
-                if (temp.indexOf("],[") != -1) {
-                    break
-                }
-                pages.add(temp)
-                s = s.replace("\'$temp\"", "")
-            }
-
-            for (i in 0 until pages.size)
-                listPage.add(ReaderChapterPage(i, "$tom/$num", prevLink, nextLink, pages[i]))
-            Log.d("Adapter1", " items - $listPage")
-
-            return listPage
-        }catch (e: IOException) {
-            Log.e("Error", "Error RCV Download News items ")
-            e.printStackTrace();
-            return listPage
-        }
-    }
-
-
-    private fun downloadDocument(url: String?){
+    private fun downloadDocument(url: String?):Document {
         document = Jsoup.connect(url)
             .userAgent(userAgent)
             .header("Content-Encoding", "gzip")
@@ -813,6 +666,7 @@ class ReadMangaParser {
             .ignoreContentType(true)
             .get()
         Log.d("document", "Document reparse")
+        return document!!
     }
 
 }

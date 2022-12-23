@@ -30,22 +30,26 @@ data class ReaderChapter(
     var pageNextId:String? = "null",
     var pageNextTitle:String? = "null",
     val translater: String = "",
-    val pages: MutableList<String>? // List image
+    var pages: MutableList<Any>? = null // List image
 )
 
+
+
 data class ReaderChapterPage(
-        var numberImageChapter: Int, // number in chapter
-        var id: String? = "", // tom|nun cur
-        var linkPagePrev: String? = "null", // Link page manga
-        var linkPageNext: String? = "null", // Link page manga
-        var linkImage: String? = "",
+    var id: String = "", // tom|nun cur
+    var numberImageChapter: Int, // number in chapter
+        //var linkPagePrev: String? = "null", // Link page manga
+        //var linkPageNext: String? = "null", // Link page manga
+    var linkImage: String = "",
     )
 
 data class TransItem(
-    /* 0- Prev
-    1- next
-    2- translate
-    3- Finish
+    /*
+    -1 - Start
+    0 - Prev
+    1 - next
+    2 - translate
+    3 - Finish
      */
     var type: Int,
     val curr: String? = "",

@@ -19,7 +19,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class ReaderProvider @Inject constructor(){
-    private val readmanga = ReadMangaParser()
+    private val readmanga = ReadMangaParserProvider()
 
     private var source: Int = 0
 
@@ -28,15 +28,15 @@ class ReaderProvider @Inject constructor(){
         source = SELECTED_SOURCE
     }
 
-    fun preloadChapterFirst(url: String, list: MutableList<ReaderChapter>): Flow<MutableList<ReaderChapter>> =
+    fun preloadChapterFirst(url: String): Flow<Any> =
          when (source) {
-            READMANGA_SOURCE -> loadChapterFirst(url, list)
-            MANGALIB_SOURCE -> flow { emit(list) }
-            RANOBELIB_SOURCE -> flow { emit(list) }
-            else -> flow { emit(list) }
+            READMANGA_SOURCE -> loadChapterFirst(url)
+            MANGALIB_SOURCE -> flow { emit(Any()) }
+            RANOBELIB_SOURCE -> flow { emit(Any()) }
+            else -> flow { emit(Any()) }
         }
 
-    private fun loadChapterFirst(url: String, list: MutableList<ReaderChapter>): Flow<MutableList<ReaderChapter>> =
-        readmanga.getDataMangaChapterReader(url, list)
+    private fun loadChapterFirst(url: String): Flow<Any> =
+        readmanga.getDataMangaChapterReader(url)
 
 }

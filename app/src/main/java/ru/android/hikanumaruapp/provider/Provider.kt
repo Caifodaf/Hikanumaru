@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class Provider @Inject constructor(){
 
-    private val readmanga = ReadMangaParser()
+    private val readmanga = ReadMangaParserProvider()
     private var source: Int = 0
 
     private fun checkSource(){
