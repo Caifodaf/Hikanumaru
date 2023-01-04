@@ -28,15 +28,26 @@ class ReaderProvider @Inject constructor(){
         source = SELECTED_SOURCE
     }
 
-    fun preloadChapterFirst(url: String): Flow<Any> =
+    fun preloadChapterFirst(url: String): Flow<ReaderChapter> =
          when (source) {
             READMANGA_SOURCE -> loadChapterFirst(url)
-            MANGALIB_SOURCE -> flow { emit(Any()) }
-            RANOBELIB_SOURCE -> flow { emit(Any()) }
-            else -> flow { emit(Any()) }
+            MANGALIB_SOURCE -> flow { emit(ReaderChapter()) }
+            RANOBELIB_SOURCE -> flow { emit(ReaderChapter()) }
+            else -> flow { emit(ReaderChapter()) }
         }
 
-    private fun loadChapterFirst(url: String): Flow<Any> =
+    private fun loadChapterFirst(url: String): Flow<ReaderChapter> =
         readmanga.getDataMangaChapterReader(url)
 
+    fun downloadReaderPageChapters(url: String): Flow<MutableList<Chapter>> {
+        return when (source) {
+            READMANGA_SOURCE -> loadDataReaderPageChapters(url)
+            MANGALIB_SOURCE -> flow { emit(listOf<Chapter>() as MutableList<Chapter>) }
+            RANOBELIB_SOURCE -> flow { emit(listOf<Chapter>() as MutableList<Chapter>) }
+            else -> flow { emit(listOf<Chapter>() as MutableList<Chapter>) }
+        }
+    }
+
+    private fun loadDataReaderPageChapters(url: String): Flow<MutableList<Chapter>> =
+        readmanga.getDataReaderChapters(url)
 }

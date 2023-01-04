@@ -7,7 +7,7 @@
     android:background="@color/black">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cc_main_block"
+        android:id="@+id/cc_main_block_chapter_reader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

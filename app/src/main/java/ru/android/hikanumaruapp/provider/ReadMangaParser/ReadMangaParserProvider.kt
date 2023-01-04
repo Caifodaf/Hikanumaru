@@ -580,8 +580,11 @@ class ReadMangaParserProvider {
     }
 
 
-    fun getDataMangaChapterReader(url:String): Flow<Any>  =
+    fun getDataMangaChapterReader(url:String): Flow<ReaderChapter>  =
         ReaderRMP().getChapter(downloadDocument(url),url)
+
+    fun getDataReaderChapters(url:String): Flow<MutableList<Chapter>>  =
+        ReaderRMP().getChaptersList(downloadDocument(url),url)
 
 
 //    fun getDataMangaChapterReaderPage(url:String,listPage: MutableList<ReaderChapterPage>): MutableList<ReaderChapterPage> {

@@ -198,6 +198,14 @@
                     app:layout_constraintGuide_percent="0.80" />
 
                 <!--   MENU Top   -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/reader_menu_up"
+                    android:background="@color/black"/>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/reader_menu_up"
                     android:layout_width="match_parent"
@@ -332,6 +340,7 @@
                             app:layout_constraintBottom_toTopOf="@+id/tv_btn_close_chapter_list_reader"
                             app:layout_constraintTop_toBottomOf="@+id/tv_title_chapter_list"
                             tools:itemCount="10"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/chapter_reader_menu_item" />
 
                         <TextView
@@ -350,6 +359,17 @@
                             android:gravity="center"
                             android:text="@string/closed_text"
                             android:textColor="@color/grey_light_alternative_2"
+                            />
+
+                        <ProgressBar
+                            android:id="@+id/progress_loading_chapter_list"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:visibility="gone"
                             />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -913,7 +933,7 @@
                             android:id="@+id/reader_seekBar"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:progress="1"
+                            android:progress="0"
                             android:progressDrawable="@drawable/reader_seekbar_background"
                             android:thumb="@drawable/ic_thumb_seekbar_reade_menu"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -929,14 +949,33 @@
 
         <!--   VIEWPAGER     -->
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top_reader_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.155" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_bottom_reader_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.80" />
+
         <FrameLayout
             android:id="@+id/reader_container_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="@id/guideline_top_reader_pager"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_reader_pager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:elevation="2dp">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager_reader"
+                android:elevation="2dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </FrameLayout>

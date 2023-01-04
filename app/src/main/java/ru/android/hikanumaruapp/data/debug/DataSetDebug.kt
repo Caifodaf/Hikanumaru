@@ -32,6 +32,7 @@ class DataSetDebug {
                 "",
                 "https://readmanga.live/van_pis",
                 "https://sun9-37.userapi.com/impg/qBa_BP4GTl-R8Ks1I-PHntwO5OVIynba_QVCMA/lsfDA9UkAuE.jpg?size=691x949&quality=96&sign=22ed460b0e8a7f8c027e28c141671214&type=album"
+                //"https://sun9-37.userapi.com/impg/qBa_BP4GTl-R8Ks1I-PHntwO5OVIynba_QVCMA/lsfDA9UkAuE.jpg?size=691x949&quality=96&sign=22ed460b0e8a7f8c027e28c141671214&type=album"
 
             )
         )

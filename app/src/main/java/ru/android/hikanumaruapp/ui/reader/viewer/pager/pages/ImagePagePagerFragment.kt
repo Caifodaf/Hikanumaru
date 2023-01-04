@@ -1,6 +1,10 @@
 package ru.android.hikanumaruapp.ui.reader.viewer.pager.pages
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
+import android.os.FileUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +14,26 @@ import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
+import com.bumptech.glide.Glide
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.OnViewTapListener
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Response
 import ru.android.hikanumaruapp.databinding.ViewPageReaderItemBinding
 import ru.android.hikanumaruapp.ui.reader.ReaderViewModel
 import ru.android.hikanumaruapp.ui.reader.model.ReaderChapterPage
+import ru.android.hikanumaruapp.utilits.ProgressListener
+import java.io.IOException
+import java.io.InputStream
+import androidx.annotation.RequiresApi as RequiresApi1
 
 
 class ImagePagePagerFragment(
@@ -52,31 +68,43 @@ class ImagePagePagerFragment(
         attacher.update()
 
        job = vm.viewModelScope.launch(Dispatchers.Default) {
+           //imageLoadGlide(chapter.linkImage)
            imageLoad(chapter.linkImage)
        }
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun imageLoadGlide(linkImage: String) {
+        ProgressListener(requireActivity(),linkImage,binding.viewPageImage,binding.tvTopChapterPageItem)
+    }
+
     private fun imageLoad(any: Any) {
-        val imageLoader = ImageLoader(requireActivity())
-        val request = ImageRequest.Builder(requireActivity())
-            .data(any)
-            .target { drawable ->
-                Log.d("ListT2d2", "Load in imga - $drawable")
-                when (drawable) {
-                    null -> {
-                        binding.tvTopChapterPageItem.text = "Ошибка загрузки."
-                        binding.circleBarReaderPageItem.visibility = View.GONE
-                        binding.tvBottomChapterPageItem.visibility = View.VISIBLE
-                        onClickErrorBtn(any as String)
-                    }
-                    else -> {
-                        binding.viewPageImage.load(drawable)
-                        binding.rlLoaderChapterPageItem.visibility = View.GONE
+        try {
+            val imageLoader = ImageLoader(requireActivity())
+            val request = ImageRequest.Builder(requireActivity())
+                .data(any)
+                .target { drawable ->
+                    Log.d("ListT2d2", "Load in imga - $drawable")
+                    when (drawable) {
+                        null -> {
+                            binding.tvTopChapterPageItem.text = "Ошибка загрузки."
+                            binding.circleBarReaderPageItem.visibility = View.GONE
+                            binding.tvBottomChapterPageItem.visibility = View.VISIBLE
+                            onClickErrorBtn(any as String)
+                        }
+                        else -> {
+                            binding.viewPageImage.load(drawable)
+                            binding.rlLoaderChapterPageItem.visibility = View.GONE
+                        }
                     }
                 }
-            }
-            .build()
-        imageLoader.enqueue(request)
+                .build()
+            imageLoader.enqueue(request)
+        }catch (e:Exception){
+            Log.e("imageLoad", e.toString())
+        }catch (e:IllegalStateException){
+            Log.e("imageLoad", e.toString())
+        }
     }
 //    var bitmap: Bitmap? = null
 //

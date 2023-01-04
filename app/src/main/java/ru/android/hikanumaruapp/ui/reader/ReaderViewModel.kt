@@ -1,17 +1,21 @@
 package ru.android.hikanumaruapp.ui.reader
 
+import android.annotation.SuppressLint
 import android.os.Handler
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
+import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.model.Chapter
 import ru.android.hikanumaruapp.provider.ReaderProvider
+import ru.android.hikanumaruapp.ui.reader.model.ReaderChapter
 import ru.android.hikanumaruapp.utilits.SaverImagePager
 import javax.inject.Inject
 
@@ -23,24 +27,25 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
     private var jobLoadChapterPrev: Job? = null
     private var handlerImageSaver: Handler? = null
 
-    private var isLoadNext = false
-    private var isLoadPrev = false
-    private var isLoadNextUrl = ""
-    private var isLoadPrevUrl = ""
+    var lastDirSaveImage: String = ""
 
-    val loadChapter: MutableLiveData<Any> by lazy {
-        MutableLiveData<Any>()
+    val loadChapter: MutableLiveData<ReaderChapter> by lazy {
+        MutableLiveData<ReaderChapter>()
     }
 
-    val preloadChapterNext: MutableLiveData<Any> by lazy {
-        MutableLiveData<Any>()
+    val preloadChapterNext: MutableLiveData<ReaderChapter> by lazy {
+        MutableLiveData<ReaderChapter>()
     }
 
-    val preloadChapterPrev: MutableLiveData<Any> by lazy {
-        MutableLiveData<Any>()
+    val preloadChapterPrev: MutableLiveData<ReaderChapter> by lazy {
+        MutableLiveData<ReaderChapter>()
     }
 
-    internal fun getDataChapter(url: String) {
+    val chapterList: MutableLiveData<MutableList<Chapter>> by lazy {
+        MutableLiveData<MutableList<Chapter>>()
+    }
+
+    fun getDataChapter(url: String) {
         job = viewModelScope.launch(Dispatchers.IO) {
             provider.preloadChapterFirst(url)
                 .catch { exception ->
@@ -56,10 +61,13 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
         }
     }
 
-    internal fun getDataChapterNext(url: String) {
-        if (isLoadNextUrl != url || !jobLoadChapterNext?.isActive!!) {
-            isLoadNextUrl = url
-            jobLoadChapterNext?.cancel()
+    val checkLoadChapterPrev:Boolean =
+        jobLoadChapterPrev == null || jobLoadChapterPrev!!.isActive
+    val checkLoadChapterNext:Boolean =
+        jobLoadChapterNext == null || jobLoadChapterNext!!.isActive
+
+    fun getDataChapterNext(url: String) {
+        if (jobLoadChapterNext == null || jobLoadChapterNext!!.isActive) {
             jobLoadChapterNext = viewModelScope.launch(Dispatchers.IO) {
                 provider.preloadChapterFirst(url)
                     .catch { exception ->
@@ -69,35 +77,39 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
                         //loadChapterError=true
                     }
                     .collect {
-                        //loadNewChapter=false
                         preloadChapterNext.postValue(it)
                     }
             }
         }
     }
 
-    internal fun getDataChapterPrev(url: String) {
-        Log.d("ListT2d2", "Load 20 - ${isLoadPrevUrl != url}")
-        Log.d("ListT2d2", "Load 20 - ${isLoadPrevUrl }")
-        Log.d("ListT2d2", "Load 20 - ${ url}")
-        if (isLoadPrevUrl != url ) {
-            //if ( !jobLoadChapterPrev?.isActive!!){
-            isLoadPrevUrl = url
-            //jobLoadChapterPrev?.cancel()
-            jobLoadChapterPrev = viewModelScope.launch(Dispatchers.IO) {
-                provider.preloadChapterFirst(url)
-                    .catch { exception ->
-                        Log.e("ErrorApi", exception.message.toString())
-                        // Todo error add
-                        //loadNewChapter=true
-                        //loadChapterError=true
-                    }
-                    .collect {
-                        //loadNewChapter=false
-                        preloadChapterPrev.postValue(it)
-                    }
-            }
-       // }
+    fun getDataChapterPrev(url: String) {
+        jobLoadChapterPrev = viewModelScope.launch(Dispatchers.IO) {
+            provider.preloadChapterFirst(url)
+                .catch { exception ->
+                    Log.e("ErrorApi", exception.message.toString())
+                    // Todo error add
+                    //loadNewChapter=true
+                    //loadChapterError=true
+                }
+                .collect {
+                    preloadChapterPrev.postValue(it)
+                }
+        }
+    }
+
+    fun reloadChapterList(url: String) {
+        job = viewModelScope.launch(Dispatchers.IO) {
+            provider.downloadReaderPageChapters(url)
+                .catch { exception ->
+                    Log.e("ErrorApi", exception.message.toString())
+                    // Todo error add
+                    //loadNewChapter=true
+                    //loadChapterError=true
+                }
+                .collect {
+                    chapterList.postValue(it)
+                }
         }
     }
 
@@ -122,27 +134,46 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
 
 
 
+    @SuppressLint("WrongConstant", "UseCompatLoadingForDrawables",
+        "UseCompatLoadingForColorStateLists")
     fun saveImageChapterInLocal(
         context: FragmentActivity,
         url: String,
         currentItem: Int,
-        view: ImageView
+        view: ImageView,
     ) {
         handlerImageSaver = Handler()
 
         job = viewModelScope.launch(Dispatchers.IO) {
-            SaverImagePager().saveImage(
-                Glide.with(context)
-                    .asBitmap()
-                    .load(url)
-                    .submit()
-                    .get(),
-                currentItem,
-                loadChapter,
-                context,
-                view,
-                handlerImageSaver
-            )
+            when( SaverImagePager(
+                url, currentItem, loadChapter,this@ReaderViewModel).saveImage()){
+                true -> {
+                    context.runOnUiThread {
+                        Toast.makeText(context, "Страница сохранена.\n$lastDirSaveImage", 1000)
+                            .show()
+
+                        view.setImageDrawable(context.resources.getDrawable(R.drawable.ic_check_circle_on))
+                        view.imageTintList = context.resources.getColorStateList(R.color.white)
+                        view.setBackgroundResource(R.drawable.gradient_green)
+                        view.backgroundTintList = context.resources.getColorStateList(R.color.green)
+
+                        handlerImageSaver!!.postDelayed(Runnable {
+                            view.setImageDrawable(context.resources.getDrawable(R.drawable.ic_reader_image_download))
+                            view.imageTintList =
+                                context.resources.getColorStateList(R.color.black_back_text)
+                            view.setBackgroundResource(R.drawable.rectangle_rounded_all)
+                            view.backgroundTintList =
+                                context.resources.getColorStateList(R.color.black_back)
+                        }, 2500)
+                    }
+                }
+                false -> {
+                    context.runOnUiThread {
+                        Toast.makeText(context, "Страница не сохранена.", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            }
         }
     }
 

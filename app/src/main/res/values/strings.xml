@@ -107,6 +107,9 @@
     <string name="prev_chapter">Предыдущая глава</string>
     <string name="next_chapter">Следующая глава</string>
 
+    <string name="prev_chapter_reader_trans">Предыдущая глава\nТом:%1$s Глава:%2$s \n\n%3$s</string>
+    <string name="next_chapter_reader_trans">Следующая глава\nТом:%1$s Глава:%2$s \n\n%3$s</string>
+
     <string name="toast_reader_start_page">Вы на первой главе</string>
     <string name="toast_reader_last_page">Вы на последней главе</string>
     <string name="cancel">Отмена</string>

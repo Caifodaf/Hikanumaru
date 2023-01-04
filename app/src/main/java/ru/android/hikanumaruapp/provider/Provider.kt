@@ -43,7 +43,6 @@ class Provider @Inject constructor(){
         }
     }
 
-
     private fun loadDataMangaPage(url: String, list: MutableList<Manga>): Flow<MutableList<Manga>> =
         readmanga.getDatMangaPage(url, list)
 

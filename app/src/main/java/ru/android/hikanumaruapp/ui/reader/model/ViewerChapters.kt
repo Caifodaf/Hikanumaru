@@ -30,7 +30,7 @@ data class ReaderChapter(
     var pageNextId:String? = "null",
     var pageNextTitle:String? = "null",
     val translater: String = "",
-    var pages: MutableList<Any>? = null // List image
+    var pages: MutableList<ReaderChapterPage>? = null // List image
 )
 
 
