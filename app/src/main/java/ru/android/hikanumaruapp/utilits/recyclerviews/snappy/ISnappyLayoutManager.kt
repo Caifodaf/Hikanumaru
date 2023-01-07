@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.utilits.snappy
+package ru.android.hikanumaruapp.utilits.recyclerviews.snappy
 
 /**
  * An interface that LayoutManagers that should snap to grid should implement.

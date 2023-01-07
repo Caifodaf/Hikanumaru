@@ -7,31 +7,46 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.launch
 import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.local.storage.library.LibraryBase
 import ru.android.hikanumaruapp.ui.mangapage.adapter.MangaPageTextAdapter
 import ru.android.hikanumaruapp.model.*
 import ru.android.hikanumaruapp.provider.Provider
 import ru.android.hikanumaruapp.ui.mangapage.adapter.MangaPageChapterAdapter
 import ru.android.hikanumaruapp.utilits.*
+import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
+import ru.android.hikanumaruapp.utilits.recyclerviews.SpaceItemDecoration
+import ru.android.hikanumaruapp.utilits.room.ConvertersRoom
+import ru.android.hikanumaruapp.utilits.room.GsonParser
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class MangaPageViewModel @Inject constructor(private val provider:Provider) : ViewModel(), RecyclerViewClickListener, UIUtils {
+class MangaPageViewModel @Inject constructor(private val provider:Provider) : ViewModel(),
+    RecyclerViewClickListener, UIUtils {
 
     private lateinit var job: Job
+    private lateinit var jobBookmark: Job
+    private lateinit var jobLibrary: Job
+    private var libraryDB : LibraryBase? = null
+
+    val library: MutableLiveData<List<Manga>> by lazy { MutableLiveData<List<Manga>>() }
+    val isBookmark: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+
     val emitter = Events.Emitter()
 
     private var isReversedList = false
@@ -46,39 +61,91 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
     private val listChaptersLoad = mutableListOf<Chapter>()
     private val listTextDataLoad = mutableListOf<MangaPageTextDate>()
 
-    private val _listPage = MutableLiveData<List<Manga>>()
-    val listPage: LiveData<List<Manga>>
-        get() = _listPage
-
-    private val _listChapters = MutableLiveData<List<Chapter>>()
-    val listChapters: LiveData<List<Chapter>>
-        get() = _listChapters
-
-    private val _listTextData = MutableLiveData<List<MangaPageTextDate>>()
-    val listTextData: LiveData<List<MangaPageTextDate>>
-        get() = _listTextData
-
+    val listPage: MutableLiveData<Manga> by lazy { MutableLiveData<Manga>() }
+    val listChapters: MutableLiveData<List<Chapter>> by lazy { MutableLiveData<List<Chapter>>() }
+    val listTextData: MutableLiveData<List<MangaPageTextDate>> by lazy { MutableLiveData<List<MangaPageTextDate>>() }
 
     init {
 
     }
 
-    //getDataPage
-    //getDatMangaPage
+    fun initBDLibrary(context: FragmentActivity) {
+        if (libraryDB == null) {
+            try {
+                val roomConverter = ConvertersRoom(GsonParser(Gson()))
+                libraryDB = Room.databaseBuilder(
+                    context.applicationContext,
+                    LibraryBase::class.java, "manga-library.db"
+                ).addTypeConverter(roomConverter)
+                    .build()
+                checkBookmarkLibrary()
+            }catch (e: Exception){
+                Log.e("ErrorDB", "Library $e")
+            }
+        }
+    }
+
+    private fun checkBookmarkLibrary() {
+        jobLibrary = Coroutines.ioThenMain({
+            try {
+                libraryDB!!.LibraryDao().getById(listPage.value!!.id)
+            } catch (e: Exception) {
+                Log.e("ErrorBD", "Library.getById(id) - " + e.message.toString())
+                null
+            }
+        },
+            {
+                when (it) {
+                    null -> isBookmark.postValue(false)
+                    else -> isBookmark.postValue(true)
+                }
+            }
+        )
+    }
+
+    fun changeBookmark() {
+        if (!::jobBookmark.isInitialized || !jobBookmark.isActive)
+            when(isBookmark.value){
+                true -> changeBookmarkInBDToFalse()
+                false ->  changeBookmarkInBDToTrue()
+                else -> changeBookmarkInBDToFalse()
+            }
+    }
+
+    private fun changeBookmarkInBDToTrue(){
+        jobBookmark = Coroutines.ioThenMain(
+            {   libraryDB!!.LibraryDao().insertAll(listPage.value!!)
+                libraryDB!!.LibraryDao().getById(listPage.value!!.id)
+            },
+            {
+                Log.e("Eadadadadadadadadadadad", "isBookmark ${it}")
+                isBookmark.postValue(true) }
+        )
+    }
+
+    private fun changeBookmarkInBDToFalse(){
+        jobBookmark = CoroutineScope(Dispatchers.Main).launch {
+            withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                libraryDB!!.LibraryDao().delete(listPage.value!!)
+            }
+            isBookmark.postValue(false)
+        }
+    }
+
+
     fun getDataPage(urlPage: String) {
         job = viewModelScope.launch(Dispatchers.IO) {
-            provider.downloadMangaPage(urlPage, listPageLoad)
+            provider.downloadMangaPage(urlPage)
                 .catch { exception ->
                     Log.e("ErrorApi", exception.message.toString())
                     // Todo error add
                 }
                 .collect {
-                    _listPage.postValue(it.requireNoNulls())
+                    listPage.postValue(it)
                 }
         }
     }
-    //getDataPageChapter
-    //getDatMangaChapters
+
     fun getDataChapter(urlPage: String) {
         isLoadingChapterList = true
         job = viewModelScope.launch(Dispatchers.IO) {
@@ -89,19 +156,19 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
                 }
                 .collect {
                     isLoadingChapterList = false
-                    _listChapters.postValue(it.requireNoNulls())
-                    _listPage.value!![0].chapter = listChaptersLoad
+                    listChapters.postValue(it.requireNoNulls())
+                    listPage.value!!.chapters = listChaptersLoad
                 }
         }
     }
 
     fun setListTextData(list: MutableList<MangaPageTextDate>) {
-        _listTextData.value = list
+        listTextData.value = list
         textAdapter.setMain(list)
     }
 
     fun setListChapterData(list: MutableList<Chapter>) {
-        _listChapters.value = list
+        listChapters.value = list
         chapterAdapter.setMain(list)
     }
 
@@ -112,9 +179,9 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
             when (button.id) {
                 // Sorting btn
                 R.id.ll_sort_btn -> {
-                    if (!_listPage.value!![0].chapter.isNullOrEmpty()) {
-                        if (!_listPage.value!![0].chapter!![0].notChapter) {
-                            val list: MutableList<Chapter> = _listPage.value!![0].chapter!!
+                    if (!listPage.value!!.chapters.isNullOrEmpty()) {
+                        if (!listPage.value!!.chapters!![0].notChapter) {
+                            val list: MutableList<Chapter> = listPage.value!!.chapters!!
                             list.reverse()
                             when (isReversedList) {
                                 true -> {
@@ -135,9 +202,9 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
                 // See more chapter nav btn
                 R.id.ll_btn_more_chapter_list -> {
                     val bundle = Bundle()
-                    val model = _listPage.value!![0]
+                    val model = listPage.value!!
 
-                    val str = Gson().toJson(model.chapter!!)
+                    val str = Gson().toJson(model.chapters!!)
                     bundle.putString("list", str)
                     bundle.putBoolean("checkLoadList", isLoadingChapterList)
                     bundle.putBoolean("reverse", isReversedList)
@@ -164,21 +231,21 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
     }
 
     fun openReaderPageFastRead(page:Int? = null) {
-        val list = listPage.value!![0]
+        val list = listPage.value!!
         val toInfoReader = Bundle()
 
         // todo add last load reading page
         val urlChapter = if (page != null)
-            list.chapter!![page].url.toString()
+            list.chapters!![page].url.toString()
         else
-            list.chapter!!.last().url.toString()
+            list.chapters!!.last().url.toString()
 
 
             toInfoReader.putString("url",urlChapter)
             toInfoReader.putString("title",list.name)
             toInfoReader.putString("type",list.type.toString())
-            if(!list.chapter.isNullOrEmpty()) {
-                val str = Gson().toJson(list.chapter!!)
+            if(!list.chapters.isNullOrEmpty()) {
+                val str = Gson().toJson(list.chapters!!)
                 toInfoReader.putString("list", str)
             }
             toInfoReader.putString("urlPage", urlPage)
@@ -193,7 +260,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
     private fun openReaderPageChapter(listHolder: Any?) {
         val toInfoReader = Bundle()
 
-        val listManga = listPage.value!![0]
+        val listManga = listPage.value!!
         val list: Chapter = listHolder as Chapter
 
         val urlChapter = list.url.toString()
@@ -202,12 +269,12 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
         toInfoReader.putString("url",urlChapter)
         toInfoReader.putString("title",listManga.name)
         toInfoReader.putInt("type",listManga.type!!.toInt())
-        if(!listManga.chapter.isNullOrEmpty()) {
+        if(!listManga.chapters.isNullOrEmpty()) {
             if (isReversedList){
-                val str = Gson().toJson(listManga.chapter!!)
+                val str = Gson().toJson(listManga.chapters!!)
                 toInfoReader.putString("list", str)
             }else{
-                var list = listManga.chapter!!
+                var list = listManga.chapters!!
                 list = list.reversed() as MutableList<Chapter>
                 val str = Gson().toJson(list)
                 toInfoReader.putString("list", str)

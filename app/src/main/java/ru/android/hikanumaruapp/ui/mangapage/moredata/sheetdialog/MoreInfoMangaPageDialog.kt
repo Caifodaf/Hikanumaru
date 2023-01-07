@@ -62,10 +62,11 @@ class FragmentMangaPageBottomSheetPanel : BottomSheetDialogFragment() {
         binding.tvCommentsSmile.text = (getEmojiByUnicode(0x1F4AC))
 
         // Load all counts
-        binding.tvCountScore.text = page[0].info[0].scoreCount
-        binding.tvCountViews.text = page[0].info[0].viewCount
-        binding.tvCountLikes.text = page[0].info[0].likesCount
-        binding.tvCountComments.text = page[0].info[0].commentCount
+        val info = page[0].info!!
+        binding.tvCountScore.text = info.scoreCount
+        binding.tvCountViews.text = info.viewCount
+        binding.tvCountLikes.text = info.likesCount
+        binding.tvCountComments.text = info.commentCount
 
         binding.tvCountLoadLocal.text = "${page[0].chapterCountLoadLocal}/${page[0].chapterCount}"
         binding.tvCountViewsLocal.text = "${page[0].chapterCountViewLocal}/${page[0].chapterCount}"
@@ -80,17 +81,17 @@ class FragmentMangaPageBottomSheetPanel : BottomSheetDialogFragment() {
             else -> requireContext().getString(R.string.manga_text)
         }
 
-        binding.tvAuthorData.text = page[0].info[0].author[0]
+        binding.tvAuthorData.text = info.author[0]
 
-        if(page[0].info[0].art.isNullOrEmpty())
+        if(info.art.isNullOrEmpty())
             binding.tvArtData.text = binding.tvAuthorData.text
         else
-            binding.tvArtData.text = page[0].info[0].art!![0]
+            binding.tvArtData.text = info.art!![0]
 
-        if (page[0].info[0].publisher.isNullOrEmpty())
+        if (info.publisher.isNullOrEmpty())
             binding.rlPublisher.visibility = GONE
         else
-            binding.tvPublisherData.text = page[0].info[0].publisher!![0].substringBefore(',')
+            binding.tvPublisherData.text = info.publisher!![0].substringBefore(',')
 
         binding.tvStateMangaData.text =
             when (page[0].status) {
@@ -113,10 +114,10 @@ class FragmentMangaPageBottomSheetPanel : BottomSheetDialogFragment() {
                     3 -> requireContext().getString(R.string.ended_text)
                     else -> requireContext().getString(R.string.ongoing_text)
                 }
-            binding.tvTranslatorsData.text = page[0].info[0].translators?.get(0)?.substringBefore(',') ?: "Нет"
+            binding.tvTranslatorsData.text = info.translators?.get(0)?.substringBefore(',') ?: "Нет"
         }
 
-        binding.tvDateRelisedData.text = page[0].info[0].dateRelise
+        binding.tvDateRelisedData.text = info.dateRelise
     }
 
     private fun getEmojiByUnicode(unicode: Int): String? {

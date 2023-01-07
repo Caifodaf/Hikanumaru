@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.utilits
+package ru.android.hikanumaruapp.utilits.navigation
 
 import android.os.Bundle
 

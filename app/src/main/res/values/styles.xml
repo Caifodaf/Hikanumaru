@@ -97,6 +97,15 @@
         <item name="android:letterSpacing">-0.02</item>-->
     </style>-->
 
+    <style name="Text.Subheadline">-->
+        <item name="android:textColor">@color/black</item>-->
+        <item name="android:fontFamily">@font/font_bold</item>-->
+        <item name="android:textSize">18sp</item>-->
+        <item name="android:lineSpacingExtra">2sp</item>-->
+        <item name="android:translationY">0.92sp</item>-->
+        <item name="android:lineHeight" tools:ignore="NewApi">21dp</item>-->
+    </style>-->
+
     <style name="Text.Subheadline_Light">-->
         <item name="android:textColor">@color/black</item>-->
         <item name="android:fontFamily">@font/font_regular</item>-->

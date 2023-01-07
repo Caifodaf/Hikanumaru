@@ -8,9 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import ru.android.hikanumaruapp.R
@@ -18,13 +16,14 @@ import ru.android.hikanumaruapp.model.Chapter
 import ru.android.hikanumaruapp.provider.Provider
 import ru.android.hikanumaruapp.ui.mangapage.adapter.MangaPageChapterAdapter
 import ru.android.hikanumaruapp.utilits.*
-import ru.android.hikanumaruapp.utilits.SnapOnScrollListener.Behavior
+import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import java.io.IOException
 import javax.inject.Inject
 
 
 @HiltViewModel
-class ChaptersPageViewModel @Inject constructor() : ViewModel(), RecyclerViewClickListener{
+class ChaptersPageViewModel @Inject constructor() : ViewModel(), RecyclerViewClickListener {
 
     private lateinit var job: Job
     private val provider = Provider()

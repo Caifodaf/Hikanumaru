@@ -35,13 +35,13 @@ import ru.android.hikanumaruapp.ui.reader.viewer.pager.ReaderPagerConst.Companio
 import ru.android.hikanumaruapp.ui.reader.viewer.pager.ReaderPagerConst.Companion.READ_MODE_LEFT
 import ru.android.hikanumaruapp.ui.reader.viewer.pager.ReaderPagerConst.Companion.READ_MODE_RIGHT
 import ru.android.hikanumaruapp.ui.reader.viewer.pager.ViewPager2ReaderAdapter
-import ru.android.hikanumaruapp.utilits.RecyclerViewClickListener
+import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import java.lang.reflect.Type
 import kotlin.math.abs
 
 
 @AndroidEntryPoint
-class ReaderFragment : Fragment(),RecyclerViewClickListener {
+class ReaderFragment : Fragment(), RecyclerViewClickListener {
 
     private var _binding: FragmentReaderBinding? = null
     private val binding get() = _binding!!

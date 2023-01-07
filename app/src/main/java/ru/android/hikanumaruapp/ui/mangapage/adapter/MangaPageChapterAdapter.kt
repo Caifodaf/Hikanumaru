@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.android.hikanumaruapp.utilits.RecyclerViewClickListener
+import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.ChapterMangaPageItemBinding
 import ru.android.hikanumaruapp.model.Chapter

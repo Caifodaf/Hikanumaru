@@ -3,7 +3,6 @@ package ru.android.hikanumaruapp.ui.mangapage.chapterspage
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +10,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.databinding.FragmentChaptersPageBinding
 import ru.android.hikanumaruapp.model.Chapter
-import ru.android.hikanumaruapp.utilits.Events
-import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
-import ru.android.hikanumaruapp.utilits.snappy.SnappyLinearLayoutManager
+import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.recyclerviews.snappy.SnappyLinearLayoutManager
 import java.lang.reflect.Type
 
 @AndroidEntryPoint

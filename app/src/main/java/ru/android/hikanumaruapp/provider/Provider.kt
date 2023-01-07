@@ -25,12 +25,12 @@ class Provider @Inject constructor(){
         source = SELECTED_SOURCE
     }
 
-    fun downloadMangaPage(url: String, list: MutableList<Manga>): Flow<MutableList<Manga>> {
+    fun downloadMangaPage(url: String): Flow<Manga> {
         return when (source) {
-            READMANGA_SOURCE -> loadDataMangaPage(url, list)
-            MANGALIB_SOURCE -> flow { emit(list) }
-            RANOBELIB_SOURCE -> flow { emit(list) }
-            else -> flow { emit(list) }
+            READMANGA_SOURCE -> loadDataMangaPage(url)
+            MANGALIB_SOURCE -> flow { }
+            RANOBELIB_SOURCE -> flow { }
+            else -> flow { }
         }
     }
 
@@ -43,8 +43,8 @@ class Provider @Inject constructor(){
         }
     }
 
-    private fun loadDataMangaPage(url: String, list: MutableList<Manga>): Flow<MutableList<Manga>> =
-        readmanga.getDatMangaPage(url, list)
+    private fun loadDataMangaPage(url: String): Flow<Manga> =
+        readmanga.getDatMangaPage(url)
 
     private fun loadDataMangaPageChapters(url: String, list: MutableList<Chapter>): Flow<MutableList<Chapter>> =
         readmanga.getDatMangaChapters(url, list)

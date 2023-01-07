@@ -15,8 +15,8 @@ import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.Repository
 import ru.android.hikanumaruapp.api.models.*
 import ru.android.hikanumaruapp.local.storage.SharedPreferenceAdapter
-import ru.android.hikanumaruapp.utilits.Events
-import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 import ru.android.hikanumaruapp.utilits.UIUtils
 import javax.inject.Inject
 

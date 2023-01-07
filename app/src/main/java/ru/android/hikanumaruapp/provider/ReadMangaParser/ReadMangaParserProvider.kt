@@ -12,7 +12,6 @@ import ru.android.hikanumaruapp.model.Manga
 import ru.android.hikanumaruapp.model.MangaInfo
 import ru.android.hikanumaruapp.provider.ReadMangaParser.Reader.ReaderRMP
 import ru.android.hikanumaruapp.ui.reader.model.ReaderChapter
-import ru.android.hikanumaruapp.ui.reader.model.ReaderChapterPage
 import java.io.IOException
 
 data class MangaPageInfoModel(
@@ -122,13 +121,13 @@ class ReadMangaParserProvider {
         return null
     }
 
-    fun getDatMangaPage(url: String?, listPage: MutableList<Manga>): Flow<MutableList<Manga>> {
+    fun getDatMangaPage(url: String?): Flow<Manga> {
         Log.d("daknxck", "par1 $url - $document")
         if (uploadDocumentPage(url)) {
             if (document != null) {
-                val list: MutableList<Manga>
+                val list: Manga
                 val listChap: MutableList<Chapter> = mutableListOf()
-                val listInfo: MutableList<MangaInfo> = mutableListOf()
+                val listInfo: MangaInfo
                 val element =
                     document!!.select("table[class=table table-hover]").select("tr")
                 val chapterCount: Int = element.size
@@ -295,7 +294,7 @@ class ReadMangaParserProvider {
                 }
 
 
-                listInfo.add(
+                listInfo =
                     MangaInfo(
                         scoreCount = "0",
                         viewCount = "0",
@@ -307,11 +306,9 @@ class ReadMangaParserProvider {
                         dateRelise = dateRelise,
                         translators = translators
                     )
-                )
 
-                list = mutableListOf(
-                    Manga(
-                        id = 0,
+                list = Manga(
+                        id = title.hashCode().toString(),
                         type = type,
                         name = title,
                         alternativeName = alternativeName,
@@ -323,25 +320,21 @@ class ReadMangaParserProvider {
                         year = yearPage,
                         image = linkImageTop,
                         imageBack = linkImageTop,
+                        urlManga = url,
                         bookmark = false,
                         bookmarkName = 0,
                         lastRead = "first",
                         chapterCount = chapterCount,
                         info = listInfo,
-                        chapter = listChap
+                        chapters = listChap
                     )
-                )
 
-                listPage.addAll(list)
+                Log.e("ErrorApi",list.toString())
 
-                return flow {
-                    emit(listPage)
-                }
+                return flow { emit(list) }
             }
         }
-        return flow {
-            emit(listPage)
-        }
+        return flow {}
     }
 
     private fun chapterMangaPageSelect(count:Int,type:Int,element:Elements,list:MutableList<Chapter>):MutableList<Chapter> {

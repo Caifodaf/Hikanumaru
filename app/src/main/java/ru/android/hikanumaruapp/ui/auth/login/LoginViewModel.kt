@@ -1,11 +1,6 @@
 package ru.android.hikanumaruapp.ui.auth.login
 
-import android.content.Context
 import android.util.Log
-import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.Repository
 import ru.android.hikanumaruapp.api.models.ErrorResponse
@@ -21,9 +15,8 @@ import ru.android.hikanumaruapp.api.models.TokenJWT
 import ru.android.hikanumaruapp.api.models.UserAuthPost
 import ru.android.hikanumaruapp.api.models.UserRegResponse
 import ru.android.hikanumaruapp.local.storage.SharedPreferenceAdapter
-import ru.android.hikanumaruapp.model.MangaMainModel
-import ru.android.hikanumaruapp.utilits.Events
-import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 import javax.inject.Inject
 
 @HiltViewModel

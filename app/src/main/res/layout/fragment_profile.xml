@@ -7,6 +7,61 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
 
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/FrameError"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:elevation="100dp"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/Text.Headline_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/font_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="Не удалось загрузить\nпрофиль" />
+
+                <TextView
+                    android:id="@+id/TVBtnReloadErrorPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/tv_role_user_top"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    style="@style/Text.Callout"
+                    android:textColor="@color/grey_light_alternative_5"
+                    android:text="Обновить страницу"
+                    android:background="@drawable/rectangle_rounded_all_15"
+                    android:backgroundTint="@color/grey_light_alternative_1"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="6dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -27,20 +82,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:text="\@xxxavuse" />
 
-            <ImageView
-                android:id="@+id/iv_settings_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="2dp"
-                android:src="@drawable/ic_setting_inside" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/rl_info_user"
                 android:layout_width="match_parent"
-                android:layout_height="162dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tv_login_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,8 +96,8 @@
                 <ImageView
                     android:id="@+id/iv_back_user_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginBottom="46dp"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="30dp"
                     android:src="@drawable/gradient_blue"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -62,12 +107,12 @@
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/iv_select_image_avatar"
                     android:layout_width="0dp"
-                    android:layout_height="98dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintBottom_toBottomOf="@id/iv_back_user_profile"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="-1dp"
-                    android:layout_marginBottom="-39dp"
-                    android:elevation="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="-30dp"
                     android:src="@drawable/ashot"
                     app:civ_border_width="8dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -77,6 +122,7 @@
                 style="@style/Text.Headline_3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@id/rl_info_user"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +135,7 @@
                 android:id="@+id/tv_role_user_top"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@id/tv_name_user_top"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -99,74 +146,108 @@
                 android:text="читатель" />
 
             <TextView
+                android:id="@+id/tv_age_profile_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/tv_role_user_top"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                style="@style/Text.Caption_1_1"
+                android:textColor="@color/grey_light_alternative_6"
+                android:text="в приложении уже: 0"
+                android:background="@drawable/rectangle_rounded_all_15"
+                android:backgroundTint="@color/grey_light_alternative_1"
+                android:paddingTop="4dp"
+                android:paddingBottom="6dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
+
+            <TextView
                 android:id="@+id/tv_lib_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_role_user_top"
-                app:layout_constraintTop_toBottomOf="@id/tv_role_user_top"
+                app:layout_constraintTop_toBottomOf="@id/tv_age_profile_register"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginStart="16dp"
                 android:textColor="@color/black"
                 android:textSize="22sp"
                 android:fontFamily="@font/font_bold"
                 android:text="Библиотека"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/rl_change_category_lib"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_lib_total"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_lib_top"
                 app:layout_constraintTop_toBottomOf="@id/tv_lib_top"
                 app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="4dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
+                android:textColor="@color/grey_light_alternative_4"
+                style="@style/Text.FootNote"
+                android:text="Всего произведений: 0"/>
+
+            <ImageView
+                android:id="@+id/ImageViewGroupLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lib_sort_3"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_lib_total"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/rectangle_rounded_all_11"
-                android:backgroundTint="@color/white_black">
+                app:tint="@color/black" />
 
-                <TextView
-                    android:id="@+id/tv_mane_category_lib"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:fontFamily="@font/font_semi_bold"
-                    android:paddingStart="14dp"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="14dp"
-                    android:paddingBottom="12dp"
-                    android:text="Все"
-                    android:textColor="@color/grey_text"
-                    android:textSize="16sp" />
+            <ImageView
+                android:id="@+id/ImageViewGroupBig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lib_sort_4"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_lib_total"
+                app:layout_constraintEnd_toStartOf="@+id/ImageViewGroupLine"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="16dp"/>
 
-                <ImageView
-                    android:id="@+id/iv_btn_change_category_lib"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:padding="12dp"
-                    android:layout_marginEnd="7dp"
-                    android:src="@drawable/ic_arrow_top"
-                    app:tint="@color/grey_text" />
+            <ImageView
+                android:id="@+id/ImageViewGroupSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lib_sort_9"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_lib_total"
+                app:layout_constraintEnd_toStartOf="@+id/ImageViewGroupBig"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="16dp"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rl_lib_tags_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                tools:listitem="@layout/folder_tags_library_profile_item"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_lib_total" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/rl_error_block_libliary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/rl_change_category_lib"
+                app:layout_constraintTop_toBottomOf="@id/tv_lib_total"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="40dp"
                 android:gravity="center"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -190,12 +271,18 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rl_lib_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
+                tools:itemCount="6"
+                tools:listitem="@layout/large_popular_main_manga_item"
+                android:orientation="vertical"
+                app:spanCount="1"
+                android:layout_marginBottom="80dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_change_category_lib" />
+                app:layout_constraintTop_toBottomOf="@id/rl_lib_tags_container" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

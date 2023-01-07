@@ -18,8 +18,8 @@ import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationStateTwoBinding
 import ru.android.hikanumaruapp.ui.auth.registration.RegistrationFragment
 import ru.android.hikanumaruapp.ui.auth.registration.RegistrationViewModel
-import ru.android.hikanumaruapp.utilits.Events
-import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 import ru.android.hikanumaruapp.utilits.UIUtils
 
 

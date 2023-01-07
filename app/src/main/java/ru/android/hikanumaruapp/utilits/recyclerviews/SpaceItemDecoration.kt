@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.utilits
+package ru.android.hikanumaruapp.utilits.recyclerviews
 
 import android.graphics.Rect
 import android.util.TypedValue

@@ -3,7 +3,7 @@ package ru.android.hikanumaruapp.ui.news.page
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import ru.android.hikanumaruapp.utilits.Events
+import ru.android.hikanumaruapp.utilits.navigation.Events
 import javax.inject.Inject
 
 @HiltViewModel

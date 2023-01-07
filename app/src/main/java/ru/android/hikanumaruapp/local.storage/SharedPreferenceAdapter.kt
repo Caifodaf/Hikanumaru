@@ -68,7 +68,36 @@ interface SharedPreferenceAdapter {
        shUser=null
     }
 
+    private fun createUserReg(requireActivity: FragmentActivity) {
+
+        val user = UserInfo()
+        var shUser = requireActivity.getSharedPreferences("user", Context.MODE_PRIVATE)
+        shUser.edit().clear().apply()
+
+        user.id = "1233452"
+        user.type = "читатель"
+        user.mail = "xample@mail.com"
+        user.login = "caifodaf"
+        user.userName = "Caifodaf__"
+        user.imageCover = "null"
+        user.imageCoverUpdatedAt = "null"
+        user.imageAvatar = "null"
+        user.imageAvatarUpdatedAt = "null"
+        user.statusCheckMail = "null"
+        user.sex = "nan"
+        user.dateBirth = "nan"
+        user.roles = "читатель"
+        user.createdAt = "null"
+        user.modeGuest = false
+
+        val serializedUser = Gson().toJson(user)
+        shUser.edit().putString("user_info", serializedUser).apply()
+
+        shUser=null
+    }
+
     fun getUserInfo (requireActivity: FragmentActivity): UserInfo? {
+        val user = createUserReg(requireActivity)
         val shUser = requireActivity.getSharedPreferences("user", Context.MODE_PRIVATE)
 
         val serializedUser = shUser.getString("user_info", null)

@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.databinding.ChapterMangaPageItemBinding
 import ru.android.hikanumaruapp.databinding.ChapterReaderMenuItemBinding
 import ru.android.hikanumaruapp.model.Chapter
-import ru.android.hikanumaruapp.utilits.RecyclerViewClickListener
+import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 
 class ChapterListAdapter(
 private val listenerClick: RecyclerViewClickListener

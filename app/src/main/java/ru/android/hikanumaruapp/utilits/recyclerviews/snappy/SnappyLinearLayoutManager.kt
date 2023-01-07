@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.utilits.snappy
+package ru.android.hikanumaruapp.utilits.recyclerviews.snappy
 
 import android.content.Context
 import android.graphics.PointF

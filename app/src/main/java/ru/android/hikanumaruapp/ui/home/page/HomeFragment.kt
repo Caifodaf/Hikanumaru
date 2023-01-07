@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.databinding.FragmentHomeBinding
-import ru.android.hikanumaruapp.utilits.Events
-import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {

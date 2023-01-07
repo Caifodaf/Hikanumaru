@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.utilits
+package ru.android.hikanumaruapp.utilits.navigation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -16,14 +16,16 @@ class Events private constructor() {
         override fun onChanged(it: NavigationEvent?) {
             when (it?.type) {
                 Type.EXECUTE_WITHOUT_LIMITS,
-                Type.WAIT_OBSERVER_IF_NEEDED -> {
+                Type.WAIT_OBSERVER_IF_NEEDED
+                -> {
                     if (!it.isHandled) {
                         it.isHandled = true
                         it.apply(handlerBlock)
                     }
                 }
                 Type.EXECUTE_ONCE,
-                Type.WAIT_OBSERVER_IF_NEEDED_AND_EXECUTE_ONCE -> {
+                Type.WAIT_OBSERVER_IF_NEEDED_AND_EXECUTE_ONCE
+                -> {
                     if (it.javaClass.simpleName !in executedEvents) {
                         if (!it.isHandled) {
                             it.isHandled = true
@@ -48,7 +50,8 @@ class Events private constructor() {
         fun waitAndExecute(event: NavigationEvent) = newEvent(event, Type.WAIT_OBSERVER_IF_NEEDED)
 
         /** Wait Observer Available and Emit Event for Execution Once */
-        fun waitAndExecuteOnce(event: NavigationEvent) = newEvent(event, Type.WAIT_OBSERVER_IF_NEEDED_AND_EXECUTE_ONCE)
+        fun waitAndExecuteOnce(event: NavigationEvent) = newEvent(event,
+            Type.WAIT_OBSERVER_IF_NEEDED_AND_EXECUTE_ONCE)
 
         /** Clear Events that are Waiting for Observer */
         fun clearWaitingEvents() = waitingEvents.clear()
@@ -76,10 +79,12 @@ class Events private constructor() {
             event.type = type
             this.value = when (type) {
                 Type.EXECUTE_WITHOUT_LIMITS,
-                Type.EXECUTE_ONCE -> if (hasObservers()) event else null
+                Type.EXECUTE_ONCE
+                -> if (hasObservers()) event else null
 
                 Type.WAIT_OBSERVER_IF_NEEDED,
-                Type.WAIT_OBSERVER_IF_NEEDED_AND_EXECUTE_ONCE -> {
+                Type.WAIT_OBSERVER_IF_NEEDED_AND_EXECUTE_ONCE
+                -> {
                     if (hasObservers() && isActive) event
                     else {
                         waitingEvents.add(event)

@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import ru.android.hikanumaruapp.utilits.RecyclerViewClickListener
-import ru.android.hikanumaruapp.utilits.SpaceItemDecoration
+import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
+import ru.android.hikanumaruapp.utilits.recyclerviews.SpaceItemDecoration
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.data.debug.DataSetDebug
 import ru.android.hikanumaruapp.model.*
 import ru.android.hikanumaruapp.ui.home.page.adapters.*
 import ru.android.hikanumaruapp.utilits.Coroutines
-import ru.android.hikanumaruapp.utilits.Events
-import ru.android.hikanumaruapp.utilits.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -203,20 +203,18 @@ class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListene
                     R.id.navigation_mangapage, bundle))
             }
             R.id.rl_back_genres_item -> {
-                Log.d("testCrated", "rl_back_genres_item ckick $list")
+                Log.d("testCrated", "rl_back_genres_item click $list")
             }
             R.id.rl_back_journal_item -> {
-                Log.d("testCrated", "rl_back_genres_item ckick")
+                Log.d("testCrated", "rl_back_genres_item click")
             }
-            R.id.rl_block_popular_manga_item -> {
+            R.id.CCMainLargeMangaBlock -> {
                 bundle.putString("url", (list as MangaPopularMainModel).linkPage)
-                emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
+                    emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
                     R.id.navigation_mangapage, bundle))
             }
         }
     }
-
-
 
     override fun onCleared() {
         if(::job.isInitialized) job.cancel()

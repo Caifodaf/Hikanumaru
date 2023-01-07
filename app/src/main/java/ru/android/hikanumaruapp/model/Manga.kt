@@ -1,5 +1,10 @@
 package ru.android.hikanumaruapp.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import ru.android.hikanumaruapp.utilits.room.ConvertersRoom
+
 data class MangaInfo (
     var scoreCount: String = "",
     var viewCount: String = "",
@@ -13,8 +18,11 @@ data class MangaInfo (
     var translators: MutableList<String>?,
 )
 
+@Entity
+@TypeConverters
 data class Manga (
-    var id: Int? = 0, // id Manga
+    @PrimaryKey
+    var id: String = "0", // id Manga
     var type: Int? = 0, // Type 0-Manga 1-Manhva 2-Manhuya 3-Web 4-Comick 5-ru
     var name: String = "",
     var alternativeName: String? = "",
@@ -24,6 +32,8 @@ data class Manga (
     var statusTranslated: Int? = 1,
     var oldRating:String? = "",
     var year: String? = "",
+
+    var urlManga: String? = "",
 
     var image: String? = "",
     var imageBack: String? = "",
@@ -36,8 +46,9 @@ data class Manga (
     var chapterCountLoadLocal: Int? = 0,
     var chapterCountViewLocal: Int? = 0,
 
-    val info: MutableList<MangaInfo>, // List Info
-    var chapter: MutableList<Chapter>? // List Pages
 
-
+    @field:TypeConverters(ConvertersRoom::class)
+    val info: MangaInfo?, // List Info
+    @field:TypeConverters(ConvertersRoom::class)
+    var chapters: MutableList<Chapter>? // List Pages
 )
