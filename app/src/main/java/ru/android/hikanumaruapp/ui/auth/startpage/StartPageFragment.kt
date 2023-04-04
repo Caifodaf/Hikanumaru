@@ -3,49 +3,64 @@ package ru.android.hikanumaruapp.ui.auth.startpage
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
-import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentStartPageBinding
-import ru.android.hikanumaruapp.utilits.UIUtils
 import java.util.*
 
 @AndroidEntryPoint
-class StartPageFragment : BaseFragment(),UIUtils {
+class StartPageFragment : BaseFragment() {
 
     private var _binding: FragmentStartPageBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<StartPageViewModel>()
-
-    private lateinit var sh : SharedPreferences
+    private val vm by viewModels<StartPageViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentStartPageBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        sh = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
-
-        //errorCheck()
-        initUI()
-
-        return root
+        return binding.root
     }
 
-    private fun errorCheck(){
+    private lateinit var timer: Timer
+    private lateinit var handler: Handler
+
+    private val adsList = arrayOf(
+        R.drawable.ashot, R.drawable.dan9, R.drawable.any,
+        R.drawable.maks, R.drawable.andre
+    )
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
+        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
+
+        binding.apply {
+            setupOnBackPressed()
+
+            imageSwitcherLoader()
+            initButtons()
+            initButtonsServices()
+        }
+    }
+
+    private fun FragmentStartPageBinding.errorCheck(){
         // todo post refactor
         // todo getstring after error create user
         // error = arguments?.getString("error").toString()
@@ -56,102 +71,94 @@ class StartPageFragment : BaseFragment(),UIUtils {
         //    errorPop(error,errorLayout,inflater,10000)
     }
 
-    private fun initUI(){
-        btnBack()
+    private fun FragmentStartPageBinding.imageSwitcherLoader() {
+        val imgIn = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+        val imgOut = AnimationUtils.loadAnimation(context, android.R.anim.slide_out_right)
 
-        imageSwitcherLoader()
-        initButtons()
-        initButtonsServices()
-    }
-
-    private fun imageSwitcherLoader(){
-        val imageSwitcher: ImageSwitcher = binding.imageSwitcher
-
-        imageSwitcher.setFactory {
-            val imgView = ImageView(context)
-            imgView.layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-            imgView.scaleType = ImageView.ScaleType.CENTER_CROP
-            imgView.setPadding(20, 20, 20, 20)
-            imgView
-        }
-
-        val adsList= arrayOf<Int>(
-            R.drawable.ashot,
-            R.drawable.dan9,
-            R.drawable.any,
-            R.drawable.maks,
-            R.drawable.andre
-        )
-
-        imageSwitcher.setImageResource(adsList[0])
-
-        val imgIn = AnimationUtils.loadAnimation(
-            context, android.R.anim.slide_in_left)
-        imageSwitcher.inAnimation = imgIn
-
-        val imgOut = AnimationUtils.loadAnimation(
-            context, android.R.anim.slide_out_right)
-        imageSwitcher.outAnimation = imgOut
-
-        var currentIndex = -1
-        try {
-            Timer().scheduleAtFixedRate(object : TimerTask() {
-                override fun run() {
-                    currentIndex++
-                    if (currentIndex == adsList.size) currentIndex = 0
-                    activity?.runOnUiThread(Runnable {
-                        imageSwitcher.setImageResource(adsList[currentIndex])
-                    })
+        ImageSwitcher.apply{
+            setFactory {
+                ImageView(context).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT
+                    )
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                    setPadding(20, 20, 20, 20)
                 }
-            }, 0, 3000)
-        }catch (e:Exception){
-            Log.d("StartPageError", "imageSwitcher error")
-        }finally {
-            Log.d("StartPageError", "imageSwitcher error")
+            }
+
+            setImageResource(adsList[0])
+            inAnimation = imgIn
+            outAnimation = imgOut
         }
+
+        var currentIndex = 0
+        timer = Timer()
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                currentIndex = (currentIndex + 1) % adsList.size
+                requireActivity().runOnUiThread {
+                    ImageSwitcher.setImageResource(adsList[currentIndex])
+                }
+            }
+        }, 0, 3000)
     }
 
-    private fun initButtons(){
-        binding.tvBtnLoginStart.setOnClickListener {
-            timerDoubleBtn(binding.tvBtnLoginStart)
-            findNavController().navigate(R.id.navigation_login, null)
+    private fun FragmentStartPageBinding.initButtons(){
+        TVBtnLoginStart.setOnClickListener {
+            TVBtnLoginStart.timerDoubleBtn()
+            findNavController().navigate(R.id.action_navigation_start_page_to_navigation_login, null)
         }
 
-        binding.tvBtnRegStart.setOnClickListener {
-            timerDoubleBtn(binding.tvBtnRegStart)
-            findNavController().navigate(R.id.navigation_registration, null)
+        TVBtnRegStart.setOnClickListener {
+            TVBtnRegStart.timerDoubleBtn()
+            findNavController().navigate(R.id.action_navigation_start_page_to_navigation_registration, null)
         }
 
-        binding.tvBtnLoginGuest.setOnClickListener {
+        TVBtnLogInGuest.setOnClickListener {
             // Todo DEV guest mode
-            timerDoubleBtn(binding.tvBtnLoginGuest)
+            TVBtnLogInGuest.timerDoubleBtn()
 
-            sh.edit().putBoolean("guest_mode", true).apply()
+            val sp = requireActivity().getPreferences(Context.MODE_PRIVATE)
+            sp.edit().putBoolean("guest_mode", true).apply()
 
             Toast.makeText(requireContext(), "Вы вошли как гость", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.navigation_home, null)
+            findNavController().navigate(R.id.action_navigation_start_page_to_navigation_home, null)
         }
     }
 
-    private fun initButtonsServices(){
-        binding.ivBtnGoogle.setOnClickListener{
+    private fun FragmentStartPageBinding.initButtonsServices(){
+        ImageBtnGoogle.setOnClickListener{
             // todo add fun
         }
-        binding.ivBtnVk.setOnClickListener{
+        ImageBtnVK.setOnClickListener{
             // todo add fun
         }
-        binding.ivBtnFacebook.setOnClickListener{
+        ImageBtnFacebook.setOnClickListener{
             // todo add fun
         }
-        binding.ivBtnTwitter.setOnClickListener{
+        ImageBtnTwitter.setOnClickListener{
             // todo add fun
         }
-        binding.ivBtnShikimori.setOnClickListener{
+        ImageBtnShikimori.setOnClickListener{
             // todo add fun
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (::timer.isInitialized)
+            timer.cancel()
+        if (::handler.isInitialized)
+            handler.removeCallbacksAndMessages(null)
+    }
+
+    fun View.timerDoubleBtn(time: Long = 2000) {
+        isClickable = false
+        this@StartPageFragment.handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            isClickable = true
+        }, time)
     }
 
 }

@@ -7,11 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.databinding.FragmentRegistrationBinding
-import ru.android.hikanumaruapp.databinding.FragmentResetPasswordStageOneBinding
 import ru.android.hikanumaruapp.databinding.FragmentResetPasswordStageTwoBinding
-import ru.android.hikanumaruapp.ui.auth.registration.RegistrationViewModel
+import ru.android.hikanumaruapp.ui.auth.registration.state.one.RegistrationViewModel
 
 @AndroidEntryPoint
 class ResetPasswordStageTwoFragment : Fragment() {

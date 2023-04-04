@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
+import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentHomeBinding
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
@@ -35,7 +37,11 @@ class HomeFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.tvErrorHome.visibility = View.GONE
         shimmerHide(1)
@@ -50,11 +56,14 @@ class HomeFragment : BaseFragment() {
         //    swipe_refresh_home.isRefreshing = true
         //    onRefreshData()
         //}
-        btnBack()
+        setupOnBackPressed()
 
         viewModel.emitter.observe(viewLifecycleOwner, navigationEventsObserver)
+    }
 
-        return root
+    override fun onResume() {
+        super.onResume()
+        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.VISIBLE
     }
 
     private fun initRecyclerView(){

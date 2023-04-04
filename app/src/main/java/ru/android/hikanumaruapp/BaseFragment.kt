@@ -11,29 +11,26 @@ abstract class BaseFragment: Fragment() {
 
     private var isBack = false
     private lateinit var isBackToast: Toast
+    private var doubleBackToExitPressedOnce = false
 
-    protected fun btnBack() {
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,
+    protected fun setupOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 @SuppressLint("WrongConstant")
                 override fun handleOnBackPressed() {
-                    if (isBack) {
+                    if (doubleBackToExitPressedOnce) {
                         isBackToast.cancel()
                         ActivityCompat.finishAffinity(requireActivity())
                     } else {
+                        doubleBackToExitPressedOnce = true
                         isBackToast =
                             Toast.makeText(requireContext(), "Нажмите еще раз для выхода", 500)
                         isBackToast.show()
-                        checkTimeExit()
+                        view?.postDelayed({
+                            doubleBackToExitPressedOnce = false
+                        }, 1000)
                     }
                 }
             })
-    }
-
-    private fun checkTimeExit(){
-        isBack = true
-        Handler().postDelayed({
-            isBack = false
-        },1000)
     }
 }

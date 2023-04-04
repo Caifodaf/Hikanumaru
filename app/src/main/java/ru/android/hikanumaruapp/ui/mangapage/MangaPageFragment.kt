@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -47,6 +48,8 @@ class MangaPageFragment : Fragment(),UIUtils {
         }
     }
 
+    init { onBack() }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,7 +66,7 @@ class MangaPageFragment : Fragment(),UIUtils {
         //    bookmarkName = sh.getString("bookmark_mark", "").toString()
 
         binding.placeholderMangaPage.visibility = View.VISIBLE
-        binding.layoutMainPageMangaPage.visibility = View.GONE
+        //binding.layoutMainPageMangaPage.visibility = View.GONE
 
         btnInitUnLoad()
 
@@ -81,8 +84,9 @@ class MangaPageFragment : Fragment(),UIUtils {
     private fun observeBookmark() {
         vm.isBookmark.observe(viewLifecycleOwner, Observer { it ->
             when(it){
-                true -> binding.ivBtnBookmarkMangaPage.imageTintList = resources.getColorStateList(R.color.red)
-                false -> binding.ivBtnBookmarkMangaPage.imageTintList = resources.getColorStateList(R.color.grey_light_alternative_2)
+                // Todo rework
+                true -> binding.ImageBtnBookmark.imageTintList = resources.getColorStateList(R.color.red)
+                false -> binding.ImageBtnBookmark.imageTintList = resources.getColorStateList(R.color.grey_light_alternative_2)
             }
         })
     }
@@ -101,7 +105,7 @@ class MangaPageFragment : Fragment(),UIUtils {
                 } else {
                     isLoadPage = false
                     Log.e("ErrorLoadMangaPage", "Error download page2")
-                    binding.frameMangaPage.visibility = View.GONE
+                    //binding.frameMangaPage.visibility = View.GONE
                     binding.frameMangaPageError.visibility = View.VISIBLE
 
                     binding.llErrorBlockMangaPage.visibility= View.VISIBLE
@@ -121,8 +125,9 @@ class MangaPageFragment : Fragment(),UIUtils {
     }
 
     private fun initRecyclerView(){
-        vm.initRecyclerView(binding.scrollTextBlock)
-        vm.initRecyclerView(binding.rvChaptersManga)
+        //vm.initRecyclerView(binding.RVTagsBlock)
+        vm.initRecyclerView(binding.RVChapterList)
+        vm.initRecyclerView(binding.RVTranslatorsChapterBlock)
     }
 
     private fun getChaptersPage(){
@@ -130,12 +135,13 @@ class MangaPageFragment : Fragment(),UIUtils {
 
         if (!listPage.chapters.isNullOrEmpty()) {
             if (!listPage.chapters!![0].notChapter) {
-                binding.llSortBtn.visibility = View.VISIBLE
-                binding.tvChaptersMangaPageError.visibility = View.GONE
-                binding.clBlockChapterMangaPage.visibility = View.VISIBLE
-                binding.progressLoadChapterMangaPage.visibility = View.VISIBLE
-                binding.rvChaptersManga.visibility = View.GONE
-                binding.llBtnMoreChapterList.visibility = View.GONE
+                binding.LLSortBtn.visibility = View.VISIBLE
+                binding.TVChaptersError.visibility = View.GONE
+                binding.CCChaptersBLock.visibility = View.VISIBLE
+                binding.ProgressLoadChapterList.visibility = View.VISIBLE
+                binding.RVTranslatorsChapterBlock.visibility = View.GONE
+                binding.RVChapterList.visibility = View.GONE
+                binding.TVBtnMoreChapterList.visibility = View.GONE
 
                 // Load 1-8 chapter for page
                 vm.setListChapterData(listPage.chapters!!)
@@ -143,13 +149,14 @@ class MangaPageFragment : Fragment(),UIUtils {
                 if (listPage.chapters!!.size >= 5)
                     vm.getDataChapter(urlPage)
 
-                binding.progressLoadChapterMangaPage.visibility = View.GONE
-                binding.rvChaptersManga.visibility = View.VISIBLE
-                binding.llBtnMoreChapterList.visibility = View.VISIBLE
+                binding.ProgressLoadChapterList.visibility = View.GONE
+                binding.RVChapterList.visibility = View.VISIBLE
+                binding.RVTranslatorsChapterBlock.visibility = View.VISIBLE
+                binding.TVBtnMoreChapterList.visibility = View.VISIBLE
             } else {
-                binding.llSortBtn.visibility = View.GONE
-                binding.tvChaptersMangaPageError.visibility = View.VISIBLE
-                binding.clBlockChapterMangaPage.visibility = View.GONE
+                binding.LLSortBtn.visibility = View.GONE
+                binding.TVChaptersError.visibility = View.VISIBLE
+                binding.CCChaptersBLock.visibility = View.GONE
             }
         }
 
@@ -199,7 +206,7 @@ class MangaPageFragment : Fragment(),UIUtils {
                 } else {
                     isLoadChapter = false
                     Log.e("ErrorLoadMangaPage", "Error download page1")
-                    binding.frameMangaPage.visibility = View.GONE
+                    //binding.frameMangaPage.visibility = View.GONE
                     binding.frameMangaPageError.visibility = View.VISIBLE
 
                     binding.llErrorBlockMangaPage.visibility= View.VISIBLE
@@ -219,29 +226,29 @@ class MangaPageFragment : Fragment(),UIUtils {
     private fun updatePage() {
         // Show Main layout
         binding.frameMangaPageError.visibility = View.GONE
-        binding.frameMangaPage.visibility = View.VISIBLE
-        binding.layoutMainPageMangaPage.visibility = View.VISIBLE
+        //binding.frameMangaPage.visibility = View.VISIBLE
+        //binding.layoutMainPageMangaPage.visibility = View.VISIBLE
 
         // Load image background
         if (!listPage.imageBack.isNullOrEmpty())
-            binding.ivBackgroundMangaPage.load(listPage.imageBack){
+            binding.ImageBack.load(listPage.imageBack){
                 // todo add place and error
                 //placeholder(R.color.grey_light_alternative_2)
                 //error(R.drawable.placeholder)
                 scale(Scale.FILL)
-                transformations(BlurTransformation(requireContext(), sampling = 0.3f))
+                //transformations(BlurTransformation(requireContext(), sampling = 0.8f))
             }
         // Load central image
-        binding.ivPageImage.load(listPage.image){
+        binding.ImageManga.load(listPage.image){
             // todo add place and error
-            scale(Scale.FILL)
-            transformations(RoundedCornersTransformation(15f*4))
+            //scale(Scale.FILL)
+            //transformations(RoundedCornersTransformation(15f*4))
         }
 
         // Load image in rating layout
-        binding.ivRatingBlockImage.load(listPage.image){
-            scale(Scale.FILL)
-        }
+        //binding.ivRatingBlockImage.load(listPage.image){
+        //    scale(Scale.FILL)
+        //}
 
         // Set data for scroll text data
         val listText = mutableListOf<MangaPageTextDate>()
@@ -263,7 +270,7 @@ class MangaPageFragment : Fragment(),UIUtils {
         // Set 1-8 chapter for page
         if (!listPage.chapters.isNullOrEmpty()) {
             if (!listPage.chapters!![0].notChapter) {
-                val params = binding.rvChaptersManga.layoutParams
+                val params = binding.RVChapterList.layoutParams
                 val heightElem: Int = when (listPage.chapters!!.size) {
                     1 -> 202
                     2 -> 408
@@ -272,40 +279,41 @@ class MangaPageFragment : Fragment(),UIUtils {
                     else -> 710
                 }
                 params.height = heightElem
-                binding.rvChaptersManga.layoutParams = params
-                binding.tvCountChapterManga.text = "${listPage.chapterCount!! - 1}"
+                binding.RVChapterList.layoutParams = params
+                binding.TVCountChapter.text = "${listPage.chapterCount!! - 1}"
                 if (listPage.chapters!!.size > 4) {
-                    binding.llBtnMoreChapterList.visibility = View.VISIBLE
+                    binding.TVBtnMoreChapterList.visibility = View.VISIBLE
                 } else {
-                    binding.llBtnMoreChapterList.visibility = View.GONE
+                    binding.TVBtnMoreChapterList.visibility = View.GONE
                 }
             } else{
-                binding.llSortBtn.visibility = View.GONE
-                binding.tvChaptersMangaPageError.visibility = View.VISIBLE
+                binding.LLSortBtn.visibility = View.GONE
+                binding.TVChaptersError.visibility = View.VISIBLE
             }
         }
 
         // Rating score
-        binding.tvScoreMangaPage.text = listPage.score
+        binding.TVScoreRating.text = listPage.score
         // Name manga
-        binding.tvNameManga.text = listPage.name
+        binding.TVNameManga.text = listPage.name
         // Alternative name check
         if (!listPage.alternativeName.isNullOrEmpty()) {
-            binding.tvAlternativeNameManga.visibility = View.VISIBLE
-            binding.tvAlternativeNameManga.text = listPage.alternativeName
+            binding.TVAlternativeNameManga.visibility = View.VISIBLE
+            binding.TVAlternativeNameManga.text = listPage.alternativeName
         } else
-            binding.tvAlternativeNameManga.visibility = View.GONE
+            binding.TVAlternativeNameManga.visibility = View.GONE
         // Description check
-        if (!listPage.description.isNullOrEmpty()) {
-            binding.tvDescriptionManga.visibility = View.VISIBLE
-            binding.tvBtnMoreDescriptionManga.visibility = View.VISIBLE
-            binding.tvDescriptionIsEmpty.visibility = View.GONE
-            binding.tvDescriptionManga.text = listPage.description
-        } else {
-            binding.tvDescriptionIsEmpty.visibility = View.VISIBLE
-            binding.tvDescriptionManga.visibility = View.GONE
-            binding.tvBtnMoreDescriptionManga.visibility = View.GONE
-        }
+        // todo visible
+        //if (!listPage.description.isNullOrEmpty()) {
+        //    binding.tvDescriptionManga.visibility = View.VISIBLE
+        //    binding.tvBtnMoreDescriptionManga.visibility = View.VISIBLE
+        //    binding.tvDescriptionIsEmpty.visibility = View.GONE
+        //    binding.tvDescriptionManga.text = listPage.description
+        //} else {
+        //    binding.tvDescriptionIsEmpty.visibility = View.VISIBLE
+        //    binding.tvDescriptionManga.visibility = View.GONE
+        //    binding.tvBtnMoreDescriptionManga.visibility = View.GONE
+        //}
         // Placeholder Hide
         binding.placeholderMangaPage.visibility = View.GONE
     }
@@ -324,21 +332,21 @@ class MangaPageFragment : Fragment(),UIUtils {
     }
 
     private fun btnInitLoad(){
-        binding.ivBtnDownloadMangaPage.setOnClickListener(){
+        binding.ImageBtnDownload.setOnClickListener(){
             //todo add fun
         }
-        binding.ivBtnBookmarkMangaPage.setOnClickListener(){
+        binding.ImageBtnBookmark.setOnClickListener(){
             vm.changeBookmark()
         }
-        binding.ivBtnShareMangaPage.setOnClickListener(){
+        binding.ImageBtnShare.setOnClickListener(){
             //todo add fun
         }
-        binding.ivBtnReadMangaPage.setOnClickListener(){
-            timerDoubleBtn(binding.ivBtnReadMangaPage)
+        binding.TVBtnRead.setOnClickListener(){
+            timerDoubleBtn(binding.TVBtnRead)
             //viewModel.openReaderPageFastRead(binding.ivBtnReadMangaPage)
         }
-        binding.ivBtnOpenMoreInfo.setOnClickListener(){
-            timerDoubleBtn(binding.ivBtnOpenMoreInfo)
+        binding.ImageBtnOpenMoreInfo.setOnClickListener(){
+            timerDoubleBtn(binding.ImageBtnOpenMoreInfo)
             lifecycleScope.launchWhenResumed {
                 val bundle = Bundle()
                 val str = Gson().toJson(listPage)
@@ -346,26 +354,37 @@ class MangaPageFragment : Fragment(),UIUtils {
                 findNavController().navigate(R.id.navigation_mangapage_more_info_sheet_panel, bundle)
             }
         }
-        binding.tvBtnMoreDescriptionManga.setOnClickListener() {
-            val readMore = requireContext().getString(R.string.read_more_manga_page)
-            val collapse = requireContext().getString(R.string.collapse_manga_page)
-            when (binding.tvBtnMoreDescriptionManga.text) {
-                readMore -> {
-                    binding.tvDescriptionManga.maxLines = Integer.MAX_VALUE
-                    binding.tvBtnMoreDescriptionManga.text = collapse
-                }
-                collapse -> {
-                    binding.tvDescriptionManga.maxLines = 3
-                    binding.tvBtnMoreDescriptionManga.text = readMore
-                }
-            }
-        }
-        vm.initBtn(binding.llSortBtn,requireContext(),binding.ivSortImage)
-        vm.initBtn(binding.llBtnMoreChapterList)
+        // todo visibility
+        //binding.tvBtnMoreDescriptionManga.setOnClickListener() {
+        //    val readMore = requireContext().getString(R.string.read_more_manga_page)
+        //    val collapse = requireContext().getString(R.string.collapse_manga_page)
+        //    when (binding.tvBtnMoreDescriptionManga.text) {
+        //        readMore -> {
+        //            binding.tvDescriptionManga.maxLines = Integer.MAX_VALUE
+        //            binding.tvBtnMoreDescriptionManga.text = collapse
+        //        }
+        //        collapse -> {
+        //            binding.tvDescriptionManga.maxLines = 3
+        //            binding.tvBtnMoreDescriptionManga.text = readMore
+        //        }
+        //    }
+        //}
+        vm.initBtn(binding.LLSortBtn,requireContext(),binding.ImageSort)
+        //vm.initBtn(binding.TVBtnMoreChapterList) todo rework
     }
 
     fun navigateNav(navigation: Int, bundle: Bundle?) {
         findNavController().navigate(navigation, bundle)
+    }
+
+    private fun onBack() {
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigateUp()
+                }
+            })
     }
 
 

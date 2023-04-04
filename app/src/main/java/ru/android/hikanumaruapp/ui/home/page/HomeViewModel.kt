@@ -200,7 +200,7 @@ class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListene
             R.id.rl_block_manga_main_item -> {
                 bundle.putString("url", (list as MangaMainModel).linkPage)
                 emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
-                    R.id.navigation_mangapage, bundle))
+                    R.id.action_navigation_home_to_navigation_mangapage, bundle))
             }
             R.id.rl_back_genres_item -> {
                 Log.d("testCrated", "rl_back_genres_item click $list")
@@ -211,7 +211,7 @@ class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListene
             R.id.CCMainLargeMangaBlock -> {
                 bundle.putString("url", (list as MangaPopularMainModel).linkPage)
                     emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
-                    R.id.navigation_mangapage, bundle))
+                    R.id.action_navigation_home_to_navigation_mangapage, bundle))
             }
         }
     }

@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
+import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentSettingsBinding
 
 @AndroidEntryPoint
@@ -18,28 +18,26 @@ class SettingsFragment : BaseFragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModels<SettingsViewModel>()
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-
-
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupOnBackPressed()
+        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
 
         initUI()
         btnInit()
-
-        return root
     }
 
-    fun initUI(){ }
+    fun initUI(){
+    }
 
     fun btnInit(){ }
 

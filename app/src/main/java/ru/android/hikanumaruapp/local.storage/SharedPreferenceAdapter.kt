@@ -19,18 +19,18 @@ interface SharedPreferenceAdapter {
         shToken.edit().clear().apply()
     }
 
-    fun changeAuth (requireActivity: FragmentActivity,state: Boolean){
-        val spStart = requireActivity.getSharedPreferences("start",Context.MODE_PRIVATE)
+    fun FragmentActivity.changeAuth (state: Boolean){
+        val spStart = getSharedPreferences("start",Context.MODE_PRIVATE)
         when(state){
             true->spStart.edit().putBoolean("pref_login_auth", true).apply()
             false->spStart.edit().putBoolean("pref_login_auth", false).apply()
         }
     }
 
-   fun saveUserReg(response: Response<UserRegResponse>, requireActivity: FragmentActivity) {
+   fun FragmentActivity.saveUserReg(response: Response<UserRegResponse>) {
 
        val user = UserInfo()
-        var shUser = requireActivity.getSharedPreferences("user", Context.MODE_PRIVATE)
+        var shUser = getSharedPreferences("user", Context.MODE_PRIVATE)
         shUser.edit().clear().apply()
 
         //spEditUser.putString("id",response.body()!!.id)
@@ -47,15 +47,15 @@ interface SharedPreferenceAdapter {
         //spEditUser.putString("createdAt",response.body()!!.createdAt)
 
        user.id = response.body()!!.id
-       user.type = response.body()!!.type.toString()
+       //user.type = response.body()!!.type.toString()
        user.mail = response.body()!!.email
        user.login = response.body()!!.login
        user.userName = response.body()!!.username
-       user.imageCover = response.body()?.imageCover.toString()
-       user.imageCoverUpdatedAt = response.body()?.imageCoverUpdatedAt.toString()
-       user.imageAvatar = response.body()?.imageAvatar.toString()
-       user.imageAvatarUpdatedAt = response.body()?.imageAvatarUpdatedAt.toString()
-       user.statusCheckMail = response.body()!!.statusCheckMail
+       //user.imageCover = response.body()?.imageCover.toString()
+       //user.imageCoverUpdatedAt = response.body()?.imageCoverUpdatedAt.toString()
+       //user.imageAvatar = response.body()?.imageAvatar.toString()
+       //user.imageAvatarUpdatedAt = response.body()?.imageAvatarUpdatedAt.toString()
+       //user.statusCheckMail = response.body()!!.statusCheckMail
        user.sex = "nan"
        user.dateBirth = "nan"
        user.roles = response.body()!!.roles.toString()
@@ -113,8 +113,8 @@ interface SharedPreferenceAdapter {
 
 
 
-    fun changeModeGuest(state:Boolean,requireActivity: FragmentActivity){
-        var shUser = requireActivity.getSharedPreferences("user", Context.MODE_PRIVATE)
+    fun FragmentActivity.changeModeGuest(state:Boolean){
+        var shUser = getSharedPreferences("user", Context.MODE_PRIVATE)
         when(state) {
             true ->
                 shUser.edit().putBoolean("guest_mode", true).apply()
@@ -123,32 +123,5 @@ interface SharedPreferenceAdapter {
         }
     }
 
-    fun saveToken(token:String, refresh:String, requireActivity: FragmentActivity) {
-        var shToken = requireActivity.getSharedPreferences("token", Context.MODE_PRIVATE)
-        shToken.edit().clear().apply()
 
-        var spEditToken = shToken.edit()
-        spEditToken.putString("token",token)
-        spEditToken.putString("refresh",refresh)
-        spEditToken.apply()
-        spEditToken=null
-        shToken=null
-    }
-
-    fun deleteJWT(requireActivity: FragmentActivity){
-        var shToken = requireActivity.getSharedPreferences("token", Context.MODE_PRIVATE)
-        shToken.edit().clear().apply()
-
-        shToken=null
-    }
-
-    fun getRefresh(requireActivity: FragmentActivity):String{
-        val shToken = requireActivity.getSharedPreferences("token", Context.MODE_PRIVATE)
-        return shToken.getString("refresh",null).toString()
-    }
-
-    fun getToken(requireActivity: FragmentActivity):String{
-        val shToken = requireActivity.getSharedPreferences("token", Context.MODE_PRIVATE)
-        return shToken.getString("token",null).toString()
-    }
 }

@@ -8,7 +8,7 @@ import ru.android.hikanumaruapp.api.ApiService
 
 object RetrofitClient {
 
-    private const val BASE_URL = "http://hikanumaru.ru/api/"
+    private const val BASE_URL = "https://hikanuma.ru/api/"
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
     private fun provideMoshi(): Moshi {

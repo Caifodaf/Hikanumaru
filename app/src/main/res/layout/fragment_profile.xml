@@ -67,10 +67,10 @@
         android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="36dp">
+            android:layout_height="match_parent">
 
             <TextView
+                android:layout_marginTop="36dp"
                 android:id="@+id/tv_login_name"
                 style="@style/Text.Headline_4"
                 android:layout_width="wrap_content"
@@ -96,7 +96,7 @@
                 <ImageView
                     android:id="@+id/iv_back_user_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="140dp"
                     android:layout_marginBottom="30dp"
                     android:src="@drawable/gradient_blue"
                     app:layout_constraintTop_toTopOf="parent"

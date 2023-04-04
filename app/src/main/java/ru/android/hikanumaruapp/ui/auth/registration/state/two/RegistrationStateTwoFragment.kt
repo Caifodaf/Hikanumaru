@@ -1,43 +1,45 @@
 package ru.android.hikanumaruapp.ui.auth.registration.state.two
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationStateTwoBinding
-import ru.android.hikanumaruapp.ui.auth.registration.RegistrationFragment
-import ru.android.hikanumaruapp.ui.auth.registration.RegistrationViewModel
+import ru.android.hikanumaruapp.ui.auth.registration.state.one.RegistrationViewModel
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
-import ru.android.hikanumaruapp.utilits.UIUtils
 
 
-class RegistrationStateTwoFragment : Fragment(), UIUtils {
-
-    companion object{
-        const val DEFAULT_BUTTON_VIEW = 0
-        const val ACTIVE_BUTTON_VIEW = 1
-        const val LOADING_BUTTON_VIEW = 2
-        const val ERROR_BUTTON_VIEW = 3
-    }
+class RegistrationStateTwoFragment() : Fragment() {
 
     private var _binding: FragmentRegistrationStateTwoBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<RegistrationViewModel>()
+    private val vm by viewModels<RegistrationStateTwoViewModel>()
 
-    private var lReqName: Boolean  = false
-    private var lReqLogin: Boolean  = false
+    lateinit var handler: Handler
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentRegistrationStateTwoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     private val navigationEventsObserver = Events.EventObserver { event ->
         when (event) {
@@ -45,88 +47,120 @@ class RegistrationStateTwoFragment : Fragment(), UIUtils {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentRegistrationStateTwoBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        argumentsLoader()
 
-        initUI()
+        // TODO DEBUG
+        binding.TVNextStageReg.isClickable = true
 
+        binding.apply {
+            checkFillingEditTextToLogin()
 
-        return root
+            initBtnNav()
+            initBtnClear()
+
+            edLoginListener()
+            edNameListener()
+
+            observeError()
+            observeLogin()
+        }
     }
 
-    private fun initUI() {
-
-        initBtnNav()
-        initBtnClear()
-
-        edLoginListener()
-        edNameListener()
-
-        observeError()
-        observeLogin()
+    private fun argumentsLoader(){
+        vm.setDataStageOne(
+            email = requireArguments().getString("email").toString(),
+            pass = requireArguments().getString("pass").toString()
+        )
     }
 
-    private fun edLoginListener() {
-        binding.etLoginReg.doOnTextChanged { text, start, count, after ->
-            binding.ivCheckLogin.visibility = View.VISIBLE
-            lReqLogin = binding.etLoginReg.text.toString().length in 3..30
-            when (lReqName) {
-                true -> binding.ivCheckLogin.setImageResource(R.drawable.ic_sucess_cirlce)
-                false -> binding.ivCheckLogin.setImageResource(R.drawable.ic_info_circle_error)
+    private fun FragmentRegistrationStateTwoBinding.edLoginListener() {
+        ETLogin.onFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus && ETLogin.text.isNullOrBlank())
+                ETLogin.setText("@")
+        }
+        ETLogin.doOnTextChanged { text, start, count, after ->
+            ImageCheckLogin.apply {
+                visibility = View.VISIBLE
+                setImageResource(when (isValidLogin()) {
+                    true -> R.drawable.ic_sucess_cirlce
+                    else -> R.drawable.ic_info_circle_error
+                })
             }
             checkFillingEditTextToLogin()
         }
     }
 
-    private fun edNameListener() {
-        binding.etNameReg.onFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
-            if (hasFocus && binding.etNameReg.text.isNullOrBlank())
-                binding.etNameReg.setText("@")
-        }
-
-        binding.etNameReg.doOnTextChanged { text, start, count, after ->
-            binding.ivCheckName.visibility = View.VISIBLE
-            lReqLogin = binding.etNameReg.text.toString().length in 3..30
-            when (lReqName) {
-                true -> binding.ivCheckName.setImageResource(R.drawable.ic_sucess_cirlce)
-                false -> binding.ivCheckName.setImageResource(R.drawable.ic_info_circle_error)
+    private fun FragmentRegistrationStateTwoBinding.edNameListener() {
+        ETNameReg.doOnTextChanged { text, start, count, after ->
+            ImageCheckName.apply {
+                visibility = View.VISIBLE
+                setImageResource(when (isValidName()) {
+                    true -> R.drawable.ic_sucess_cirlce
+                    else -> R.drawable.ic_info_circle_error
+                })
             }
             checkFillingEditTextToLogin()
         }
     }
 
-    @SuppressLint("ResourceAsColor")
-    fun checkFillingEditTextToLogin(){
-        if(lReqName && lReqLogin)
-            btnNextStageView(ACTIVE_BUTTON_VIEW)
-         else
-            btnNextStageView(DEFAULT_BUTTON_VIEW)
+    private fun FragmentRegistrationStateTwoBinding.initBtnNav() {
+       TVNextStageReg.setOnClickListener {
+            TVNextStageReg.timerDoubleBtn()
+            btnNextStageView(RegistrationViewModel.LOADING_BUTTON_VIEW)
+
+            //TODO NOt Founded Now
+            //vm.apiCheckLogin(
+            //    login = ETLogin.text.toString(),
+            //    userName = ETNameReg.text.toString()
+            //)
+           vm.setDataStageTwo(
+               login = ETLogin.text.toString(),
+               userName = ETNameReg.text.toString()
+           )
+           vm.postCreateUser(requireActivity())
+        }
+
+        TVBtnBackReg.setOnClickListener {
+            TVBtnBackReg.timerDoubleBtn()
+            findNavController().navigateUp()
+        }
     }
 
-    private fun observeError(){
-        viewModel.error.observe(viewLifecycleOwner, Observer { error ->
-            val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-            val bundle = Bundle()
-
-            bundle.putString("error","Ошибка при регистрации.")
-
-            findNavController().navigate(R.id.navigation_start_page, bundle)
-            transaction.remove(this)
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-            transaction.commit()
-        })
+    private fun FragmentRegistrationStateTwoBinding.initBtnClear(){
+        ImageBtnClearLogin.setOnClickListener{
+            ETLogin.setText("@")
+        }
+        ImageBtnClearName.setOnClickListener{
+            ETNameReg.text = null
+        }
+        CCMain.setOnClickListener{
+            val imm: InputMethodManager =
+                requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            var view = requireActivity().currentFocus
+            if (view == null) view = View(activity)
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
-    private fun observeLogin(){
-        viewModel.emailResponse.observe(viewLifecycleOwner, Observer { response ->
+    private fun FragmentRegistrationStateTwoBinding.changeCheckImage(check:Boolean,optional:Int=0) {
+        ImageCheckLogin.visibility = View.VISIBLE
+        when (check) {
+            true->  ImageCheckLogin.setImageResource(R.drawable.ic_sucess_cirlce)
+            false-> ImageCheckLogin.setImageResource(R.drawable.ic_info_circle_error)
+        }
+        if (optional == 1)
+            ImageCheckLogin.setImageResource(R.drawable.ic_load_alt)
+    }
+
+    /////////////////////////////////////////////////////////////////
+    private fun FragmentRegistrationStateTwoBinding.observeLogin(){
+        vm.loginResponse.observe(viewLifecycleOwner) { response ->
             when(response.success){
                 true->{
                     changeCheckImage(true)
-                    viewModel.postCreateUser(requireActivity())
+                    vm.postCreateUser(requireActivity())
                     //btnNextStageView(RegistrationFragment.ACTIVE_BUTTON_VIEW)
                     //findNavController().navigate(R.id.navigation_registration_two, null)
                 }
@@ -134,77 +168,94 @@ class RegistrationStateTwoFragment : Fragment(), UIUtils {
                     // todo disable pop
                     //errorPop(response.body()!!.message,errorLayout,inflater)
                     changeCheckImage(false)
-                    btnNextStageView(RegistrationFragment.DEFAULT_BUTTON_VIEW)
+                    btnNextStageView(RegistrationViewModel.DEFAULT_BUTTON_VIEW)
                 }
             }
+        }
+    }
+
+    private fun FragmentRegistrationStateTwoBinding.observeError(){
+        vm.loginError.observe(viewLifecycleOwner, Observer { error ->
+            //val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+            //val bundle = Bundle()
+//
+            //bundle.putString("error","Ошибка при регистрации.")
+//
+            //findNavController().navigate(R.id.action_navigation_registration_two_to_navigation_start_page, bundle)
+            //transaction.remove(this@RegistrationStateTwoFragment)
+            //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+            //transaction.commit()
         })
     }
+    /////////////////////////////////////////////////////////////////
 
-    private fun initBtnNav() {
-        binding.tvNextStageReg.setOnClickListener {
-            timerDoubleBtn(binding.tvNextStageReg,5000)
-            btnNextStageView(RegistrationFragment.LOADING_BUTTON_VIEW)
+    private fun FragmentRegistrationStateTwoBinding.isValidLogin() =
+        ETLogin.text.length in RegistrationViewModel.LENGTH_LOGIN_RANGE
 
-            viewModel.apiCheckLogin(
-                login = binding.etLoginReg.text.toString(),
-                userName = binding.etNameReg.text.toString()
-                )
-        }
+    private fun FragmentRegistrationStateTwoBinding.isValidName() =
+        ETLogin.text.length in RegistrationViewModel.LENGTH_NAME_RANGE
 
-        binding.tvBtnBackReg.setOnClickListener {
-            timerDoubleBtn(binding.tvBtnBackReg)
-            requireActivity().supportFragmentManager.popBackStack()
+    @SuppressLint("ResourceAsColor")
+    fun FragmentRegistrationStateTwoBinding.checkFillingEditTextToLogin(){
+        when(isValidLogin() && isValidName()){
+            true -> btnNextStageView(RegistrationViewModel.ACTIVE_BUTTON_VIEW)
+            else -> btnNextStageView(RegistrationViewModel.DEFAULT_BUTTON_VIEW)
         }
     }
 
-    private fun initBtnClear(){
-        binding.ivBtnClearLogin.setOnClickListener{
-            binding.etNameReg.setText("@")
-        }
-        binding.ivBtnClearName.setOnClickListener{
-            binding.etNameReg.text = null
-        }
-    }
-
-    private fun changeCheckImage(check:Boolean,optional:Int=0) {
-        binding.ivCheckLogin.visibility = View.VISIBLE
-        when (check) {
-            true->binding.ivCheckLogin.setImageResource(R.drawable.ic_sucess_cirlce)
-            false->binding.ivCheckLogin.setImageResource(R.drawable.ic_info_circle_error)
-        }
-        if (optional == 1)
-            binding.ivCheckLogin.setImageResource(R.drawable.ic_load_alt)
-    }
-
-    private fun btnNextStageView(state:Int){
+    private fun FragmentRegistrationStateTwoBinding.btnNextStageView(state:Int){
+        val context = requireContext()
         when (state){
-            RegistrationFragment.DEFAULT_BUTTON_VIEW -> {
-                binding.progressAuthBtn.visibility = View.GONE
-                binding.tvNextStageReg.text = getString(R.string.proceed)
-                binding.tvNextStageReg.setTextColor(resources.getColor(R.color.grey_light_alternative_4));
-                DrawableCompat.setTint(binding.tvNextStageReg.background, ContextCompat.getColor(requireContext(), R.color.grey_light_alternative_1));
-                binding.tvNextStageReg.isClickable = false
+            RegistrationViewModel.DEFAULT_BUTTON_VIEW -> {
+                with(TVNextStageReg) {
+                    text = getString(R.string.proceed)
+                    setTextColor(ContextCompat.getColor(context, R.color.grey_light_alternative_4))
+                    isClickable = false
+                }
+                DrawableCompat.setTint(TVNextStageReg.background, ContextCompat.getColor(context, R.color.grey_light_alternative_1))
+                ProgressAuth.visibility = View.GONE
             }
-            RegistrationFragment.ACTIVE_BUTTON_VIEW -> {
-                binding.progressAuthBtn.visibility = View.GONE
-                binding.tvNextStageReg.text = getString(R.string.proceed)
-                binding.tvNextStageReg.setTextColor(resources.getColor(R.color.white));
-                DrawableCompat.setTint(binding.tvNextStageReg.background, ContextCompat.getColor(requireContext(), R.color.blue));
-                binding.tvNextStageReg.isClickable = true
+            RegistrationViewModel.ACTIVE_BUTTON_VIEW -> {
+                with(TVNextStageReg) {
+                    text = getString(R.string.proceed)
+                    setTextColor(ContextCompat.getColor(context, R.color.white))
+                    isClickable = true
+                }
+                DrawableCompat.setTint(TVNextStageReg.background, ContextCompat.getColor(context, R.color.grey_light_alternative_7))
+                ProgressAuth.visibility = View.GONE
             }
-            RegistrationFragment.LOADING_BUTTON_VIEW -> {
-                binding.progressAuthBtn.visibility = View.VISIBLE
-                binding.tvNextStageReg.text = ""
-                binding.progressAuthBtn.isClickable = false
+            RegistrationViewModel.LOADING_BUTTON_VIEW -> {
+                TVNextStageReg.text = ""
+                ProgressAuth.isClickable = false
+                ProgressAuth.visibility = View.VISIBLE
             }
-            RegistrationFragment.ERROR_BUTTON_VIEW -> {
-
+            RegistrationViewModel.ERROR_BUTTON_VIEW -> {
+                TVNextStageReg.text = getString(R.string.proceed)
+                with(TVNextStageReg) {
+                    setTextColor(ContextCompat.getColor(context, R.color.grey_light_alternative_4))
+                    isClickable = false
+                }
+                DrawableCompat.setTint(TVNextStageReg.background, ContextCompat.getColor(context, R.color.grey_light_alternative_1))
+                ProgressAuth.visibility = View.GONE
             }
         }
+    }
+
+    fun View.timerDoubleBtn(time: Long = 2000) {
+        isClickable = false
+        this@RegistrationStateTwoFragment.handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            isClickable = true
+        }, time)
     }
 
     fun navigateNav(navigation: Int, bundle: Bundle?) {
         findNavController().navigate(navigation, bundle)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (::handler.isInitialized)
+            handler.removeCallbacksAndMessages(null)
+    }
 }

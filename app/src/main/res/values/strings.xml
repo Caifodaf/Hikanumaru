@@ -196,7 +196,7 @@
     <string name="title_registration">RegistrationFragment</string>
     <string name="your_email">Ваша почта</string>
     <string name="mail_login_text">Почта/Логин</string>
-    <string name="forgot_your_password">Забыли пароль?</string>
+    <string name="forgot_your_password">Восстановить пароль</string>
     <string name="log_in">Войти</string>
     <string name="login_text">Логин</string>
     <string name="password_hint_reg">Сложнее чем 123</string>
@@ -204,7 +204,7 @@
     <string name="request_pass_text">Требования к паролю</string>
     <string name="nickname_text">Никнейм</string>
     <string name="your_name_text">Имя на сервисе</string>
-    <string name="example_login_reg">\@xxxxxx</string>
+    <string name="example_login_reg">\@xxxxxxxxx</string>
     <string name="title_registration_two">RegistrationStateTwoFragment</string>
     <string name="description_reset_password_stage_one">На вашу почту мы выслали код \nподтверждения, напишите его \nв приложении</string>
     <string name="reset_password_title_one">Востановление \nпароля</string>
@@ -237,5 +237,7 @@
     <string name="night_shift_setting_reader_text">Night shift</string>
     <string name="night_shift_description_setting_reader_text">Технология изменения цвета белого, для более комфортного чтения, особенно в ночное время</string>
     <string name="navigation_reader_fragment">ReaderFragment</string>
+    <string name="settings">Насторйки</string>
+    <string name="UserRequest">Нажимая кнопку «продолжить» \nвы принимаете условия пользовательского соглашения</string>
 
 </resources>

@@ -97,6 +97,9 @@
     <color name="transparent_dark_back">#9824242A</color>
     <color name="yellow">#FFCC00</color>
     <color name="pink">#FF2D55</color>
+    <color name="light_grey_3">#D1D1D6</color>
+    <color name="light_grey_4">#B2B2B2</color>
+    <color name="light_grey_7">#0E0E0E</color>
 
 
 </resources>

@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.github.chrisbanes.photoview.OnViewTapListener
@@ -84,6 +86,8 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
     private lateinit var pageSeekBar: SeekBar
     private var currentPage: Int? = 0
     private var maxCountSeekBar: Int = 1
+
+    init { onBack() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -670,6 +674,16 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
             GONE -> VISIBLE
             else -> GONE
         }
+    }
+
+    private fun onBack() {
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigateUp()
+                }
+            })
     }
 
     override fun onDestroyView() {

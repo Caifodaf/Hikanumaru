@@ -1,13 +1,17 @@
 package ru.android.hikanumaruapp.ui.auth.login
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.doOnTextChanged
@@ -16,27 +20,18 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentLoginBinding
+import ru.android.hikanumaruapp.ui.auth.registration.state.one.RegistrationViewModel
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 import ru.android.hikanumaruapp.utilits.UIUtils
 
 class LoginFragment : Fragment(),UIUtils {
 
-    companion object{
-        const val DEFAULT_BUTTON_VIEW = 0
-        const val ACTIVE_BUTTON_VIEW = 1
-        const val LOADING_BUTTON_VIEW = 2
-        const val ERROR_BUTTON_VIEW = 3
-    }
-
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<LoginViewModel>()
 
-    private var lReqLogin: Boolean = false
-    private var lReqPass: Boolean = false
-    private var isResetPassword: Boolean = false
-
+    lateinit var handler: Handler
     private var isShowPass: Boolean = false
 
     private val navigationEventsObserver = Events.EventObserver { event ->
@@ -46,124 +41,85 @@ class LoginFragment : Fragment(),UIUtils {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        initUI()
-
-        return root
+        return binding.root
     }
 
-    private fun initUI() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            checkFillingEditTextToLogin()
 
-        initBtnNav()
-        initBtnClear()
+            initBtnNav()
+            initBtnClear()
 
-        edLoginListener()
-        edPassListener()
-
+            edLoginListener()
+            edPassListener()
+        }
     }
 
-
-    private fun edLoginListener() {
-        binding.etLogin.doOnTextChanged { text, start, count, after ->
-            binding.ivCheckLogin.visibility = View.VISIBLE
-            lReqLogin = if (binding.etLogin.text.toString().length in 3..40) {
-                binding.ivCheckLogin.setImageResource(R.drawable.ic_sucess_cirlce)
-                true
-            } else {
-                binding.ivCheckLogin.setImageResource(R.drawable.ic_info_circle_error)
-                false
+    private fun FragmentLoginBinding.edLoginListener() {
+        ETLogin.doOnTextChanged { text, start, count, after ->
+            ImageCheckLogin.apply {
+                visibility = View.VISIBLE
+                setImageResource(when (isValidLogin()) {
+                    true -> R.drawable.ic_sucess_cirlce
+                    else -> R.drawable.ic_info_circle_error
+                })
             }
             checkFillingEditTextToLogin()
         }
     }
 
-    private fun edPassListener() {
-        binding.etPass.transformationMethod = PasswordTransformationMethod()
+    private fun FragmentLoginBinding.edPassListener() {
+        ETPass.transformationMethod = PasswordTransformationMethod()
 
-        binding.etPass.doOnTextChanged { text, start, count, after ->
-            binding.ivEyePass.visibility = View.VISIBLE
-            binding.ivCheckPass.visibility = View.VISIBLE
-            binding.ivEyePass.setOnClickListener {
-                showPassword()
+        ETPass.doOnTextChanged { text, start, count, after ->
+            ImageCheckPass.apply {
+                visibility = View.VISIBLE
+                setImageResource(when (isValidPassword()) {
+                    true -> R.drawable.ic_sucess_cirlce
+                    else -> R.drawable.ic_info_circle_error
+                })
             }
-            lReqPass = binding.etPass.text.toString().length in 5..40
-
-            when (lReqPass) {
-                true ->  binding.ivCheckPass.setImageResource(R.drawable.ic_sucess_cirlce)
-                false ->  binding.ivCheckPass.setImageResource(R.drawable.ic_info_circle_error)
-            }
+            ImageEyePass.setOnClickListener { showPassword() }
             checkFillingEditTextToLogin()
         }
     }
 
-    private fun showPassword() {
-        binding.etPass.transformationMethod = when (isShowPass) {
-            true -> {
-                isShowPass = false
-                binding.ivCheckPass.setImageResource(R.drawable.ic_eye_hide)
-                PasswordTransformationMethod()
-            }
-            false -> {
-                isShowPass = true
-                binding.ivCheckPass.setImageResource(R.drawable.ic_eye_show)
-                HideReturnsTransformationMethod.getInstance()
-            }
+    private fun FragmentLoginBinding.showPassword() {
+        isShowPass = !isShowPass
+        val transformationMethod = when (isShowPass) {
+            true -> HideReturnsTransformationMethod.getInstance()
+            else -> PasswordTransformationMethod.getInstance()
+        }
+
+        ETPass.transformationMethod = transformationMethod
+        ETPass.transformationMethod = transformationMethod
+        ImageEyePass.setImageResource(if (isShowPass) R.drawable.ic_eye_show else R.drawable.ic_eye_hide)
+    }
+
+    private fun FragmentLoginBinding.initBtnClear(){
+        ImageBtnClearLogin.setOnClickListener{
+            ETLogin.text = null
+        }
+        ImageBtnClearPass.setOnClickListener{
+            ETPass.text = null
+        }
+        CCMain.setOnClickListener{
+            val imm: InputMethodManager =
+                requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            var view = requireActivity().currentFocus
+            if (view == null) view = View(activity)
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
-    @SuppressLint("ResourceAsColor")
-    private fun checkFillingEditTextToLogin() {
-        if(lReqLogin && lReqPass){
-            btnNextStageView(ACTIVE_BUTTON_VIEW)
-        } else {
-            btnNextStageView(DEFAULT_BUTTON_VIEW)
-        }
-    }
-
-    private fun initBtnNav() {
-        binding.tvResetPass.setOnClickListener {
-            timerDoubleBtn(binding.tvResetPass)
-            // todo add
-            //findNavController().navigate(R.id.action_loginFragment_to_resetPasswordLoginFragment, null)
-        }
-
-        binding.tvBtnLogin.setOnClickListener {
-            timerDoubleBtn(binding.tvBtnLogin,5000)
-            btnNextStageView(LOADING_BUTTON_VIEW)
-
-            observeUser()
-            observeError()
-
-            viewModel.postApiAuth(
-                login = binding.etLogin.text.toString(),
-                pass = binding.etPass.text.toString(),
-                requireActivity()
-            )
-
-                //viewModel.getCheckEmail(cancel = true)
-                //Log.d("ApiService", "apiCheckLogin -$e")
-        }
-
-        binding.tvBtnLoginBack.setOnClickListener {
-            timerDoubleBtn(binding.tvBtnLoginBack)
-            requireActivity().supportFragmentManager.popBackStack()
-        }
-    }
-
-    private fun initBtnClear(){
-        binding.ivBtnClearLogin.setOnClickListener{
-            binding.etLogin.text = null
-        }
-        binding.ivBtnClearPass.setOnClickListener{
-            binding.etPass.text = null
-        }
-    }
-
+    /////////////////////////////////////////////////////////////////
     private fun observeUser(){
         // todo useless
     }
@@ -193,36 +149,83 @@ class LoginFragment : Fragment(),UIUtils {
                 }
             }
 
-            btnNextStageView(ERROR_BUTTON_VIEW)
+            //vm.btnNextStageView(RegistrationViewModel.ERROR_BUTTON_VIEW)
         })
     }
+    /////////////////////////////////////////////////////////////////
 
-    private fun btnNextStageView(state:Int){
+    private fun FragmentLoginBinding.isValidLogin() =
+        ETLogin.text.length in RegistrationViewModel.LENGTH_LOGIN_RANGE
+
+    private fun FragmentLoginBinding.isValidPassword() =
+        ETPass.text.length in RegistrationViewModel.LENGTH_PASSWORD_RANGE
+
+    @SuppressLint("ResourceAsColor")
+    fun FragmentLoginBinding.checkFillingEditTextToLogin(){
+        when(isValidLogin() && isValidPassword()){
+            true -> btnNextStageView(RegistrationViewModel.ACTIVE_BUTTON_VIEW)
+            else -> btnNextStageView(RegistrationViewModel.DEFAULT_BUTTON_VIEW)
+        }
+    }
+
+    private fun FragmentLoginBinding.initBtnNav() {
+        TVBtnResetPassword.setOnClickListener {
+            TVBtnResetPassword.timerDoubleBtn()
+            findNavController().navigate(R.id.action_navigation_login_to_navigation_reset_password_stage_three, null)
+        }
+
+        TVBtnLogin.setOnClickListener {
+            TVBtnLogin.timerDoubleBtn()
+            btnNextStageView(RegistrationViewModel.LOADING_BUTTON_VIEW)
+
+            observeUser()
+            observeError()
+
+            viewModel.postApiAuth(
+                login = ETLogin.text.toString(),
+                pass =  ETPass.text.toString(),
+                requireActivity()
+            )
+        }
+
+        TVBtnLoginBack.setOnClickListener {
+            TVBtnLoginBack.timerDoubleBtn()
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun FragmentLoginBinding.btnNextStageView(state:Int){
+        val context = requireContext()
         when (state){
-            DEFAULT_BUTTON_VIEW -> {
-                binding.tvBtnLogin.setTextColor(resources.getColor(R.color.grey_light_alternative_4));
-                DrawableCompat.setTint(binding.tvBtnLogin.background, ContextCompat.getColor(requireContext(), R.color.grey_light_alternative_1));
-                binding.tvBtnLogin.isClickable = false
+            RegistrationViewModel.DEFAULT_BUTTON_VIEW -> {
+                with(TVBtnLogin) {
+                    setTextColor(ContextCompat.getColor(context, R.color.grey_light_alternative_4))
+                    isClickable = false
+                }
+                DrawableCompat.setTint(TVBtnLogin.background, ContextCompat.getColor(context, R.color.grey_light_alternative_1))
+                ProgressAuth.visibility = View.GONE
             }
-            ACTIVE_BUTTON_VIEW -> {
-                binding.tvBtnLogin.setTextColor(resources.getColor(R.color.white));
-                DrawableCompat.setTint(binding.tvBtnLogin.background, ContextCompat.getColor(requireContext(), R.color.blue));
-                binding.tvBtnLogin.isClickable = true
+            RegistrationViewModel.ACTIVE_BUTTON_VIEW -> {
+                with(TVBtnLogin) {
+                    setTextColor(ContextCompat.getColor(context, R.color.white))
+                    isClickable = true
+                }
+                DrawableCompat.setTint(TVBtnLogin.background, ContextCompat.getColor(context, R.color.grey_light_alternative_7))
+                ProgressAuth.visibility = View.GONE
             }
-            LOADING_BUTTON_VIEW -> {
-                binding.progressAuthBtn.visibility = View.VISIBLE
-                binding.tvBtnLogin.text = ""
-                binding.progressAuthBtn.isClickable = false
+            RegistrationViewModel.LOADING_BUTTON_VIEW -> {
+                TVBtnLogin.text = ""
+                ProgressAuth.isClickable = false
+                ProgressAuth.visibility = View.VISIBLE
             }
-            ERROR_BUTTON_VIEW -> {
-                binding.progressAuthBtn.visibility = View.GONE
-                binding.tvBtnLogin.text = getString(R.string.proceed)
-
-                binding.tvBtnLogin.setTextColor(resources.getColor(R.color.grey_light_alternative_4));
-                DrawableCompat.setTint(
-                    binding.tvBtnLogin.background, ContextCompat.getColor(requireContext(), R.color.grey_light_alternative_1)
-                )
-                binding.tvBtnLogin.isClickable = false
+            RegistrationViewModel.ERROR_BUTTON_VIEW -> {
+                TVBtnLogin.text = getString(R.string.log_in)
+                with(TVBtnLogin) {
+                    setTextColor(ContextCompat.getColor(context, R.color.grey_light_alternative_4))
+                    isClickable = false
+                }
+                DrawableCompat.setTint(TVBtnLogin.background, ContextCompat.getColor(context, R.color.grey_light_alternative_1))
+                ProgressAuth.visibility = View.GONE
             }
         }
     }
@@ -231,5 +234,17 @@ class LoginFragment : Fragment(),UIUtils {
         findNavController().navigate(navigation, bundle)
     }
 
+    fun View.timerDoubleBtn(time: Long = 2000) {
+        isClickable = false
+        this@LoginFragment.handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            isClickable = true
+        }, time)
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (::handler.isInitialized)
+            handler.removeCallbacksAndMessages(null)
+    }
 }

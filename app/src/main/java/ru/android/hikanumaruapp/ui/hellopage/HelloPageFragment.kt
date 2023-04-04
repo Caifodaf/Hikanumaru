@@ -1,32 +1,55 @@
 package ru.android.hikanumaruapp.ui.hellopage
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.android.hikanumaruapp.BaseFragment
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.databinding.FragmentHelloPageBinding
 
-class HelloPageFragment : BaseFragment() {
+@AndroidEntryPoint
+class HelloPageFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = HelloPageFragment()
-    }
-
-    private lateinit var viewModel: HelloPageViewModel
+    private var _binding: FragmentHelloPageBinding? = null
+    private val binding get() = _binding!!
+    private val vm by viewModels<HelloPageViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_hello_page, container, false)
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentHelloPageBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HelloPageViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val sp = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        scheduleSplashScreen(vm.onStartup(sp),sp)
+    }
+
+    private fun scheduleSplashScreen(ifFirstStart: Boolean, sp: SharedPreferences) {
+        binding.root.postDelayed({
+            val user = vm.getUser(ifFirstStart,sp)
+            routeToAppropriatePage(user)
+        }, 1000L)
+    }
+
+    private fun routeToAppropriatePage(user: Int) {
+        when(user) {
+            HelloPageViewModel.START -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_start_page)
+            HelloPageViewModel.MAIN -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_home)
+            else -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_start_page)
+        }
     }
 
 }

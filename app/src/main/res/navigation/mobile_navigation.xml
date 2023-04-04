@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_hello_page">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_navigation_reader"
             app:destination="@id/navigation_reader" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_mangapage"
+            app:destination="@id/navigation_mangapage" />
     </fragment>
 
     <fragment
@@ -167,21 +170,25 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_registration"
-        android:name="ru.android.hikanumaruapp.ui.auth.registration.RegistrationFragment"
+        android:name="ru.android.hikanumaruapp.ui.auth.registration.state.one.RegistrationFragment"
         android:label="@string/title_registration"
         tools:layout="@layout/fragment_registration" >
         <action
             android:id="@+id/action_navigation_registration_to_navigation_registration_two"
             app:destination="@id/navigation_registration_two" />
+
     </fragment>
     <fragment
         android:id="@+id/navigation_registration_two"
         android:name="ru.android.hikanumaruapp.ui.auth.registration.state.two.RegistrationStateTwoFragment"
         android:label="@string/title_registration_two"
-        tools:layout="@layout/fragment_registration" >
+        tools:layout="@layout/fragment_registration_state_two" >
         <action
             android:id="@+id/action_navigation_registration_two_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_registration_two_to_navigation_start_page"
+            app:destination="@id/navigation_start_page" />
     </fragment>
     <fragment
         android:id="@+id/navigation_reset_password_stage_one"

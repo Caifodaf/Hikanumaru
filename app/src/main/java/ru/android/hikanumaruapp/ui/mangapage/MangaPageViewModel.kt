@@ -199,8 +199,8 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
                         }
                     }
                 }
-                // See more chapter nav btn
-                R.id.ll_btn_more_chapter_list -> {
+                // See more chapter nav btn todo rework
+                R.id.tv_btn_more_chapter_list_ph -> {
                     val bundle = Bundle()
                     val model = listPage.value!!
 
@@ -213,20 +213,22 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
                     bundle.putString("count", (model.chapterCount?.minus(1)).toString())
 
                     emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
-                        R.id.navigation_chapters_page, bundle))
+                        R.id.action_navigation_mangapage_to_navigation_chapters_page, bundle))
                 }
             }
         }
     }
 
-    fun initRecyclerView(recyclerView: RecyclerView, ) {
+    fun initRecyclerView(recyclerView: RecyclerView ) {
         when (recyclerView.id) {
-            R.id.scroll_text_block -> {
-                recyclerView.addItemDecoration(SpaceItemDecoration(8))
-                recyclerView.adapter = textAdapter
-            }
-            R.id.rv_chapters_manga ->
+            //R.id.RVTagsBlock -> {
+            //    recyclerView.addItemDecoration(SpaceItemDecoration(8))
+            //    recyclerView.adapter = textAdapter
+            //}
+            R.id.RVChapterList ->
                 recyclerView.adapter = chapterAdapter
+           // R.id.TVCountChapterStart ->
+           //     recyclerView.adapter = chapterAdapter
         }
     }
 
@@ -253,7 +255,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
 
         emitter.emitAndExecute(
             NavigationFragmentinViewModel.NavigationFrag(
-                R.id.navigation_reader, toInfoReader))
+                R.id.action_navigation_mangapage_to_navigation_reader, toInfoReader))
 
     }
 
@@ -285,7 +287,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
 
         emitter.emitAndExecute(
             NavigationFragmentinViewModel.NavigationFrag(
-                R.id.navigation_reader, toInfoReader))
+                R.id.action_navigation_mangapage_to_navigation_reader, toInfoReader))
 
     }
 

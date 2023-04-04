@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -18,7 +19,6 @@ import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentProfileBinding
 import ru.android.hikanumaruapp.model.Manga
-import ru.android.hikanumaruapp.model.MangaMainModel
 import ru.android.hikanumaruapp.ui.profile.folders.FoldersLibraryAdapter
 import ru.android.hikanumaruapp.ui.profile.folders.LibraryAdapter
 import ru.android.hikanumaruapp.utilits.navigation.Events
@@ -38,6 +38,7 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,7 +54,7 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnBack()
+        setupOnBackPressed()
         vm.getUser(requireActivity())
         vm.initBDLibrary(this)
 
@@ -161,7 +162,7 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
             R.id.CCMainLibraryItem ->{
                 val bundle = Bundle()
                 bundle.putString("url", (list as Manga).urlManga)
-                findNavController().navigate(R.id.navigation_mangapage, bundle)
+                findNavController().navigate(R.id.action_navigation_profile_to_navigation_mangapage, bundle)
             }
         }
     }

@@ -22,9 +22,9 @@ class Repository @Inject constructor(){
         }
     }
 
-    suspend fun getUserMe(token: String): Flow<Response<UserRegResponse>> {
+    suspend fun getUserMe(): Flow<Response<UserRegResponse>> {
         return flow {
-            emit(RetrofitClient.api.getUserMe(token))
+            emit(RetrofitClient.api.getUserMe())
         }
     }
 
@@ -40,7 +40,7 @@ class Repository @Inject constructor(){
         }
     }
 
-    suspend fun postCreateUser(post: UserRegPost): Flow<Response<UserRegResponse>> {
+    suspend fun postCreateUser(post: UserRegPost): Flow<Response<TokenJWT>> {
         return flow {
             emit(RetrofitClient.api.postCreateUser(post))
         }

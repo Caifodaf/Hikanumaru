@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_manga_item"
-        android:layout_width="120dp"
+        android:layout_width="116dp"
         android:layout_height="180dp"
         android:elevation="0dp">
 
@@ -60,6 +60,7 @@
 
     <TextView
         android:id="@+id/tv_type_manga_item"
+        style="@style/Text.FootNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title_manga_item"
@@ -68,6 +69,5 @@
         android:layout_marginEnd="4dp"
         android:lines="1"
         android:text="@string/manga"
-        android:textColor="@color/blue"
-        style="@style/Text.FootNote"/>
+        android:textColor="@color/grey_light_alternative_5" />
 </RelativeLayout>
