@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.api
+package ru.android.hikanumaruapp.api.old
 
 import retrofit2.Response
 import retrofit2.http.*
@@ -27,9 +27,9 @@ interface ApiService {
     //@Headers("Content-Type: application/ld+json")
     //suspend fun getUserMe(@Header("Authorization Bearer ") token: String): Response<UserRegResponse>
 
-    @GET("/api/token")
-    @Headers("Content-Type: application/ld+json")
-    suspend fun getUserMe(): Response<UserRegResponse>
+    //@GET("/api/token")
+    //@Headers("Content-Type: application/ld+json")
+    //suspend fun getUserMe(): Response<UserRegResponse>
 
     @POST("login_check")
     @Headers("Content-Type: application/json")
@@ -47,9 +47,9 @@ interface ApiService {
     //suspend fun getCheckEmail(post: String): Response<CodeMessageResponse>
     suspend fun getCheckLogin(@Path("login") post:String): Response<CodeMessageResponse>
 
-    @POST("/api/user/create")
-    @Headers("Content-Type: application/json")
-    suspend fun postCreateUser(@Body post: UserRegPost): Response<TokenJWT>
+    //@POST("/api/user/create")
+    //@Headers("Content-Type: application/json")
+    //suspend fun postCreateUser(@Body post: UserRegPost): Response<TokenJWT>
 
     //@GET("genres")
     //@Headers("Content-Type: application/json")

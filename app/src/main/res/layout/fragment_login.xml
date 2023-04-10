@@ -7,220 +7,302 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.auth.login.LoginFragment">
 
-   <androidx.constraintlayout.widget.ConstraintLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:layout_marginStart="16dp"
-       android:layout_marginEnd="16dp"
-       >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
-       <TextView
-           android:id="@+id/TVTitleLogin"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           style="@style/Text.Callout"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           android:layout_marginTop="90dp"
-           android:text="@string/login_text"
-           android:textColor="@color/grey_light_alternative_5"
-           />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_kitty"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/TVTitleLogin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-       <EditText
-           android:id="@+id/ETLogin"
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
-           style="@style/Text.Headline_1"
-           android:background="@android:color/transparent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@id/TVTitleLogin"
-           app:layout_constraintEnd_toStartOf="@+id/ImageBtnClearLogin"
-           android:autofillHints="username|emailAddress"
-           android:gravity="start"
-           android:layout_marginTop="8dp"
-           android:inputType="textEmailAddress|textPersonName"
-           android:maxEms="40"
-           android:maxLines="1"
-           android:hint="@string/mail_login_text"
-           android:textColorHint="@color/grey_light_alternative_2"
-           android:textColor="@color/grey_light_alternative_7"
-           />
+        <TextView
+            android:id="@+id/TVTitleLogin"
+            style="@style/Text.Subheadline.Semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="@string/login_hint_login"
+            android:textColor="@color/grey_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ETLogin" />
 
-       <ImageView
-           android:id="@+id/ImageCheckLogin"
-           android:layout_width="16dp"
-           android:layout_height="0dp"
-           android:layout_marginStart="8dp"
-           android:src="@drawable/ic_sucess_cirlce"
-           android:visibility="invisible"
-           app:layout_constraintBottom_toBottomOf="@+id/TVTitleLogin"
-           app:layout_constraintStart_toEndOf="@+id/TVTitleLogin"
-           app:layout_constraintTop_toTopOf="@id/TVTitleLogin" />
+        <ImageView
+            android:id="@+id/ImageCheckLogin"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_info_circle_error"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/TVTitleLogin"
+            app:layout_constraintStart_toEndOf="@+id/TVTitleLogin"
+            app:layout_constraintTop_toTopOf="@id/TVTitleLogin" />
 
-       <ImageView
-           android:id="@+id/ImageBtnClearLogin"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:paddingEnd="20dp"
-           android:paddingTop="20dp"
-           android:paddingBottom="20dp"
-           android:src="@drawable/ic_cancel_fill"
-           app:layout_constraintBottom_toBottomOf="@+id/ETLogin"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintTop_toTopOf="@id/ETLogin" />
+        <EditText
+            android:id="@+id/ETLogin"
+            style="@style/Text.Headline_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:autofillHints="username"
+            android:inputType="textPersonName"
+            android:background="@android:color/transparent"
+            android:gravity="start"
+            android:hint="@string/login_login_hint"
+            android:maxEms="100"
+            android:maxLines="1"
+            android:textColor="@color/grey_900"
+            android:textColorHint="@color/grey_300"
+            app:layout_constraintBottom_toTopOf="@id/TVTitlePass"
+            app:layout_constraintEnd_toStartOf="@+id/ImageBtnClearLogin"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
-       <TextView
-           android:id="@+id/TVTitlePass"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           style="@style/Text.Callout"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@id/ETLogin"
-           android:layout_marginTop="48dp"
-           android:text="@string/password"
-           android:textColor="@color/grey_light_alternative_5"
-           />
+        <ImageView
+            android:id="@+id/ImageBtnClearLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:paddingStart="6dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/ic_cancel_fill"
+            app:layout_constraintBottom_toBottomOf="@+id/ETLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ETLogin" />
 
-       <EditText
-           android:id="@+id/ETPass"
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
-           style="@style/Text.Headline_1"
-           android:background="@android:color/transparent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@id/TVTitlePass"
-           app:layout_constraintEnd_toStartOf="@+id/ImageEyePass"
-           android:autofillHints="password"
-           android:gravity="start"
-           android:layout_marginTop="8dp"
-           android:inputType="textPassword"
-           android:hint="@string/password"
-           android:maxEms="30"
-           android:maxLines="1"
-           android:textColorHint="@color/grey_light_alternative_2"
-           android:textColor="@color/grey_light_alternative_7"
-           />
+        <TextView
+            android:id="@+id/TVTitlePass"
+            style="@style/Text.Subheadline.Semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="@string/password"
+            android:textColor="@color/grey_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ETPass" />
 
-       <ImageView
-           android:id="@+id/ImageCheckPass"
-           android:layout_width="16dp"
-           android:layout_height="0dp"
-           android:layout_marginStart="8dp"
-           android:src="@drawable/ic_sucess_cirlce"
-           android:visibility="invisible"
-           app:layout_constraintBottom_toBottomOf="@+id/TVTitlePass"
-           app:layout_constraintStart_toEndOf="@+id/TVTitlePass"
-           app:layout_constraintTop_toTopOf="@id/TVTitlePass" />
+        <ImageView
+            android:id="@+id/ImageCheckPass"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_info_circle_error"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/TVTitlePass"
+            app:layout_constraintStart_toEndOf="@+id/TVTitlePass"
+            app:layout_constraintTop_toTopOf="@id/TVTitlePass" />
 
-       <ImageView
-           android:id="@+id/ImageBtnClearPass"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           app:layout_constraintBottom_toBottomOf="@+id/ETPass"
-           app:layout_constraintTop_toTopOf="@id/ETPass"
-           app:layout_constraintEnd_toEndOf="parent"
-           android:layout_marginStart="20dp"
-           android:paddingEnd="20dp"
-           android:paddingTop="20dp"
-           android:paddingBottom="20dp"
-           android:paddingStart="6dp"
-           android:src="@drawable/ic_cancel_fill" />
+        <EditText
+            android:id="@+id/ETPass"
+            style="@style/Text.Headline_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="password"
+            android:inputType="textPassword"
+            android:hint="@string/login_password_hint"
+            android:gravity="start"
+            android:maxEms="100"
+            android:maxLines="1"
+            android:textColor="@color/grey_900"
+            android:textColorHint="@color/grey_300"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintEnd_toStartOf="@+id/ImageEyePass"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/TVBtnLogin" />
 
-       <ImageView
-           android:id="@+id/ImageEyePass"
-           app:layout_constraintBottom_toBottomOf="@+id/ETPass"
-           app:layout_constraintTop_toTopOf="@id/ETPass"
-           app:layout_constraintEnd_toStartOf="@id/ImageBtnClearPass"
-           android:layout_width="44dp"
-           android:layout_height="44dp"
-           android:padding="10dp"
-           android:src="@drawable/ic_eye_hide" />
+        <ImageView
+            android:id="@+id/ImageBtnClearPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:paddingStart="6dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/ic_cancel_fill"
+            app:layout_constraintBottom_toBottomOf="@+id/ETPass"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ETPass" />
 
-       <TextView
-           android:id="@+id/TVBtnResetPassword"
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
-           android:background="@drawable/rectangle_rounded_all_11"
-           android:backgroundTint="@color/grey_light_alternative_0"
-           app:layout_constraintTop_toBottomOf="@id/ETPass"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           android:layout_centerHorizontal="true"
-           android:layout_marginTop="30dp"
-           android:ellipsize="end"
-           android:gravity="center"
-           android:maxLines="1"
-           style="@style/Text.Callout"
-           android:padding="7dp"
-           android:layout_marginStart="40dp"
-           android:layout_marginEnd="40dp"
-           android:text="@string/forgot_your_password"
-           android:textColor="@color/grey_light_alternative_5" />
+        <ImageView
+            android:id="@+id/ImageEyePass"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_eye_hide"
+            app:layout_constraintBottom_toBottomOf="@+id/ETPass"
+            app:layout_constraintEnd_toStartOf="@id/ImageBtnClearPass"
+            app:layout_constraintTop_toTopOf="@id/ETPass" />
 
-       <ProgressBar
-           android:id="@+id/ProgressAuth"
-           android:layout_width="0dp"
-           android:layout_height="0dp"
-           android:padding="4dp"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintTop_toTopOf="@id/TVBtnLogin"
-           app:layout_constraintBottom_toBottomOf="@id/TVBtnLogin"
-           android:layout_centerHorizontal="true"
-           android:visibility="gone"
-           />
+        <TextView
+            android:id="@+id/TVBtnLogin"
+            style="@style/Text.Headline_6.Semibold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_rounded_all_16"
+            android:backgroundTint="@color/grey_100"
+            android:gravity="center"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/log_in"
+            android:textColor="@color/grey_400"
+            app:layout_constraintBottom_toTopOf="@+id/TVBtnLogInGuest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-       <TextView
-           android:id="@+id/TVBtnLogin"
-           style="@style/Text.Headline_5"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="8dp"
-           android:background="@drawable/rectangle_rounded_all"
-           android:backgroundTint="@color/grey_light_alternative_0"
-           android:gravity="center"
-           android:paddingTop="10dp"
-           android:paddingBottom="10dp"
-           android:clickable="false"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintBottom_toTopOf="@+id/TVBtnLoginBack"
-           android:text="@string/log_in"
-           android:textColor="@color/grey_light_alternative_3" />
+        <ProgressBar
+            android:id="@+id/ProgressAuth"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="@id/TVBtnLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/TVBtnLogin" />
 
-       <TextView
-           android:id="@+id/TVBtnLoginBack"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_centerHorizontal="true"
-           android:paddingTop="10dp"
-           android:paddingBottom="10dp"
-           android:layout_marginTop="8dp"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintBottom_toBottomOf="parent"
-           android:gravity="center"
-           android:layout_marginBottom="38dp"
-           style="@style/Text.Headline_5"
-           android:textColor="@color/grey_light_alternative_5"
-           android:text="@string/back" />
+        <TextView
+            android:id="@+id/TVBtnLogInGuest"
+            style="@style/Text.Subheadline.Semibold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:gravity="center"
+            android:text="@string/login_guest_text"
+            android:textColor="@color/grey_800"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/LLDividerStartPage" />
 
+        <LinearLayout
+            android:id="@+id/LLDividerStartPage"
+            android:layout_width="match_parent"
+            android:layout_height="17dp"
+            app:layout_constraintBottom_toTopOf="@id/LLBlockLoginServices"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal">
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="0.7"
+                android:background="@color/grey_200"
+                android:layout_gravity="center"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/or_text"
+                android:lines="1"
+                style="@style/Text.FootNote"
+                android:textColor="@color/grey_400" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="0.7"
+                android:background="@color/grey_200"
+                android:layout_gravity="center"/>
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/LLBlockLoginServices"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toTopOf="@id/TVBtnRegistration"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/ImageBtnGoogle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_google_start_page" />
 
+            <ImageView
+                android:id="@+id/ImageBtnVK"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_vk_start_page" />
 
+            <ImageView
+                android:id="@+id/ImageBtnTwitter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_twitter_start_page" />
 
+            <ImageView
+                android:id="@+id/ImageBtnShikimori"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_shikimori_start_page" />
+        </LinearLayout>
 
+        <TextView
+            android:id="@+id/TVBtnRegistration"
+            style="@style/Text.Headline_6.Semibold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/registration"
+            android:textColor="@color/grey_800"
+            android:background="@drawable/rectangle_rounded_all_16"
+            android:backgroundTint="@color/grey_100"
+            app:layout_constraintBottom_toTopOf="@+id/TVBtnResetPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/TVBtnResetPassword"
+            style="@style/Text.Subheadline.Semibold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="45dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:text="@string/forgot_your_password"
+            android:textColor="@color/grey_400"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-
-
-
-
-
-   </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

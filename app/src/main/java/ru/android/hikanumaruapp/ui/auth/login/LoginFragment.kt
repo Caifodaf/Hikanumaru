@@ -1,44 +1,49 @@
 package ru.android.hikanumaruapp.ui.auth.login
 
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
+import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
+import ru.android.hikanumaruapp.api.api.token.AuthViewModel
+import ru.android.hikanumaruapp.api.init.ApiResponse
+import ru.android.hikanumaruapp.api.models.UserRegResponse
+import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentLoginBinding
-import ru.android.hikanumaruapp.ui.auth.registration.state.one.RegistrationViewModel
-import ru.android.hikanumaruapp.utilits.navigation.Events
-import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
-import ru.android.hikanumaruapp.utilits.UIUtils
+import ru.android.hikanumaruapp.local.storage.UserDataViewModel
+import ru.android.hikanumaruapp.ui.auth.RulesNameAuth
+import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
 
-class LoginFragment : Fragment(),UIUtils {
+
+@AndroidEntryPoint
+class LoginFragment : BaseFragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<LoginViewModel>()
+    private val vm by viewModels<LoginViewModel>()
 
-    lateinit var handler: Handler
+    private val vmAuth by viewModels<AuthViewModel>()
+    private val vmToken by activityViewModels<TokenViewModel>()
+    private val vmApi by viewModels<MainApiViewModel>()
+    private val vmUser by viewModels<UserDataViewModel>()
+
+    private lateinit var handler: Handler
     private var isShowPass: Boolean = false
-
-    private val navigationEventsObserver = Events.EventObserver { event ->
-        when (event) {
-            is NavigationFragmentinViewModel.NavigationFrag -> navigateNav(event.navigation, event.bundle)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,42 +56,57 @@ class LoginFragment : Fragment(),UIUtils {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupOnBackPressed()
+        vm.setupUserData(vmUser, UserRegResponse(
+            "c0d73c84-9b62-11ed-8abc-bf0c6260b682",
+            "McLOVIN@gmail.com",
+            "McLOVIN",
+            "Mac Fucker",
+            listOf<String>( "ROLE_USER"),
+            "2023-01-23T21:13:16+00:00",
+            "2023-01-23T21:13:16+00:00"
+        ))
         binding.apply {
             checkFillingEditTextToLogin()
 
             initBtnNav()
             initBtnClear()
+            initButtonsServices()
 
             edLoginListener()
             edPassListener()
+
+            observeLogin()
+            observeUser()
         }
     }
 
     private fun FragmentLoginBinding.edLoginListener() {
+        ETLogin.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus && ETLogin.text.isNullOrBlank())
+                ETLogin.setText("@")
+        }
         ETLogin.doOnTextChanged { text, start, count, after ->
-            ImageCheckLogin.apply {
-                visibility = View.VISIBLE
-                setImageResource(when (isValidLogin()) {
-                    true -> R.drawable.ic_sucess_cirlce
-                    else -> R.drawable.ic_info_circle_error
-                })
+            TVTitleLogin.text = getString(R.string.login_hint_login)
+            TVTitleLogin.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey_500))
+            val text: String = ETLogin.text.toString().lowercase()
+            if (ETLogin.text.toString() != text) {
+                ETLogin.setText(text)
+                ETLogin.setSelection(text.length)
             }
+            ImageCheckLogin.visibility = View.INVISIBLE
             checkFillingEditTextToLogin()
         }
     }
 
     private fun FragmentLoginBinding.edPassListener() {
         ETPass.transformationMethod = PasswordTransformationMethod()
+        ImageEyePass.setOnClickListener { showPassword() }
 
         ETPass.doOnTextChanged { text, start, count, after ->
-            ImageCheckPass.apply {
-                visibility = View.VISIBLE
-                setImageResource(when (isValidPassword()) {
-                    true -> R.drawable.ic_sucess_cirlce
-                    else -> R.drawable.ic_info_circle_error
-                })
-            }
-            ImageEyePass.setOnClickListener { showPassword() }
+            TVTitlePass.text = getString(R.string.password)
+            TVTitlePass.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey_500))
+            ImageCheckPass.visibility = View.INVISIBLE
             checkFillingEditTextToLogin()
         }
     }
@@ -99,7 +119,6 @@ class LoginFragment : Fragment(),UIUtils {
         }
 
         ETPass.transformationMethod = transformationMethod
-        ETPass.transformationMethod = transformationMethod
         ImageEyePass.setImageResource(if (isShowPass) R.drawable.ic_eye_show else R.drawable.ic_eye_hide)
     }
 
@@ -111,140 +130,199 @@ class LoginFragment : Fragment(),UIUtils {
             ETPass.text = null
         }
         CCMain.setOnClickListener{
-            val imm: InputMethodManager =
-                requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            var view = requireActivity().currentFocus
-            if (view == null) view = View(activity)
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            closeKeyBoard()
         }
     }
 
-    /////////////////////////////////////////////////////////////////
-    private fun observeUser(){
-        // todo useless
+    private fun closeKeyBoard(){
+        val imm: InputMethodManager =
+            requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = requireActivity().currentFocus
+        if (view == null) view = View(activity)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+    /////////////////////////////////////////////////////////////////
 
-    private fun observeError(){
-        viewModel.error.observe(viewLifecycleOwner, Observer { error ->
-            var message = error.message
-            if (message.isNullOrEmpty()) {
-                message = "Unknown Error" as String
+    private fun FragmentLoginBinding.observeLogin() {
+        vmAuth.loginResponse.observe(viewLifecycleOwner) {
+            when(it) {
+                is ApiResponse.Failure -> {
+                    val pop = PopAlertDialog(requireActivity(),lifecycleScope)
+                    Log.d("ApiAuth","loginResponse falure - " + it.errorMessage)
+                    when(it.code){
+                        400,401 -> {
+                            pop.setDataDialog("Неверная почта или пароль")
+                            pop.show()
+                        }
+                        502 -> {
+                            pop.setDataDialog("Ошибка сервера")
+                            pop.show()
+                        }
+                        else -> {
+                            pop.setDataDialog("Неверная почта или пароль")
+                            pop.show()
+                        }
+                    }
+                }
+                ApiResponse.Loading -> {
+                    Log.d("ApiAuth","loginResponse Loading")
+                }
+                is ApiResponse.Success -> {
+                    vmToken.saveToken(it.data.token)
+                    vm.apiAuthGetUser(vmApi )
+                    Log.d("ApiAuth","loginResponse token - " + it.data.token)
+                    Log.d("ApiAuth","loginResponse refresh - " + it.data.refresh)
+                }
             }
+        }
+    }
 
-            when (error.codeApp) {
-                401 -> {
-                    message = "Неверный логин или пароль."
+    private fun FragmentLoginBinding.observeUser(){
+        vmApi.userInfoResponse.observe(viewLifecycleOwner) {
+            when(it) {
+                is ApiResponse.Failure -> {
+                    Log.d("ApiMain","observeUser falure - " + it.errorMessage)
+                    val pop = PopAlertDialog(requireActivity(),lifecycleScope)
+                    when(it.code){
+                        400,401 -> {
+                            pop.setDataDialog("Неверная почта или пароль")
+                            pop.show()
+                        }
+                        502 -> {
+                            pop.setDataDialog("Ошибка сервера")
+                            pop.show()
+                        }
+                        else -> {
+                            pop.setDataDialog("Неверная почта или пароль")
+                            pop.show()
+                        }
+                    }
+                }
+                ApiResponse.Loading -> {
+                    Log.d("ApiMain","observeUser Loading")
+                }
+                is ApiResponse.Success -> {
+                    Log.d("ApiMain","observeUser info - " + it.data)
 
-                    // todo disable pop
-                    //errorPop(message!!, errorLayout, inflater)
-                }
-                0->{
-                    // todo disable pop
-                    //errorPop("Ошибка авторизации. Код: $codeApi", errorLayout, inflater)
-                }
-                else -> {
-                    // todo disable pop
-                    //errorPop("Ошибка отправки. Код: $codeApi", errorLayout, inflater)
+//                   saveUserReg(it, context)
+//                   saveToken(tokenResponse.value!!.token, tokenResponse.value!!.refresh, context)
+//                   changeModeGuest(false,context)
+//                   changeAuth(context,true)
                 }
             }
+        }
+    }
 
-            //vm.btnNextStageView(RegistrationViewModel.ERROR_BUTTON_VIEW)
-        })
+    private fun FragmentLoginBinding.observeUserData(){
+        vmUser.user.observe(viewLifecycleOwner) { user ->
+            Log.d("padaianf", user.toString())
+        }
     }
     /////////////////////////////////////////////////////////////////
 
     private fun FragmentLoginBinding.isValidLogin() =
-        ETLogin.text.length in RegistrationViewModel.LENGTH_LOGIN_RANGE
+        ETLogin.text.length in RulesNameAuth.LENGTH_LOGIN_RANGE
 
     private fun FragmentLoginBinding.isValidPassword() =
-        ETPass.text.length in RegistrationViewModel.LENGTH_PASSWORD_RANGE
+        ETPass.text.length in RulesNameAuth.LENGTH_PASSWORD_RANGE
 
-    @SuppressLint("ResourceAsColor")
-    fun FragmentLoginBinding.checkFillingEditTextToLogin(){
+    private fun FragmentLoginBinding.checkFillingEditTextToLogin(){
         when(isValidLogin() && isValidPassword()){
-            true -> btnNextStageView(RegistrationViewModel.ACTIVE_BUTTON_VIEW)
-            else -> btnNextStageView(RegistrationViewModel.DEFAULT_BUTTON_VIEW)
+            true -> btnNextStageView(RulesNameAuth.ACTIVE_BUTTON_VIEW)
+            else -> btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
         }
     }
 
     private fun FragmentLoginBinding.initBtnNav() {
         TVBtnResetPassword.setOnClickListener {
-            TVBtnResetPassword.timerDoubleBtn()
+            TVBtnResetPassword.timerDoubleButton()
             findNavController().navigate(R.id.action_navigation_login_to_navigation_reset_password_stage_three, null)
         }
 
         TVBtnLogin.setOnClickListener {
-            TVBtnLogin.timerDoubleBtn()
-            btnNextStageView(RegistrationViewModel.LOADING_BUTTON_VIEW)
-
-            observeUser()
-            observeError()
-
-            viewModel.postApiAuth(
-                login = ETLogin.text.toString(),
-                pass =  ETPass.text.toString(),
-                requireActivity()
-            )
+            TVBtnLogin.timerDoubleButton()
+            when(isValidLogin() && isValidPassword()){
+                true->{
+                    btnNextStageView(RulesNameAuth.LOADING_BUTTON_VIEW)
+                    vm.postApiAuth(vmAuth,
+                        login = ETLogin.text.toString(),
+                        pass =  ETPass.text.toString())
+                }
+                false->{
+                    if (isValidLogin()) {
+                        TVTitleLogin.text = getString(R.string.please_edit_login_login)
+                        TVTitleLogin.setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow))
+                    }
+                    if (isValidPassword()) {
+                        TVTitleLogin.text = getString(R.string.please_edit_password_login)
+                        TVTitleLogin.setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow))
+                    }
+                }
+            }
         }
 
-        TVBtnLoginBack.setOnClickListener {
-            TVBtnLoginBack.timerDoubleBtn()
-            findNavController().navigateUp()
+        TVBtnLogInGuest.setOnClickListener {
+            TVBtnLogInGuest.timerDoubleButton()
+            // Todo DEV guest mode
+            TVBtnLogInGuest.timerDoubleButton()
+
+            val sp = requireActivity().getPreferences(Context.MODE_PRIVATE)
+            sp.edit().putBoolean("guest_mode", true).apply()
+
+            Toast.makeText(requireContext(), "Вы вошли как гость", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_navigation_login_to_navigation_home, null)
+        }
+
+        TVBtnRegistration.setOnClickListener {
+            TVBtnRegistration.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_login_to_navigation_registration, null)
         }
     }
 
-    private fun FragmentLoginBinding.btnNextStageView(state:Int){
+    private fun FragmentLoginBinding.initButtonsServices(){
+        ImageBtnGoogle.setOnClickListener{
+            // todo add fun
+        }
+        ImageBtnVK.setOnClickListener{
+            // todo add fun
+        }
+        ImageBtnTwitter.setOnClickListener{
+            // todo add fun
+        }
+        ImageBtnShikimori.setOnClickListener{
+            // todo add fun
+        }
+    }
+
+    private fun FragmentLoginBinding.btnNextStageView(state:Int) {
         val context = requireContext()
-        when (state){
-            RegistrationViewModel.DEFAULT_BUTTON_VIEW -> {
-                with(TVBtnLogin) {
-                    setTextColor(ContextCompat.getColor(context, R.color.grey_light_alternative_4))
-                    isClickable = false
-                }
-                DrawableCompat.setTint(TVBtnLogin.background, ContextCompat.getColor(context, R.color.grey_light_alternative_1))
+        when (state) {
+            RulesNameAuth.DEFAULT_BUTTON_VIEW -> {
+                TVBtnLogin.setTextColor(ContextCompat.getColor(context, R.color.grey_400))
+                TVBtnLogin.isClickable = true
                 ProgressAuth.visibility = View.GONE
             }
-            RegistrationViewModel.ACTIVE_BUTTON_VIEW -> {
-                with(TVBtnLogin) {
-                    setTextColor(ContextCompat.getColor(context, R.color.white))
-                    isClickable = true
-                }
-                DrawableCompat.setTint(TVBtnLogin.background, ContextCompat.getColor(context, R.color.grey_light_alternative_7))
+            RulesNameAuth.ACTIVE_BUTTON_VIEW -> {
+                TVBtnLogin.setTextColor(ContextCompat.getColor(context, R.color.grey_800))
+                TVBtnLogin.isClickable = true
                 ProgressAuth.visibility = View.GONE
             }
-            RegistrationViewModel.LOADING_BUTTON_VIEW -> {
+            RulesNameAuth.LOADING_BUTTON_VIEW -> {
                 TVBtnLogin.text = ""
-                ProgressAuth.isClickable = false
+                TVBtnLogin.isClickable = false
                 ProgressAuth.visibility = View.VISIBLE
             }
-            RegistrationViewModel.ERROR_BUTTON_VIEW -> {
+            RulesNameAuth.ERROR_BUTTON_VIEW -> {
                 TVBtnLogin.text = getString(R.string.log_in)
-                with(TVBtnLogin) {
-                    setTextColor(ContextCompat.getColor(context, R.color.grey_light_alternative_4))
-                    isClickable = false
-                }
-                DrawableCompat.setTint(TVBtnLogin.background, ContextCompat.getColor(context, R.color.grey_light_alternative_1))
+                TVBtnLogin.isClickable = true
                 ProgressAuth.visibility = View.GONE
             }
         }
-    }
-
-    fun navigateNav(navigation: Int, bundle: Bundle?) {
-        findNavController().navigate(navigation, bundle)
-    }
-
-    fun View.timerDoubleBtn(time: Long = 2000) {
-        isClickable = false
-        this@LoginFragment.handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            isClickable = true
-        }, time)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (::handler.isInitialized)
-            handler.removeCallbacksAndMessages(null)
+        closeKeyBoard()
     }
 }

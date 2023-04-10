@@ -155,7 +155,7 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
                         view.setImageDrawable(context.resources.getDrawable(R.drawable.ic_check_circle_on))
                         view.imageTintList = context.resources.getColorStateList(R.color.white)
                         view.setBackgroundResource(R.drawable.gradient_green)
-                        view.backgroundTintList = context.resources.getColorStateList(R.color.green)
+                        view.backgroundTintList = context.resources.getColorStateList(R.color.green_old)
 
                         handlerImageSaver!!.postDelayed(Runnable {
                             view.setImageDrawable(context.resources.getDrawable(R.drawable.ic_reader_image_download))

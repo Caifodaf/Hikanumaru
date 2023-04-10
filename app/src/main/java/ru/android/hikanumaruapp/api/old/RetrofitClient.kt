@@ -1,10 +1,10 @@
-package ru.android.hikanumaruapp.api.init
+package ru.android.hikanumaruapp.api.old
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import ru.android.hikanumaruapp.api.ApiService
+import ru.android.hikanumaruapp.api.init.SerializeNullsFactory
 
 object RetrofitClient {
 

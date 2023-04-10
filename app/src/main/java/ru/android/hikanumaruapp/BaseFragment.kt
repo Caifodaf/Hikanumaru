@@ -6,8 +6,9 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import ru.android.hikanumaruapp.utilits.UIUtils
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment: Fragment(),UIUtils {
 
     private var isBack = false
     private lateinit var isBackToast: Toast

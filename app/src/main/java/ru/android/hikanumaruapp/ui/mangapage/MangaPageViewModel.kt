@@ -174,7 +174,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
 
     @SuppressLint("UseCompatLoadingForDrawables")
     fun initBtn(button: LinearLayout,context: Context? = null,view: Any? = null){
-        timerDoubleBtn(button)
+        button.timerDoubleButton()
         button.setOnClickListener{
             when (button.id) {
                 // Sorting btn
@@ -294,7 +294,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
     override fun onRecyclerViewItemClick(view: View, list: Any?) {
         when (view.id) {
             R.id.cc_main_block -> {
-                timerDoubleBtn(view as ConstraintLayout)
+                (view as ConstraintLayout).timerDoubleButton()
                 openReaderPageChapter(list)
             }
 //            R.id.rl_block_manga_main_item -> {

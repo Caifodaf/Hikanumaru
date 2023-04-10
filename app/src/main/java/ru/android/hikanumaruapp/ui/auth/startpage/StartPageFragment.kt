@@ -1,26 +1,24 @@
 package ru.android.hikanumaruapp.ui.auth.startpage
 
-import android.content.Context
-import android.content.SharedPreferences
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentStartPageBinding
-import java.util.*
+import ru.android.hikanumaruapp.ui.auth.startpage.adapter.StartPageImagersAdapter
 
 @AndroidEntryPoint
 class StartPageFragment : BaseFragment() {
@@ -38,125 +36,129 @@ class StartPageFragment : BaseFragment() {
         return binding.root
     }
 
-    private lateinit var timer: Timer
-    private lateinit var handler: Handler
+    private var delayInMillisImages = 10000L
 
+    private lateinit var vpAdapter: StartPageImagersAdapter
+
+    private val adsTextList = arrayOf(
+        "Экран премущества Ашот","Экран премущества Даня",
+        "Экран премущества Аня","Экран премущества Гусь",
+        "Экран премущества Андрей",
+    )
     private val adsList = arrayOf(
         R.drawable.ashot, R.drawable.dan9, R.drawable.any,
         R.drawable.maks, R.drawable.andre
     )
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
-        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
-
         binding.apply {
             setupOnBackPressed()
-
-            imageSwitcherLoader()
+            ViewPager2ImagesLoader()
             initButtons()
-            initButtonsServices()
         }
     }
 
-    private fun FragmentStartPageBinding.errorCheck(){
-        // todo post refactor
-        // todo getstring after error create user
-        // error = arguments?.getString("error").toString()
-        //errorLayout = requireView().ll_error_block
-        //inflater = layoutInflater
-
-        //if(error.isNotBlank() && error != "null")
-        //    errorPop(error,errorLayout,inflater,10000)
+    private fun FragmentStartPageBinding.ViewPager2ImagesLoader() {
+        createImagesTabPager()
+        vpAdapter = StartPageImagersAdapter(adsList)
+        ViewPager2Start.apply {
+            adapter = vpAdapter
+            currentItem = 1
+        }
+        onInfinitePageChangeCallback(adsList.size+2)
     }
 
-    private fun FragmentStartPageBinding.imageSwitcherLoader() {
-        val imgIn = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
-        val imgOut = AnimationUtils.loadAnimation(context, android.R.anim.slide_out_right)
-
-        ImageSwitcher.apply{
-            setFactory {
-                ImageView(context).apply {
-                    layoutParams = FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT
-                    )
-                    scaleType = ImageView.ScaleType.CENTER_CROP
-                    setPadding(20, 20, 20, 20)
-                }
-            }
-
-            setImageResource(adsList[0])
-            inAnimation = imgIn
-            outAnimation = imgOut
-        }
-
-        var currentIndex = 0
-        timer = Timer()
-        timer.scheduleAtFixedRate(object : TimerTask() {
+    private fun autoSwitcher(ViewPager2Start: ViewPager2) {
+        val handler = Handler(Looper.myLooper()!!)
+        val runnable = object : Runnable {
             override fun run() {
-                currentIndex = (currentIndex + 1) % adsList.size
-                requireActivity().runOnUiThread {
-                    ImageSwitcher.setImageResource(adsList[currentIndex])
+                ViewPager2Start.currentItem = ViewPager2Start.currentItem + 1
+                handler.postDelayed(this, delayInMillisImages)
+            }
+        }
+        handler.postDelayed(runnable, 5000)
+        binding.ViewPager2Start.currentItem = 1
+    }
+
+    private fun onInfinitePageChangeCallback(listSize: Int) {
+        binding.ViewPager2Start.currentItem = 1
+        val vp2 = binding.ViewPager2Start
+        vp2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+
+                if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    when (vp2.currentItem) {
+                        listSize - 1 -> vp2.setCurrentItem(1, false)
+                        0 -> vp2.setCurrentItem(listSize - 2, false)
+                    }
                 }
             }
-        }, 0, 3000)
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                if (position != 0 && position != listSize - 1) {
+                    vm.pagerCounter.value = position-1
+                    // Name adsTextList
+                    binding.TVTitleImages.text = adsTextList[position-1]
+                }
+            }
+        })
+    }
+
+    private fun FragmentStartPageBinding.createImagesTabPager() {
+        val dpValue10 = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18f,
+            resources.displayMetrics).toInt()
+        val dpValue4 = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f,
+            resources.displayMetrics).toInt()
+        val layoutParams = LinearLayout.LayoutParams(dpValue10,dpValue10)
+
+        for (element in adsList) {
+            val imageView = ImageView(context)
+            imageView.layoutParams = layoutParams
+            imageView.setPadding(dpValue4,dpValue4,dpValue4,dpValue4)
+            imageView.setImageResource(R.drawable.circle)
+            imageView.setColorFilter(ContextCompat.getColor(requireContext(),R.color.grey_200))
+            imageView.setOnClickListener {
+                val position = LLCounterImages.indexOfChild(imageView)
+                ViewPager2Start.currentItem = position+1
+            }
+            LLCounterImages.addView(imageView,layoutParams)
+
+            vm.pagerCounter.observe(viewLifecycleOwner) {
+                if (ViewPager2Start.currentItem-1 == LLCounterImages.indexOfChild(imageView))
+                    imageView.setColorFilter(ContextCompat.getColor(requireContext(),R.color.blue))
+                else
+                    imageView.setColorFilter(ContextCompat.getColor(requireContext(),R.color.grey_200))
+
+            }
+        }
     }
 
     private fun FragmentStartPageBinding.initButtons(){
-        TVBtnLoginStart.setOnClickListener {
-            TVBtnLoginStart.timerDoubleBtn()
+        TVBtnSkipStart.setOnClickListener {
+            TVBtnSkipStart.timerDoubleBtn()
             findNavController().navigate(R.id.action_navigation_start_page_to_navigation_login, null)
         }
 
-        TVBtnRegStart.setOnClickListener {
-            TVBtnRegStart.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_start_page_to_navigation_registration, null)
-        }
-
-        TVBtnLogInGuest.setOnClickListener {
-            // Todo DEV guest mode
-            TVBtnLogInGuest.timerDoubleBtn()
-
-            val sp = requireActivity().getPreferences(Context.MODE_PRIVATE)
-            sp.edit().putBoolean("guest_mode", true).apply()
-
-            Toast.makeText(requireContext(), "Вы вошли как гость", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_navigation_start_page_to_navigation_home, null)
+        TVBtnNext.setOnClickListener {
+            TVBtnNext.timerDoubleBtn()
+            CCImages.visibility = View.VISIBLE
+            ViewPager2Start.setCurrentItem(0,false)
+            binding.root.postDelayed({
+                LoaderImages.visibility = View.GONE
+            }, 200L)
+            LLStateZero.visibility = View.GONE
+            ImageKitty.visibility = View.GONE
+            autoSwitcher(ViewPager2Start)
         }
     }
 
-    private fun FragmentStartPageBinding.initButtonsServices(){
-        ImageBtnGoogle.setOnClickListener{
-            // todo add fun
-        }
-        ImageBtnVK.setOnClickListener{
-            // todo add fun
-        }
-        ImageBtnFacebook.setOnClickListener{
-            // todo add fun
-        }
-        ImageBtnTwitter.setOnClickListener{
-            // todo add fun
-        }
-        ImageBtnShikimori.setOnClickListener{
-            // todo add fun
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if (::timer.isInitialized)
-            timer.cancel()
-        if (::handler.isInitialized)
-            handler.removeCallbacksAndMessages(null)
-    }
-
-    fun View.timerDoubleBtn(time: Long = 2000) {
+    private fun View.timerDoubleBtn(time: Long = 2000) {
         isClickable = false
-        this@StartPageFragment.handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             isClickable = true
         }, time)
     }

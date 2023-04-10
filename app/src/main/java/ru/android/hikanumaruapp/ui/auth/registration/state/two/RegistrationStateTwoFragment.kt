@@ -5,6 +5,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -14,23 +15,32 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
+import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
+import ru.android.hikanumaruapp.api.api.token.AuthViewModel
+import ru.android.hikanumaruapp.api.init.ApiResponse
+import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationStateTwoBinding
-import ru.android.hikanumaruapp.ui.auth.registration.state.one.RegistrationViewModel
+import ru.android.hikanumaruapp.ui.auth.RulesNameAuth
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 
-
-class RegistrationStateTwoFragment() : Fragment() {
+@AndroidEntryPoint
+class RegistrationStateTwoFragment() : BaseFragment() {
 
     private var _binding: FragmentRegistrationStateTwoBinding? = null
     private val binding get() = _binding!!
     private val vm by viewModels<RegistrationStateTwoViewModel>()
 
-    lateinit var handler: Handler
+    private val vmAuth by viewModels<AuthViewModel>()
+    private val vmToken by activityViewModels<TokenViewModel>()
+    private val vmApi by viewModels<MainApiViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +91,11 @@ class RegistrationStateTwoFragment() : Fragment() {
                 ETLogin.setText("@")
         }
         ETLogin.doOnTextChanged { text, start, count, after ->
+            val text: String = ETLogin.text.toString().lowercase()
+            if (ETLogin.text.toString() != text) {
+                ETLogin.setText(text)
+                ETLogin.setSelection(text.length)
+            }
             ImageCheckLogin.apply {
                 visibility = View.VISIBLE
                 setImageResource(when (isValidLogin()) {
@@ -107,8 +122,8 @@ class RegistrationStateTwoFragment() : Fragment() {
 
     private fun FragmentRegistrationStateTwoBinding.initBtnNav() {
        TVNextStageReg.setOnClickListener {
-            TVNextStageReg.timerDoubleBtn()
-            btnNextStageView(RegistrationViewModel.LOADING_BUTTON_VIEW)
+            TVNextStageReg.timerDoubleButton()
+            btnNextStageView(RulesNameAuth.LOADING_BUTTON_VIEW)
 
             //TODO NOt Founded Now
             //vm.apiCheckLogin(
@@ -119,18 +134,18 @@ class RegistrationStateTwoFragment() : Fragment() {
                login = ETLogin.text.toString(),
                userName = ETNameReg.text.toString()
            )
-           vm.postCreateUser(requireActivity())
+           vm.postApiCreateUser(vmAuth)
         }
 
         TVBtnBackReg.setOnClickListener {
-            TVBtnBackReg.timerDoubleBtn()
+            TVBtnBackReg.timerDoubleButton()
             findNavController().navigateUp()
         }
     }
 
     private fun FragmentRegistrationStateTwoBinding.initBtnClear(){
         ImageBtnClearLogin.setOnClickListener{
-            ETLogin.setText("@")
+            ETLogin.text = null
         }
         ImageBtnClearName.setOnClickListener{
             ETNameReg.text = null
@@ -156,26 +171,35 @@ class RegistrationStateTwoFragment() : Fragment() {
 
     /////////////////////////////////////////////////////////////////
     private fun FragmentRegistrationStateTwoBinding.observeLogin(){
-        vm.loginResponse.observe(viewLifecycleOwner) { response ->
-            when(response.success){
-                true->{
-                    changeCheckImage(true)
-                    vm.postCreateUser(requireActivity())
-                    //btnNextStageView(RegistrationFragment.ACTIVE_BUTTON_VIEW)
-                    //findNavController().navigate(R.id.navigation_registration_two, null)
-                }
-                false->{
+        vmAuth.createUserResponse.observe(viewLifecycleOwner) {
+            when(it) {
+                is ApiResponse.Failure -> {
+                    Log.d("pizdaaa","falure - " + it.errorMessage)
                     // todo disable pop
                     //errorPop(response.body()!!.message,errorLayout,inflater)
                     changeCheckImage(false)
-                    btnNextStageView(RegistrationViewModel.DEFAULT_BUTTON_VIEW)
+                    btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
+                }
+                ApiResponse.Loading -> {
+                    Log.d("pizdaaa","Loading")
+                }
+                is ApiResponse.Success -> {
+                    vmToken.saveToken(it.data.token)
+                    vm.apiAuthGetUser(vmApi)
+                    Log.d("pizdaaa","token - " + it.data.token)
+                    Log.d("pizdaaa","refresh - " + it.data.refresh)
+
+                    changeCheckImage(true)
+                    //vm.postCreateUser(requireActivity())
+                    //btnNextStageView(RegistrationFragment.ACTIVE_BUTTON_VIEW)
+                    //findNavController().navigate(R.id.navigation_registration_two, null)
                 }
             }
         }
     }
 
     private fun FragmentRegistrationStateTwoBinding.observeError(){
-        vm.loginError.observe(viewLifecycleOwner, Observer { error ->
+        vm.error.observe(viewLifecycleOwner, Observer { error ->
             //val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
             //val bundle = Bundle()
 //
@@ -190,23 +214,23 @@ class RegistrationStateTwoFragment() : Fragment() {
     /////////////////////////////////////////////////////////////////
 
     private fun FragmentRegistrationStateTwoBinding.isValidLogin() =
-        ETLogin.text.length in RegistrationViewModel.LENGTH_LOGIN_RANGE
+        ETLogin.text.length in RulesNameAuth.LENGTH_LOGIN_RANGE
 
     private fun FragmentRegistrationStateTwoBinding.isValidName() =
-        ETLogin.text.length in RegistrationViewModel.LENGTH_NAME_RANGE
+        ETLogin.text.length in RulesNameAuth.LENGTH_NAME_RANGE
 
     @SuppressLint("ResourceAsColor")
     fun FragmentRegistrationStateTwoBinding.checkFillingEditTextToLogin(){
         when(isValidLogin() && isValidName()){
-            true -> btnNextStageView(RegistrationViewModel.ACTIVE_BUTTON_VIEW)
-            else -> btnNextStageView(RegistrationViewModel.DEFAULT_BUTTON_VIEW)
+            true -> btnNextStageView(RulesNameAuth.ACTIVE_BUTTON_VIEW)
+            else -> btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
         }
     }
 
     private fun FragmentRegistrationStateTwoBinding.btnNextStageView(state:Int){
         val context = requireContext()
         when (state){
-            RegistrationViewModel.DEFAULT_BUTTON_VIEW -> {
+            RulesNameAuth.DEFAULT_BUTTON_VIEW -> {
                 with(TVNextStageReg) {
                     text = getString(R.string.proceed)
                     setTextColor(ContextCompat.getColor(context, R.color.grey_light_alternative_4))
@@ -215,7 +239,7 @@ class RegistrationStateTwoFragment() : Fragment() {
                 DrawableCompat.setTint(TVNextStageReg.background, ContextCompat.getColor(context, R.color.grey_light_alternative_1))
                 ProgressAuth.visibility = View.GONE
             }
-            RegistrationViewModel.ACTIVE_BUTTON_VIEW -> {
+            RulesNameAuth.ACTIVE_BUTTON_VIEW -> {
                 with(TVNextStageReg) {
                     text = getString(R.string.proceed)
                     setTextColor(ContextCompat.getColor(context, R.color.white))
@@ -224,12 +248,12 @@ class RegistrationStateTwoFragment() : Fragment() {
                 DrawableCompat.setTint(TVNextStageReg.background, ContextCompat.getColor(context, R.color.grey_light_alternative_7))
                 ProgressAuth.visibility = View.GONE
             }
-            RegistrationViewModel.LOADING_BUTTON_VIEW -> {
+            RulesNameAuth.LOADING_BUTTON_VIEW -> {
                 TVNextStageReg.text = ""
                 ProgressAuth.isClickable = false
                 ProgressAuth.visibility = View.VISIBLE
             }
-            RegistrationViewModel.ERROR_BUTTON_VIEW -> {
+            RulesNameAuth.ERROR_BUTTON_VIEW -> {
                 TVNextStageReg.text = getString(R.string.proceed)
                 with(TVNextStageReg) {
                     setTextColor(ContextCompat.getColor(context, R.color.grey_light_alternative_4))
@@ -241,21 +265,11 @@ class RegistrationStateTwoFragment() : Fragment() {
         }
     }
 
-    fun View.timerDoubleBtn(time: Long = 2000) {
-        isClickable = false
-        this@RegistrationStateTwoFragment.handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            isClickable = true
-        }, time)
-    }
-
     fun navigateNav(navigation: Int, bundle: Bundle?) {
         findNavController().navigate(navigation, bundle)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (::handler.isInitialized)
-            handler.removeCallbacksAndMessages(null)
     }
 }

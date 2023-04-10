@@ -12,7 +12,8 @@
         android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="60dp">
 
             <TextView
                 android:id="@+id/TVTitle"
@@ -33,6 +34,7 @@
                 android:layout_marginTop="32dp"
                 tools:itemCount="2"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,16 +57,50 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="fill"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/rectangle_rounded_all_24"
+                    android:backgroundTint="@color/grey_100"
                     >
-                    <TextView
-                        style="@style/Text.Headline_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/ImageAccount"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_setting_icon_profile"
+                        android:layout_margin="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/TVTitleAccount"
+                        style="@style/Text.Headline_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings"
-                        android:textColor="@color/black" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Аккаунт"
+                        android:textColor="@color/light_grey_7"
+                        app:layout_constraintTop_toBottomOf="@id/ImageAccount"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/TVDescriptionAccount"
+                        />
+                    <TextView
+                        android:id="@+id/TVDescriptionAccount"
+                        style="@style/Text.Caption_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Полное редактирование"
+                        android:textColor="@color/light_grey_4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TVTitleAccount"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,16 +108,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/rectangle_rounded_all_24"
+                    android:backgroundTint="@color/grey_100"
                     >
-                    <TextView
-                        style="@style/Text.Headline_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/ImageNotivication"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_setting_icon_notification"
+                        android:layout_margin="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/TVTitleNotivication"
+                        style="@style/Text.Headline_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings"
-                        android:textColor="@color/black" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Уведомления"
+                        android:textColor="@color/light_grey_7"
+                        app:layout_constraintTop_toBottomOf="@id/ImageNotivication"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/TVDescriptionNotivication"
+                        />
+                    <TextView
+                        android:id="@+id/TVDescriptionNotivication"
+                        style="@style/Text.Caption_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Полное редактирование"
+                        android:textColor="@color/light_grey_4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TVTitleNotivication"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -102,16 +172,50 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="fill"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/rectangle_rounded_all_24"
+                    android:backgroundTint="@color/grey_100"
                     >
-                    <TextView
-                        style="@style/Text.Headline_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/ImageMedia"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_setting_icon_meida"
+                        android:layout_margin="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/TVTitleMedia"
+                        style="@style/Text.Headline_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings"
-                        android:textColor="@color/black" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Медиатека"
+                        android:textColor="@color/light_grey_7"
+                        app:layout_constraintTop_toBottomOf="@id/ImageMedia"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/TVDescriptionMedia"
+                        />
+                    <TextView
+                        android:id="@+id/TVDescriptionMedia"
+                        style="@style/Text.Caption_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Полное редактирование"
+                        android:textColor="@color/light_grey_4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TVTitleMedia"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -119,16 +223,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/rectangle_rounded_all_24"
+                    android:backgroundTint="@color/grey_100"
                     >
-                    <TextView
-                        style="@style/Text.Headline_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/ImageSource"
+                        android:layout_width="wrap_content"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_setting_icon_source"
+                        android:layout_margin="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/TVTitleSource"
+                        style="@style/Text.Headline_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings"
-                        android:textColor="@color/black" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Источник"
+                        android:textColor="@color/light_grey_7"
+                        app:layout_constraintTop_toBottomOf="@id/ImageSource"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/TVDescriptionSource"
+                        />
+                    <TextView
+                        android:id="@+id/TVDescriptionSource"
+                        style="@style/Text.Caption_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Полное редактирование"
+                        android:textColor="@color/light_grey_4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TVTitleSource"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -149,16 +287,50 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="fill"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/rectangle_rounded_all_24"
+                    android:backgroundTint="@color/grey_100"
                     >
-                    <TextView
-                        style="@style/Text.Headline_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/ImageTheme"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_setting_icon_theme"
+                        android:layout_margin="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/TVTitleTheme"
+                        style="@style/Text.Headline_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings"
-                        android:textColor="@color/black" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Стили и темы"
+                        android:textColor="@color/light_grey_7"
+                        app:layout_constraintTop_toBottomOf="@id/ImageTheme"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/TVDescriptionTheme"
+                        />
+                    <TextView
+                        android:id="@+id/TVDescriptionTheme"
+                        style="@style/Text.Caption_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Полное редактирование"
+                        android:textColor="@color/light_grey_4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TVTitleTheme"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,16 +338,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/rectangle_rounded_all_24"
+                    android:backgroundTint="@color/grey_100"
                     >
-                    <TextView
-                        style="@style/Text.Headline_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/ImageSupport"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_setting_icon_support"
+                        android:layout_margin="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/TVTitleSupport"
+                        style="@style/Text.Headline_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings"
-                        android:textColor="@color/black" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Поддержка"
+                        android:textColor="@color/light_grey_7"
+                        app:layout_constraintTop_toBottomOf="@id/ImageSupport"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/TVDescriptionSupport"
+                        />
+                    <TextView
+                        android:id="@+id/TVDescriptionSupport"
+                        style="@style/Text.Caption_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Полное редактирование"
+                        android:textColor="@color/light_grey_4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TVTitleSupport"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -196,16 +402,50 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="fill"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/rectangle_rounded_all_24"
+                    android:backgroundTint="@color/grey_100"
                     >
-                    <TextView
-                        style="@style/Text.Headline_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/ImageStatistics"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_setting_icon_statistic"
+                        android:layout_margin="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/TVTitleStatistics"
+                        style="@style/Text.Headline_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings"
-                        android:textColor="@color/black" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Статистика"
+                        android:textColor="@color/light_grey_7"
+                        app:layout_constraintTop_toBottomOf="@id/ImageStatistics"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/TVDescriptionStatistics"
+                        />
+                    <TextView
+                        android:id="@+id/TVDescriptionStatistics"
+                        style="@style/Text.Caption_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Полное редактирование"
+                        android:textColor="@color/light_grey_4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TVTitleStatistics"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -213,16 +453,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/rectangle_rounded_all_24"
+                    android:backgroundTint="@color/grey_100"
                     >
-                    <TextView
-                        style="@style/Text.Headline_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/ImageAbout"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_setting_icon_profile"
+                        android:layout_margin="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/TVTitleAbout"
+                        style="@style/Text.Headline_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings"
-                        android:textColor="@color/black" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="О нас"
+                        android:textColor="@color/light_grey_7"
+                        app:layout_constraintTop_toBottomOf="@id/ImageAbout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/TVDescriptionAbout"
+                        />
+                    <TextView
+                        android:id="@+id/TVDescriptionAbout"
+                        style="@style/Text.Caption_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Полное редактирование"
+                        android:textColor="@color/light_grey_4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TVTitleAbout"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 

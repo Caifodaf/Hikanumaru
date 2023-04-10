@@ -15,8 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.size.Scale
-import coil.transform.RoundedCornersTransformation
-import com.commit451.coiltransformations.BlurTransformation
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.R
@@ -85,7 +83,7 @@ class MangaPageFragment : Fragment(),UIUtils {
         vm.isBookmark.observe(viewLifecycleOwner, Observer { it ->
             when(it){
                 // Todo rework
-                true -> binding.ImageBtnBookmark.imageTintList = resources.getColorStateList(R.color.red)
+                true -> binding.ImageBtnBookmark.imageTintList = resources.getColorStateList(R.color.red_old)
                 false -> binding.ImageBtnBookmark.imageTintList = resources.getColorStateList(R.color.grey_light_alternative_2)
             }
         })
@@ -342,11 +340,11 @@ class MangaPageFragment : Fragment(),UIUtils {
             //todo add fun
         }
         binding.TVBtnRead.setOnClickListener(){
-            timerDoubleBtn(binding.TVBtnRead)
+            binding.TVBtnRead.timerDoubleButton()
             //viewModel.openReaderPageFastRead(binding.ivBtnReadMangaPage)
         }
         binding.ImageBtnOpenMoreInfo.setOnClickListener(){
-            timerDoubleBtn(binding.ImageBtnOpenMoreInfo)
+            binding.ImageBtnOpenMoreInfo.timerDoubleButton()
             lifecycleScope.launchWhenResumed {
                 val bundle = Bundle()
                 val str = Gson().toJson(listPage)

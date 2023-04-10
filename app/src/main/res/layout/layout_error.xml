@@ -32,7 +32,7 @@
         android:fontFamily="@font/font_medium"
         android:maxLines="3"
         android:text="@string/text_error"
-        android:textColor="@color/red"
+        android:textColor="@color/red_old"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

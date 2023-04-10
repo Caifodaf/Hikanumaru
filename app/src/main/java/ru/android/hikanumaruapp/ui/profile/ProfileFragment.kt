@@ -66,11 +66,12 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
     private fun observeList() {
         vm.user.observe(viewLifecycleOwner, Observer { user ->
             binding.tvLoginName.text = "@"+user.login
-            binding.tvNameUserTop.text = user.userName
-            if (user.imageCover != "null" ) // todo add default cover
-                binding.ivSelectImageAvatar.load(user.imageAvatar)
-            if (user.imageCover != "null" ) // todo add default cover
-                binding.ivBackUserProfile.load(user.imageCover)
+            //todo edit
+            //binding.tvNameUserTop.text = useruserName
+            //if (user.imageCover != "null" ) // todo add default cover
+            //    binding.ivSelectImageAvatar.load(user.imageAvatar)
+            //if (user.imageCover != "null" ) // todo add default cover
+            //    binding.ivBackUserProfile.load(user.imageCover)
             binding.tvRoleUserTop // todo add other roles
         })
 

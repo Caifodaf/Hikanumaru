@@ -1,10 +1,8 @@
-package ru.android.hikanumaruapp.api
+package ru.android.hikanumaruapp.api.old
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
-import ru.android.hikanumaruapp.api.init.RetrofitClient
 import ru.android.hikanumaruapp.api.models.*
 import javax.inject.Inject
 
@@ -22,11 +20,11 @@ class Repository @Inject constructor(){
         }
     }
 
-    suspend fun getUserMe(): Flow<Response<UserRegResponse>> {
-        return flow {
-            emit(RetrofitClient.api.getUserMe())
-        }
-    }
+    //suspend fun getUserMe(): Flow<Response<UserRegResponse>> {
+    //    return flow {
+    //        emit(RetrofitClient.api.getUserMe())
+    //    }
+    //}
 
     suspend fun getCheckEmail(post: String): Flow<Response<CodeMessageResponse>> {
         return flow {
@@ -40,11 +38,11 @@ class Repository @Inject constructor(){
         }
     }
 
-    suspend fun postCreateUser(post: UserRegPost): Flow<Response<TokenJWT>> {
-        return flow {
-            emit(RetrofitClient.api.postCreateUser(post))
-        }
-    }
+    //suspend fun postCreateUser(post: UserRegPost): Flow<Response<TokenJWT>> {
+    //    return flow {
+    //        emit(RetrofitClient.api.postCreateUser(post))
+    //    }
+    //}
 
 
 }

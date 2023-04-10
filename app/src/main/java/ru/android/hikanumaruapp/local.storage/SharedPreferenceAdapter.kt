@@ -46,21 +46,21 @@ interface SharedPreferenceAdapter {
         //spEditUser.putString("roles", response.body()!!.roles.toString())
         //spEditUser.putString("createdAt",response.body()!!.createdAt)
 
-       user.id = response.body()!!.id
-       //user.type = response.body()!!.type.toString()
-       user.mail = response.body()!!.email
-       user.login = response.body()!!.login
-       user.userName = response.body()!!.username
-       //user.imageCover = response.body()?.imageCover.toString()
-       //user.imageCoverUpdatedAt = response.body()?.imageCoverUpdatedAt.toString()
-       //user.imageAvatar = response.body()?.imageAvatar.toString()
-       //user.imageAvatarUpdatedAt = response.body()?.imageAvatarUpdatedAt.toString()
-       //user.statusCheckMail = response.body()!!.statusCheckMail
-       user.sex = "nan"
-       user.dateBirth = "nan"
-       user.roles = response.body()!!.roles.toString()
-       user.createdAt = response.body()!!.createdAt
-       user.modeGuest = false
+       //user.id = response.body()!!.id
+       ////user.type = response.body()!!.type.toString()
+       //user.mail = response.body()!!.email
+       //user.login = response.body()!!.login
+       //user.userName = response.body()!!.username
+       ////user.imageCover = response.body()?.imageCover.toString()
+       ////user.imageCoverUpdatedAt = response.body()?.imageCoverUpdatedAt.toString()
+       ////user.imageAvatar = response.body()?.imageAvatar.toString()
+       ////user.imageAvatarUpdatedAt = response.body()?.imageAvatarUpdatedAt.toString()
+       ////user.statusCheckMail = response.body()!!.statusCheckMail
+       //user.sex = "nan"
+       //user.dateBirth = "nan"
+       //user.roles = response.body()!!.roles.toString()
+       //user.createdAt = response.body()!!.createdAt
+       //user.modeGuest = false
 
        val serializedUser = Gson().toJson(user)
        shUser.edit().putString("user_info", serializedUser).apply()
@@ -74,21 +74,21 @@ interface SharedPreferenceAdapter {
         var shUser = requireActivity.getSharedPreferences("user", Context.MODE_PRIVATE)
         shUser.edit().clear().apply()
 
-        user.id = "1233452"
-        user.type = "читатель"
-        user.mail = "xample@mail.com"
-        user.login = "caifodaf"
-        user.userName = "Caifodaf__"
-        user.imageCover = "null"
-        user.imageCoverUpdatedAt = "null"
-        user.imageAvatar = "null"
-        user.imageAvatarUpdatedAt = "null"
-        user.statusCheckMail = "null"
-        user.sex = "nan"
-        user.dateBirth = "nan"
-        user.roles = "читатель"
-        user.createdAt = "null"
-        user.modeGuest = false
+        //user.id = "1233452"
+        //user.type = "читатель"
+        //user.mail = "xample@mail.com"
+        //user.login = "caifodaf"
+        //user.userName = "Caifodaf__"
+        //user.imageCover = "null"
+        //user.imageCoverUpdatedAt = "null"
+        //user.imageAvatar = "null"
+        //user.imageAvatarUpdatedAt = "null"
+        //user.statusCheckMail = "null"
+        //user.sex = "nan"
+        //user.dateBirth = "nan"
+        //user.roles = "читатель"
+        //user.createdAt = "null"
+        //user.modeGuest = false
 
         val serializedUser = Gson().toJson(user)
         shUser.edit().putString("user_info", serializedUser).apply()

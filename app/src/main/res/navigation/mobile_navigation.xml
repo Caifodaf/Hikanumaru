@@ -43,11 +43,23 @@
             android:id="@+id/action_navigation_settings_to_navigation_storage_settings"
             app:destination="@id/navigation_storage_settings" />
         <action
-            android:id="@+id/action_navigation_settings_to_navigation_application_settings"
-            app:destination="@id/navigation_application_settings" />
-        <action
             android:id="@+id/action_navigation_settings_to_navigation_notification_settings"
             app:destination="@id/navigation_notification_settings" />
+        <action
+            android:id="@+id/action_navigation_settings_to_sourceSettingsFragment"
+            app:destination="@id/sourceSettingsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_themeSettingsFragment"
+            app:destination="@id/themeSettingsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_supportSettingsFragment"
+            app:destination="@id/supportSettingsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_statsSettingsFragment"
+            app:destination="@id/statsSettingsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_aboutSettingsFragment"
+            app:destination="@id/aboutSettingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_news"
@@ -86,6 +98,9 @@
         <action
             android:id="@+id/action_navigation_hello_page_to_navigation_settings"
             app:destination="@id/navigation_settings" />
+        <action
+            android:id="@+id/action_navigation_hello_page_to_navigation_login"
+            app:destination="@id/navigation_login" />
     </fragment>
     <fragment
         android:id="@+id/navigation_mangapage"
@@ -117,11 +132,6 @@
         android:label="@string/title_news_page"
         tools:layout="@layout/fragment_news_page" />
     <fragment
-        android:id="@+id/navigation_application_settings"
-        android:name="ru.android.hikanumaruapp.ui.settings.application.ApplicationSettingsFragment"
-        android:label="@string/title_application_settings"
-        tools:layout="@layout/fragment_application_settings" />
-    <fragment
         android:id="@+id/navigation_notification_settings"
         android:name="ru.android.hikanumaruapp.ui.settings.notification.NotificationSettingsFragment"
         android:label="@string/title_notification_settings"
@@ -152,6 +162,9 @@
         <action
             android:id="@+id/action_navigation_login_to_navigation_reset_password_stage_three"
             app:destination="@id/navigation_reset_password_stage_three" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_registration"
+            app:destination="@id/navigation_registration" />
     </fragment>
     <fragment
         android:id="@+id/navigation_start_page"
@@ -162,11 +175,8 @@
             android:id="@+id/action_navigation_start_page_to_navigation_login"
             app:destination="@id/navigation_login" />
         <action
-            android:id="@+id/action_navigation_start_page_to_navigation_registration"
-            app:destination="@id/navigation_registration" />
-        <action
-            android:id="@+id/action_navigation_start_page_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            android:id="@+id/action_navigation_start_page_to_navigation_login2"
+            app:destination="@id/navigation_login" />
     </fragment>
     <fragment
         android:id="@+id/navigation_registration"
@@ -222,4 +232,29 @@
         android:name="ru.android.hikanumaruapp.ui.reader.ReaderFragment"
         android:label="@string/navigation_reader_fragment"
         tools:layout="@layout/fragment_reader" />
+    <fragment
+        android:id="@+id/aboutSettingsFragment"
+        android:name="ru.android.hikanumaruapp.ui.settings.about.AboutSettingsFragment"
+        android:label="about_settings_fragment"
+        tools:layout="@layout/about_settings_fragment" />
+    <fragment
+        android:id="@+id/sourceSettingsFragment"
+        android:name="ru.android.hikanumaruapp.ui.settings.source.SourceSettingsFragment"
+        android:label="source_settings_fragment"
+        tools:layout="@layout/source_settings_fragment" />
+    <fragment
+        android:id="@+id/themeSettingsFragment"
+        android:name="ru.android.hikanumaruapp.ui.settings.theme.ThemeSettingsFragment"
+        android:label="theme_settings_fragment"
+        tools:layout="@layout/theme_settings_fragment" />
+    <fragment
+        android:id="@+id/supportSettingsFragment"
+        android:name="ru.android.hikanumaruapp.ui.settings.supprot.SupportSettingsFragment"
+        android:label="support_settings_fragment"
+        tools:layout="@layout/support_settings_fragment" />
+    <fragment
+        android:id="@+id/statsSettingsFragment"
+        android:name="ru.android.hikanumaruapp.ui.settings.stats.StatsSettingsFragment"
+        android:label="stats_settings_fragment"
+        tools:layout="@layout/stats_settings_fragment" />
 </navigation>

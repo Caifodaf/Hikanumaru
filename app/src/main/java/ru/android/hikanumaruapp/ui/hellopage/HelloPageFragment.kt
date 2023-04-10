@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentHelloPageBinding
@@ -47,6 +45,7 @@ class HelloPageFragment : Fragment() {
     private fun routeToAppropriatePage(user: Int) {
         when(user) {
             HelloPageViewModel.START -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_start_page)
+            HelloPageViewModel.LOGIN -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_login)
             HelloPageViewModel.MAIN -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_home)
             else -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_start_page)
         }

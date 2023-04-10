@@ -20,8 +20,12 @@
     <string name="welcome_start_page">Добро пожаловать\nв Hikanumaru!</string>
     <string name="login_start_page">Вход</string>
     <string name="reg_start_page">Регистрация</string>
-    <string name="email_or_login">Почта или логин</string>
+    <string name="email_or_login_hint_login">Почта / Логин</string>
+    <string name="login_hint_login">Логин</string>
     <string name="password_login">Пароль</string>
+    <string name="please_edit_login_login">Пожалуйста введите логин</string>
+    <string name="please_edit_password_login">Пожалуйста введите пароль</string>
+    <string name="please_edit_email_password">Пожалуйста введите почту</string>
     <string name="button_back_login">Назад</string>
     <string name="button_login">Войти</string>
     <string name="button_registration_reg">Зарегистрироваться</string>
@@ -124,7 +128,7 @@
     <string name="more_info_rating_manga_page">Тогда вы можете\nпорекомендовать его\nдругим и не забудьте\nпоставить оценку.</string>
     <string name="skip">Пропустить</string>
     <string name="contines">Продолжить</string>
-    <string name="start_page_welcome">Добро пожаловать в Hikanumaru!</string>
+    <string name="start_page_welcome">Весь мир манги\nи аниме - в одном приложении</string>
     <string name="simple_reg_start_page">Простая регистрация. Полный доступ.</string>
     <string name="new_main_page">Новое</string>
     <string name="error_load">Ошибка загрузки</string>
@@ -195,7 +199,8 @@
     <string name="title_login">LoginFragmnet</string>
     <string name="title_registration">RegistrationFragment</string>
     <string name="your_email">Ваша почта</string>
-    <string name="mail_login_text">Почта/Логин</string>
+    <string name="login_mail_login_hint">Введите почту/логин</string>
+    <string name="login_login_hint">Введите логин</string>
     <string name="forgot_your_password">Восстановить пароль</string>
     <string name="log_in">Войти</string>
     <string name="login_text">Логин</string>
@@ -237,7 +242,10 @@
     <string name="night_shift_setting_reader_text">Night shift</string>
     <string name="night_shift_description_setting_reader_text">Технология изменения цвета белого, для более комфортного чтения, особенно в ночное время</string>
     <string name="navigation_reader_fragment">ReaderFragment</string>
-    <string name="settings">Насторйки</string>
+    <string name="settings">Настройки</string>
     <string name="UserRequest">Нажимая кнопку «продолжить» \nвы принимаете условия пользовательского соглашения</string>
+    <string name="login_password_hint">Введите пароль</string>
+    <string name="skip_start_page_text">Пропустить</string>
+    <string name="next_start_page_text">Продолжить</string>
 
 </resources>

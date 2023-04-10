@@ -40,12 +40,12 @@
 
 
     // Default
-    <color name="light_purple">#EDEDF9</color>
+    <color name="light_purple_old">#EDEDF9</color>
     <color name="light_purple_text">#9F9FD5</color>
-    <color name="light_blue">#3DA4FF</color>
+    <color name="light_blue_old">#3DA4FF</color>
     <color name="white_blue">#ECF5FF</color>
     <color name="light_red">#FF544A</color>
-    <color name="red">#FF3B30</color>
+    <color name="red_old">#FF3B30</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey_news_hint">#DEDEDE</color>
@@ -60,7 +60,7 @@
     <color name="black_news_text">#5A5A5A</color>
     <color name="fon_profile">#F6F6FC</color>
     <color name="line_chapter_item">#B9B9EF</color>
-    <color name="green">#34C759</color>
+    <color name="green_old">#34C759</color>
 
     <color name="black_back">#24242A</color>
     <color name="black_back_text">#5F5F6E</color>
@@ -69,7 +69,6 @@
     <color name="grey_text">#8D8D8D</color>
     <color name="grey_text_40">#B0B1B8</color>
     <color name="grey_text_200">#F4F4F5</color>
-    <color name="grey_500">#ADADBD</color>
     <color name="light_grey_5">#AEAEB2</color>
 
     <color name="grey_light_alternative">#D1D1D1</color>
@@ -81,8 +80,9 @@
     <color name="grey_light_alternative_5">#595959</color>
     <color name="grey_light_alternative_6">#2D2D2D</color>
     <color name="grey_light_alternative_7">#0E0E0E</color>
-
     <color name="blue_light_alternative_0">#F0F7FF</color>
+
+
 
     <!--    <color name="grey_light_alternative_4">#B2B2B2</color>-->
 
@@ -95,11 +95,34 @@
 
     <color name="transparent_dark">#98000000</color>
     <color name="transparent_dark_back">#9824242A</color>
-    <color name="yellow">#FFCC00</color>
-    <color name="pink">#FF2D55</color>
+    <color name="light_grey_1">#F5F5F5</color>
     <color name="light_grey_3">#D1D1D6</color>
     <color name="light_grey_4">#B2B2B2</color>
     <color name="light_grey_7">#0E0E0E</color>
+
+
+
+
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_900">#212121</color>
+    <color name="text_black">#1D1D1D</color>
+
+    <color name="red">#FF3B30</color>
+    <color name="light_purple">#AF52DE</color>
+    <color name="purple">#007AFF</color>
+    <color name="light_blue">#5AC8FA</color>
+    <color name="orange">#FF9500</color>
+    <color name="yellow">#FFCC00</color>
+    <color name="green">#0CD318</color>
+    <color name="pink">#FF2D55</color>
 
 
 </resources>
