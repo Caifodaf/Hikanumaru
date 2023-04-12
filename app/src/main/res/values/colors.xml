@@ -69,7 +69,7 @@
     <color name="grey_text">#8D8D8D</color>
     <color name="grey_text_40">#B0B1B8</color>
     <color name="grey_text_200">#F4F4F5</color>
-    <color name="light_grey_5">#AEAEB2</color>
+
 
     <color name="grey_light_alternative">#D1D1D1</color>
     <color name="grey_light_alternative_0">#FAFAFA</color>
@@ -98,6 +98,8 @@
     <color name="light_grey_1">#F5F5F5</color>
     <color name="light_grey_3">#D1D1D6</color>
     <color name="light_grey_4">#B2B2B2</color>
+    <color name="light_grey_5">#AEAEB2</color>
+    <color name="light_grey_6">#2D2D2D</color>
     <color name="light_grey_7">#0E0E0E</color>
 
 

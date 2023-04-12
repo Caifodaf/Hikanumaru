@@ -3,10 +3,9 @@ package ru.android.hikanumaruapp.ui.auth.registration.state.one
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +15,18 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.api.api.token.AuthViewModel
+import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationBinding
 import ru.android.hikanumaruapp.ui.auth.RulesNameAuth
+import ru.android.hikanumaruapp.ui.auth.registration.RegistrationViewModel
+import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
 
 
 @AndroidEntryPoint
@@ -32,6 +35,8 @@ class RegistrationFragment : BaseFragment() {
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
     private val vm by viewModels<RegistrationViewModel>()
+
+    private val vmAuth by viewModels<AuthViewModel>()
 
     private var isShowPass: Boolean = false
 
@@ -46,9 +51,6 @@ class RegistrationFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // TODO DEBUG
-        binding.TVNextStageReg.isClickable = true
-
         binding.apply {
             checkFillingEditTextToLogin()
 
@@ -60,7 +62,6 @@ class RegistrationFragment : BaseFragment() {
             edPassAgainListener()
 
             observeEmail()
-            observeError()
         }
     }
 
@@ -123,29 +124,15 @@ class RegistrationFragment : BaseFragment() {
     }
 
     private fun FragmentRegistrationBinding.initBtnNav() {
-        val htmlString = "Нажимая кнопку «продолжить» \n" + "вы принимаете условия <font color=\"#007AFF\">пользовательского соглашения</font>"
+        val htmlString = "Нажимая кнопку «продолжить» \n" +
+                "вы принимаете условия <font color=\"#007AFF\">пользовательского соглашения</font>"
         val sequence: CharSequence =
             HtmlCompat.fromHtml(htmlString, HtmlCompat.FROM_HTML_MODE_LEGACY)
         TVUserRequest.text = sequence.toString()
 
-
-
         TVNextStageReg.setOnClickListener {
             TVNextStageReg.timerDoubleButton()
-            btnNextStageView(RulesNameAuth.LOADING_BUTTON_VIEW)
-            //TODO NOt Founded Now
-            //vm.postCheckEmailStateOne(
-            //    email = ETEmail.text.toString(),
-            //    pass =  ETPassReg.text.toString()
-            //)
-            vm.setDataStageOne(
-                email = ETEmail.text.toString(),
-                pass =  ETPassReg.text.toString()
-            )
-            val bundle = Bundle()
-            bundle.putString("email",ETEmail.text.toString())
-            bundle.putString("pass",ETPassReg.text.toString())
-            findNavController().navigate(R.id.action_navigation_registration_to_navigation_registration_two,bundle)
+            vm.getCheckEmailStateOne(vmAuth,email = ETEmail.text.toString())
         }
 
         TVBtnBackReg.setOnClickListener {
@@ -174,28 +161,45 @@ class RegistrationFragment : BaseFragment() {
     }
 /////////////////////////////////////////////////////////////////
     private fun FragmentRegistrationBinding.observeEmail() {
-        vm.emailResponse.observe(viewLifecycleOwner) { response ->
-            when {
-                response.success -> {
-                    changeCheckImage(true)
-                    btnNextStageView(RulesNameAuth.ACTIVE_BUTTON_VIEW)
-                    findNavController().navigate(R.id.action_navigation_registration_to_navigation_registration_two)
+        vmAuth.checkEmailResponse.observe(viewLifecycleOwner) {
+            val pop = PopAlertDialog(requireActivity(),lifecycleScope)
+            when(it) {
+                is ApiResponse.Failure -> {
+                    Log.d("ApiAuth","checkEmailResponse falure - " + it.errorMessage)
+                    when(it.code){
+                        502 -> pop.setDataDialog("Ошибка сервера")
+                        else -> pop.setDataDialog("Неверная почта")
+                    }
                 }
-                else -> {
-                    // todo disable pop
-                    //errorPop(response.body()!!.message,errorLayout,inflater)
-                    changeCheckImage(false)
-                    btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
+                ApiResponse.Loading -> {
+                    Log.d("ApiAuth","checkEmailResponse Loading")
+                    btnNextStageView(RulesNameAuth.LOADING_BUTTON_VIEW)
+                }
+                is ApiResponse.Success -> {
+                    when(it.data.available){
+                        true-> {
+                            changeCheckImage(true)
+                            btnNextStageView(RulesNameAuth.ACTIVE_BUTTON_VIEW)
+                            vm.apply {
+                                vm.setDataStageOne(
+                                    email = ETEmail.text.toString(),
+                                    pass = ETPassReg.text.toString()
+                                )
+                            }
+                            findNavController().navigate(R.id.action_navigation_registration_to_navigation_registration_two)
+                        }
+                        false->{
+                            pop.setDataDialog("Неверная почта или уже используятся")
+                            changeCheckImage(false)
+                            btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
+                        }
+                    }
                 }
             }
         }
     }
 
-    private fun FragmentRegistrationBinding.observeError(){
-        vm.emailError.observe(viewLifecycleOwner) { emailError ->
-                //todo add error
-        }
-    }
+
 ////////////////////////////////////////////////////////
     private fun FragmentRegistrationBinding.changeCheckImage(check:Boolean,optional:Int=0) {
         ImageCheckMail.visibility = View.VISIBLE
@@ -249,6 +253,7 @@ class RegistrationFragment : BaseFragment() {
             }
             RulesNameAuth.LOADING_BUTTON_VIEW -> {
                 TVNextStageReg.text = ""
+                TVNextStageReg.isClickable = false
                 ProgressAuth.isClickable = false
                 ProgressAuth.visibility = View.VISIBLE
             }

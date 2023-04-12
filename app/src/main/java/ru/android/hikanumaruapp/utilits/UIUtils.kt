@@ -16,6 +16,7 @@ import ru.android.hikanumaruapp.R
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 interface UIUtils {
@@ -26,6 +27,19 @@ interface UIUtils {
   handler.postDelayed({
    isClickable = true
   }, time)
+ }
+
+ fun getDaysPassed(dateString: String): Int {
+  //"2022-07-05T16:48:35+00:00"
+  val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+  val date = sdf.parse(dateString)
+  if (date != null) {
+   val currentTime = System.currentTimeMillis()
+   val elapsedTime = currentTime - date.time
+   val daysPassed = TimeUnit.MILLISECONDS.toDays(elapsedTime)
+   return daysPassed.toInt()
+  }
+  return -1 // Return -1 if there's an error parsing the date
  }
 
 fun getCurrentDataTime(){

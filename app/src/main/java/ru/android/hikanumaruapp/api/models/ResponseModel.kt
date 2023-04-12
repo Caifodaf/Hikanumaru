@@ -24,3 +24,7 @@ data class TokenJWT(
 //    @Json(name = "success")var success:Boolean? = false,
 //    @Json(name = "message")var message:String? = "",
 )
+
+data class CheckAvailabilityResponse(
+    @Json(name = "available")var available:Boolean = false,
+)

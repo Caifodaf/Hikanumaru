@@ -27,6 +27,7 @@ class SettingsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,8 +35,6 @@ class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressed()
-        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
-
         binding.apply {
             btnInit()
         }
@@ -43,49 +42,36 @@ class SettingsFragment : BaseFragment() {
 
     private fun FragmentSettingsBinding.btnInit(){
         CCAccount.setOnClickListener {
-            CCAccount.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_settings_to_navigation_profile_settings, null)
+            CCAccount.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_settings_to_navigation_profile_settings)
         }
         CCNotivication.setOnClickListener {
-            CCNotivication.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_settings_to_navigation_notification_settings, null)
+            CCNotivication.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_settings_to_navigation_notification_settings)
         }
         CCMedia.setOnClickListener {
-            CCMedia.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_settings_to_navigation_storage_settings, null)
+            CCMedia.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_settings_to_navigation_storage_settings)
         }
         CCSource.setOnClickListener {
-            CCSource.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_settings_to_sourceSettingsFragment, null)
+            CCSource.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_settings_to_sourceSettingsFragment)
         }
         CCTheme.setOnClickListener {
-            CCTheme.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_settings_to_themeSettingsFragment, null)
+            CCTheme.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_settings_to_themeSettingsFragment)
         }
         CCSupport.setOnClickListener {
-            CCSupport.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_settings_to_supportSettingsFragment, null)
+            CCSupport.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_settings_to_supportSettingsFragment)
         }
         CCStatistics.setOnClickListener {
-            CCStatistics.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_settings_to_statsSettingsFragment, null)
+            CCStatistics.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_settings_to_statsSettingsFragment,)
         }
         CCAbout.setOnClickListener {
-            CCAbout.timerDoubleBtn()
-            findNavController().navigate(R.id.action_navigation_settings_to_aboutSettingsFragment, null)
+            CCAbout.timerDoubleButton()
+            findNavController().navigate(R.id.action_navigation_settings_to_aboutSettingsFragment)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun View.timerDoubleBtn(time: Long = 2000) {
-        isClickable = false
-        Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            isClickable = true
-        }, time)
     }
 }

@@ -3,8 +3,6 @@ package ru.android.hikanumaruapp.ui.auth.registration.state.two
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +12,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
@@ -27,20 +25,27 @@ import ru.android.hikanumaruapp.api.api.token.AuthViewModel
 import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationStateTwoBinding
+import ru.android.hikanumaruapp.local.user.UserDataViewModel
 import ru.android.hikanumaruapp.ui.auth.RulesNameAuth
-import ru.android.hikanumaruapp.utilits.navigation.Events
-import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.ui.auth.registration.RegistrationViewModel
+import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
 
 @AndroidEntryPoint
 class RegistrationStateTwoFragment() : BaseFragment() {
 
+    companion object{
+        const val BUNDLE_ERROR_CODE = "error_reg"
+    }
+
     private var _binding: FragmentRegistrationStateTwoBinding? = null
     private val binding get() = _binding!!
-    private val vm by viewModels<RegistrationStateTwoViewModel>()
+    private val vm by viewModels<RegistrationViewModel>()
 
     private val vmAuth by viewModels<AuthViewModel>()
     private val vmToken by activityViewModels<TokenViewModel>()
     private val vmApi by viewModels<MainApiViewModel>()
+
+    private val vmUser by viewModels<UserDataViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,19 +56,8 @@ class RegistrationStateTwoFragment() : BaseFragment() {
         return binding.root
     }
 
-    private val navigationEventsObserver = Events.EventObserver { event ->
-        when (event) {
-            is NavigationFragmentinViewModel.NavigationFrag -> navigateNav(event.navigation, event.bundle)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        argumentsLoader()
-
-        // TODO DEBUG
-        binding.TVNextStageReg.isClickable = true
-
         binding.apply {
             checkFillingEditTextToLogin()
 
@@ -73,16 +67,8 @@ class RegistrationStateTwoFragment() : BaseFragment() {
             edLoginListener()
             edNameListener()
 
-            observeError()
             observeLogin()
         }
-    }
-
-    private fun argumentsLoader(){
-        vm.setDataStageOne(
-            email = requireArguments().getString("email").toString(),
-            pass = requireArguments().getString("pass").toString()
-        )
     }
 
     private fun FragmentRegistrationStateTwoBinding.edLoginListener() {
@@ -123,18 +109,7 @@ class RegistrationStateTwoFragment() : BaseFragment() {
     private fun FragmentRegistrationStateTwoBinding.initBtnNav() {
        TVNextStageReg.setOnClickListener {
             TVNextStageReg.timerDoubleButton()
-            btnNextStageView(RulesNameAuth.LOADING_BUTTON_VIEW)
-
-            //TODO NOt Founded Now
-            //vm.apiCheckLogin(
-            //    login = ETLogin.text.toString(),
-            //    userName = ETNameReg.text.toString()
-            //)
-           vm.setDataStageTwo(
-               login = ETLogin.text.toString(),
-               userName = ETNameReg.text.toString()
-           )
-           vm.postApiCreateUser(vmAuth)
+            vm.getCheckLoginStateTwo(vmAuth, login = ETLogin.text.toString())
         }
 
         TVBtnBackReg.setOnClickListener {
@@ -170,47 +145,108 @@ class RegistrationStateTwoFragment() : BaseFragment() {
     }
 
     /////////////////////////////////////////////////////////////////
-    private fun FragmentRegistrationStateTwoBinding.observeLogin(){
-        vmAuth.createUserResponse.observe(viewLifecycleOwner) {
-            when(it) {
+    private fun FragmentRegistrationStateTwoBinding.observeLogin() {
+        vmAuth.checkLoginResponse.observe(viewLifecycleOwner) {
+            val pop = PopAlertDialog(requireActivity(), lifecycleScope)
+            when (it) {
                 is ApiResponse.Failure -> {
-                    Log.d("pizdaaa","falure - " + it.errorMessage)
-                    // todo disable pop
-                    //errorPop(response.body()!!.message,errorLayout,inflater)
-                    changeCheckImage(false)
-                    btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
+                    Log.d("ApiAuth", "checkLoginResponse falure - " + it.errorMessage)
+                    when (it.code) {
+                        502 -> pop.setDataDialog("Ошибка сервера")
+                        else -> pop.setDataDialog("Неверный логин")
+                    }
                 }
                 ApiResponse.Loading -> {
-                    Log.d("pizdaaa","Loading")
+                    Log.d("ApiAuth", "checkLoginResponse Loading")
+                    btnNextStageView(RulesNameAuth.LOADING_BUTTON_VIEW)
                 }
                 is ApiResponse.Success -> {
-                    vmToken.saveToken(it.data.token)
-                    vm.apiAuthGetUser(vmApi)
-                    Log.d("pizdaaa","token - " + it.data.token)
-                    Log.d("pizdaaa","refresh - " + it.data.refresh)
+                    when (it.data.available) {
+                        true -> {
+                            changeCheckImage(true)
+                            vm.apply {
+                                vm.apply {
+                                    setDataStageTwo(
+                                        login = ETLogin.text.toString(),
+                                        userName = ETNameReg.text.toString()
+                                    )
+                                    postApiCreateUser(vmAuth)
+                                }
+                            }
+                        }
+                        false -> {
+                            pop.setDataDialog("Неверный логин или уже используятся")
+                            changeCheckImage(false)
+                            btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
+                        }
+                    }
+                }
+            }
+        }
 
-                    changeCheckImage(true)
-                    //vm.postCreateUser(requireActivity())
-                    //btnNextStageView(RegistrationFragment.ACTIVE_BUTTON_VIEW)
-                    //findNavController().navigate(R.id.navigation_registration_two, null)
+        vmAuth.createUserResponse.observe(viewLifecycleOwner) {
+            val pop = PopAlertDialog(requireActivity(), lifecycleScope)
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.d("ApiAuth", "createUserResponse falure - " + it.errorMessage)
+                    when (it.code) {
+                        502 -> pop.setDataDialog("Ошибка сервера")
+                        else -> pop.setDataDialog("Ошибка Регистрации")
+                    }
+                    errorCreateUser()
+                }
+                ApiResponse.Loading -> {
+                    Log.d("ApiAuth", "createUserResponse Loading")
+                    btnNextStageView(RulesNameAuth.LOADING_BUTTON_VIEW)
+                }
+                is ApiResponse.Success -> {
+                    Log.d("vmToken","token - " + it.data.token)
+                    Log.d("vmToken","refresh - " + it.data.refresh)
+                    vm.apiAuthGetUser(vmApi)
+                    vmToken.saveToken(it.data.token)
+                }
+            }
+        }
+
+        vmApi.userInfoResponse.observe(viewLifecycleOwner) {
+            val pop = PopAlertDialog(requireActivity(), lifecycleScope)
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.d("ApiAuth", "userInfoResponse failure - " + it.errorMessage)
+                     when (it.code) {
+                        502 -> pop.setDataDialog("Ошибка сервера")
+                        else -> pop.setDataDialog("Ошибка Регистрации")
+                    }
+                    errorCreateUser()
+                }
+                ApiResponse.Loading -> {
+                    Log.d("ApiAuth", "userInfoResponse Loading")
+                    btnNextStageView(RulesNameAuth.LOADING_BUTTON_VIEW)
+                }
+                is ApiResponse.Success -> {
+                    Log.d("vmApi User","User - " + it.data)
+                    vm.apply {
+                        requireActivity().registrationFinish(vmUser,it.data)
+                    }.let {
+                        findNavController().navigate(R.id.action_navigation_registration_two_to_navigation_home)
+                    }
                 }
             }
         }
     }
 
-    private fun FragmentRegistrationStateTwoBinding.observeError(){
-        vm.error.observe(viewLifecycleOwner, Observer { error ->
-            //val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-            //val bundle = Bundle()
-//
-            //bundle.putString("error","Ошибка при регистрации.")
-//
-            //findNavController().navigate(R.id.action_navigation_registration_two_to_navigation_start_page, bundle)
-            //transaction.remove(this@RegistrationStateTwoFragment)
-            //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-            //transaction.commit()
-        })
+    private fun errorCreateUser(){
+        vmToken.deleteToken()
+
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        val bundle = Bundle()
+        bundle.putBoolean(BUNDLE_ERROR_CODE,true)
+        findNavController().navigate(R.id.action_navigation_registration_two_to_navigation_login, bundle)
+        transaction.remove(this@RegistrationStateTwoFragment)
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+        transaction.commit()
     }
+
     /////////////////////////////////////////////////////////////////
 
     private fun FragmentRegistrationStateTwoBinding.isValidLogin() =
@@ -250,6 +286,7 @@ class RegistrationStateTwoFragment() : BaseFragment() {
             }
             RulesNameAuth.LOADING_BUTTON_VIEW -> {
                 TVNextStageReg.text = ""
+                TVNextStageReg.isClickable = false
                 ProgressAuth.isClickable = false
                 ProgressAuth.visibility = View.VISIBLE
             }
@@ -263,10 +300,6 @@ class RegistrationStateTwoFragment() : BaseFragment() {
                 ProgressAuth.visibility = View.GONE
             }
         }
-    }
-
-    fun navigateNav(navigation: Int, bundle: Bundle?) {
-        findNavController().navigate(navigation, bundle)
     }
 
     override fun onDestroyView() {

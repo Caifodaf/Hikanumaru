@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.profile.ProfileFragment">
 
     <FrameLayout
@@ -42,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    app:layout_constraintTop_toBottomOf="@id/tv_role_user_top"
+                    app:layout_constraintTop_toBottomOf="@id/TVUserRoles"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="16dp"
@@ -70,9 +71,9 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_marginTop="36dp"
-                android:id="@+id/tv_login_name"
-                style="@style/Text.Headline_4"
+                android:layout_marginTop="10dp"
+                android:id="@+id/TVLoginName"
+                style="@style/Text.Headline_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -86,7 +87,7 @@
                 android:id="@+id/rl_info_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_login_name"
+                app:layout_constraintTop_toBottomOf="@id/TVLoginName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="16dp"
@@ -94,32 +95,47 @@
                 android:layout_marginEnd="16dp">
 
                 <ImageView
-                    android:id="@+id/iv_back_user_profile"
+                    android:id="@+id/ImageBackAvatar"
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
+                    android:layout_height="130dp"
                     android:layout_marginBottom="30dp"
-                    android:src="@drawable/gradient_blue"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_ph_profile_back_avatar"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/ImageMask"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="-9dp"
+                    android:layout_marginEnd="-9dp"
+                    android:src="@drawable/ic_submask_profile_back"
+                    app:layout_constraintStart_toStartOf="@+id/ImageAvatar"
+                    app:layout_constraintEnd_toEndOf="@id/ImageAvatar"
+                    app:layout_constraintTop_toTopOf="@id/ImageAvatar"
+                    app:layout_constraintBottom_toBottomOf="@+id/ImageBackAvatar"/>
 
                 <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/iv_select_image_avatar"
+                    android:id="@+id/ImageAvatar"
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="90dp"
                     app:layout_constraintDimensionRatio="H,1:1"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_back_user_profile"
+                    app:layout_constraintBottom_toBottomOf="@id/ImageBackAvatar"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginBottom="-30dp"
-                    android:src="@drawable/ashot"
-                    app:civ_border_width="8dp" />
+                    android:src="@drawable/ic_ph_profile_avatar"
+                    app:civ_border_width="6dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/tv_name_user_top"
-                style="@style/Text.Headline_3"
+                android:id="@+id/TVUserName"
+                style="@style/Text.Headline_4.Bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -132,64 +148,64 @@
                 android:text="Mark Oganesyan" />
 
             <TextView
-                android:id="@+id/tv_role_user_top"
+                android:id="@+id/TVUserRoles"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/tv_name_user_top"
+                app:layout_constraintTop_toBottomOf="@id/TVUserName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 style="@style/Text.Callout_Light"
+                android:textColor="@color/grey_600"
                 android:text="читатель" />
 
             <TextView
-                android:id="@+id/tv_age_profile_register"
+                android:id="@+id/TVAgeProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/tv_role_user_top"
+                app:layout_constraintTop_toBottomOf="@id/TVUserRoles"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 style="@style/Text.Caption_1_1"
-                android:textColor="@color/grey_light_alternative_6"
-                android:text="в приложении уже: 0"
-                android:background="@drawable/rectangle_rounded_all_15"
-                android:backgroundTint="@color/grey_light_alternative_1"
+                android:textColor="@color/light_grey_6"
+                android:text="в приложении уже: 2 мес."
+                android:background="@drawable/rectangle_rounded_all_8"
+                android:backgroundTint="@color/light_grey_1"
                 android:paddingTop="4dp"
                 android:paddingBottom="6dp"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"/>
 
             <TextView
-                android:id="@+id/tv_lib_top"
+                android:id="@+id/TVTitleLibrary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_role_user_top"
-                app:layout_constraintTop_toBottomOf="@id/tv_age_profile_register"
+                android:layout_below="@id/TVUserRoles"
+                app:layout_constraintTop_toBottomOf="@id/TVAgeProfile"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="36dp"
                 android:layout_marginStart="16dp"
                 android:textColor="@color/black"
-                android:textSize="22sp"
-                android:fontFamily="@font/font_bold"
+                style="@style/Text.Headline_4.Bold"
                 android:text="Библиотека"/>
 
             <TextView
-                android:id="@+id/tv_lib_total"
+                android:id="@+id/TVLibraryCounter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_lib_top"
-                app:layout_constraintTop_toBottomOf="@id/tv_lib_top"
+                android:layout_below="@id/TVTitleLibrary"
+                app:layout_constraintTop_toBottomOf="@id/TVTitleLibrary"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:layout_marginStart="16dp"
-                android:textColor="@color/grey_light_alternative_4"
+                android:textColor="@color/light_grey_4"
                 style="@style/Text.FootNote"
                 android:text="Всего произведений: 0"/>
 
@@ -198,34 +214,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_lib_sort_3"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_lib_total"
+                app:layout_constraintBottom_toBottomOf="@+id/TVLibraryCounter"
+                app:layout_constraintTop_toTopOf="@+id/TVLibraryCounter"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginBottom="5dp"
                 android:layout_marginEnd="16dp"
-                app:tint="@color/black" />
+                app:tint="@color/grey_700" />
 
             <ImageView
                 android:id="@+id/ImageViewGroupBig"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_lib_sort_4"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_lib_total"
+                app:layout_constraintBottom_toBottomOf="@+id/TVLibraryCounter"
                 app:layout_constraintEnd_toStartOf="@+id/ImageViewGroupLine"
+                app:layout_constraintTop_toTopOf="@+id/TVLibraryCounter"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                app:tint="@color/light_grey_4" />
 
             <ImageView
                 android:id="@+id/ImageViewGroupSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_lib_sort_9"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_lib_total"
+                app:layout_constraintTop_toTopOf="@+id/TVLibraryCounter"
+                app:layout_constraintBottom_toBottomOf="@+id/TVLibraryCounter"
                 app:layout_constraintEnd_toStartOf="@+id/ImageViewGroupBig"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                app:tint="@color/light_grey_4"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rl_lib_tags_container"
+                android:id="@+id/RVLibraryTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -234,13 +255,13 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_lib_total" />
+                app:layout_constraintTop_toBottomOf="@id/TVLibraryCounter" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/rl_error_block_libliary"
+                android:id="@+id/RVErrorBlockLibrary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_lib_total"
+                app:layout_constraintTop_toBottomOf="@id/TVLibraryCounter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="16dp"
@@ -269,7 +290,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rl_lib_container"
+                android:id="@+id/RVLibraryContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
@@ -282,7 +303,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_lib_tags_container" />
+                app:layout_constraintTop_toBottomOf="@id/RVLibraryTags" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -6,6 +6,7 @@
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:id="@+id/CCMain"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.auth.registration.state.one.RegistrationFragment">
 
@@ -226,7 +227,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/TVNextStageReg"
         android:layout_marginBottom="16dp"
-        android:text="@string/UserRequest"
         android:textColor="@color/grey_800" />
 
     <ProgressBar

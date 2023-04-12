@@ -13,18 +13,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
-import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.BaseFragment
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentProfileBinding
+import ru.android.hikanumaruapp.local.user.UserDataViewModel
 import ru.android.hikanumaruapp.model.Manga
 import ru.android.hikanumaruapp.ui.profile.folders.FoldersLibraryAdapter
 import ru.android.hikanumaruapp.ui.profile.folders.LibraryAdapter
-import ru.android.hikanumaruapp.utilits.navigation.Events
-import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
+import ru.android.hikanumaruapp.utilits.UIUtils
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.utilits.recyclerviews.SpaceItemDecoration
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
@@ -32,6 +34,8 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val vm by viewModels<ProfileViewModel>()
+
+    private val vmUser by viewModels<UserDataViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,116 +47,129 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
         return binding.root
     }
 
-    private val navigationEventsObserver = Events.EventObserver { event ->
-        when (event) {
-            is NavigationFragmentinViewModel.NavigationFrag -> navigateNav(event.navigation, event.bundle)
-        }
-    }
-
-    private lateinit var folderAdapter: FoldersLibraryAdapter
-    private lateinit var libraryAdapter: LibraryAdapter
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressed()
-        vm.getUser(requireActivity())
-        vm.initBDLibrary(this)
+        vm.apply {
+            requireContext().getUser(vmUser)
+            initBDLibrary(this@ProfileFragment)
+        }
+        binding.apply {
+            observeList()
 
-        observeList()
-        initUI()
-        initBtn()
+            initRecyclerTags()
+            initRecyclerLibrary()
+
+            initBtn()
+        }
     }
 
-    private fun observeList() {
-        vm.user.observe(viewLifecycleOwner, Observer { user ->
-            binding.tvLoginName.text = "@"+user.login
+    @SuppressLint("SetTextI18n")
+    private fun FragmentProfileBinding.observeList() {
+        vmUser.user.observe(viewLifecycleOwner, Observer { user ->
+            TVLoginName.text = "@"+user.login
+            TVUserName.text = user.username
+            //for (i in user.roles){
+            //    TVUserRoles.text = TVUserRoles.text.toString() + when(i){
+            //        "ROLE_USER" -> getString(R.string.role_user_user)
+            //        "ROLE_ADMIN" -> getString(R.string.role_user_user)
+            //        "ROLE_REDACTOR" -> getString(R.string.role_user_user)
+            //        else -> getString(R.string.role_user_user)
+            //    }
+            //}
+            TVUserRoles.text = getString(R.string.role_user_user)
+            val days = getDaysPassed(user.createdAt)
+            TVAgeProfile.text = getString(R.string.profile_age_start_text) + " " +
+                    when(days){
+                        0 -> "$days ${getString(R.string.profile_age_date_zero_days)}"
+                        1 -> "$days ${getString(R.string.profile_age_date_ten_days)}"
+                        in 2..4 -> "$days ${getString(R.string.profile_age_date_days)}"
+                        in 5..30 -> "$days ${getString(R.string.profile_age_date_month)}"
+                        in 31..365*4 -> "$days ${getString(R.string.profile_age_date_year)}"
+                        in 365*4..365*100 -> "$days ${getString(R.string.profile_age_date_years)}"
+                        else -> "бесконечность :3"
+                    }
             //todo edit
-            //binding.tvNameUserTop.text = useruserName
+            //tvNameUserTop.text = useruserName
             //if (user.imageCover != "null" ) // todo add default cover
-            //    binding.ivSelectImageAvatar.load(user.imageAvatar)
+            //    ivSelectImageAvatar.load(user.imageAvatar)
             //if (user.imageCover != "null" ) // todo add default cover
-            //    binding.ivBackUserProfile.load(user.imageCover)
-            binding.tvRoleUserTop // todo add other roles
+            //    ivBackUserProfile.load(user.imageCover)
         })
 
         vm.library.observe(viewLifecycleOwner, Observer { library ->
             Log.e("Eadadadadadadadadadadad", "isBookmark ${library}")
-            libraryAdapter.setMain(library)
+            vm.libraryAdapter.setMain(library)
         })
     }
 
-    private fun initUI() {
-       initRecyclerTags()
-       initRecyclerLibrary()
-    }
-
-    private fun initRecyclerLibrary() {
-        libraryAdapter = LibraryAdapter(this,
-            binding.rlLibContainer.layoutManager as GridLayoutManager)
-        binding.rlLibContainer.apply {
-            adapter = libraryAdapter
+    private fun FragmentProfileBinding.initRecyclerLibrary() {
+        vm.libraryAdapter = LibraryAdapter(this@ProfileFragment,
+            RVLibraryContainer.layoutManager as GridLayoutManager)
+        RVLibraryContainer.apply {
+            adapter = vm.libraryAdapter
         }
     }
 
-    private fun initRecyclerTags() {
+    private fun FragmentProfileBinding.initRecyclerTags() {
         val snapManger = LinearSnapHelper()
-        folderAdapter = FoldersLibraryAdapter(this)
+        vm.folderAdapter = FoldersLibraryAdapter(this@ProfileFragment)
 
-        snapManger.attachToRecyclerView(binding.rlLibTagsContainer)
-        binding.rlLibTagsContainer.apply {
+        snapManger.attachToRecyclerView(RVLibraryTags)
+        RVLibraryTags.apply {
             addItemDecoration(SpaceItemDecoration(16))
-            adapter = folderAdapter
+            adapter = vm.folderAdapter
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
 
-        vm.setDefaultTagsList(folderAdapter)
+        vm.setDefaultTagsList(vm.folderAdapter)
     }
 
-    private fun initBtn() {
-        val lm: GridLayoutManager = binding.rlLibContainer.layoutManager as GridLayoutManager
-        binding.ImageViewGroupLine.setOnClickListener {
-            if (lm.spanCount != 1) {
-                lm.spanCount = 1
+    private fun FragmentProfileBinding.initBtn() {
+        val lm: GridLayoutManager = RVLibraryContainer.layoutManager as GridLayoutManager
+        val spanCountOne = 1
+        val spanCountTwo = 2
+        val spanCountThree = 3
+
+        ImageViewGroupLine.setOnClickListener {
+            if (lm.spanCount != spanCountOne) {
+                lm.spanCount = spanCountOne
                 initRecyclerLibrary()
-                libraryAdapter.setMain(vm.library.value!!)
+                vm.libraryAdapter.setMain(vm.library.value!!)
                 grigViewSwitcher()
             }
         }
-        binding.ImageViewGroupBig.setOnClickListener {
-            if (lm.spanCount != 2) {
-                lm.spanCount = 2
+        ImageViewGroupBig.setOnClickListener {
+            if (lm.spanCount != spanCountTwo) {
+                lm.spanCount = spanCountTwo
                 initRecyclerLibrary()
-                libraryAdapter.setMain(vm.library.value!!)
+                vm.libraryAdapter.setMain(vm.library.value!!)
                 grigViewSwitcher()
             }
         }
-        binding.ImageViewGroupSmall.setOnClickListener {
-            if (lm.spanCount != 3) {
-                lm.spanCount = 3
+        ImageViewGroupSmall.setOnClickListener {
+            if (lm.spanCount != spanCountThree) {
+                lm.spanCount = spanCountThree
                 initRecyclerLibrary()
-                libraryAdapter.setMain(vm.library.value!!)
+                vm.libraryAdapter.setMain(vm.library.value!!)
                 grigViewSwitcher()
             }
         }
     }
 
     @SuppressLint("UseCompatLoadingForColorStateLists")
-    private fun grigViewSwitcher() {
-        binding.ImageViewGroupSmall.imageTintList = resources.getColorStateList(R.color.grey_light_alternative_2)
-        binding.ImageViewGroupBig.imageTintList = resources.getColorStateList(R.color.grey_light_alternative_2)
-        binding.ImageViewGroupLine.imageTintList = resources.getColorStateList(R.color.grey_light_alternative_2)
-        when((binding.rlLibContainer.layoutManager as GridLayoutManager).spanCount){
-            1->binding.ImageViewGroupLine.imageTintList =
-                resources.getColorStateList(R.color.grey_light_alternative_7)
-            2->binding.ImageViewGroupBig.imageTintList =
-                resources.getColorStateList(R.color.grey_light_alternative_7)
-            3->binding.ImageViewGroupSmall.imageTintList =
-                resources.getColorStateList(R.color.grey_light_alternative_7)
+    private fun FragmentProfileBinding.grigViewSwitcher() {
+        ImageViewGroupSmall.imageTintList = resources.getColorStateList(R.color.light_grey_4)
+        ImageViewGroupBig.imageTintList = resources.getColorStateList(R.color.light_grey_4)
+        ImageViewGroupLine.imageTintList = resources.getColorStateList(R.color.light_grey_4)
+        when((RVLibraryContainer.layoutManager as GridLayoutManager).spanCount){
+            1->ImageViewGroupLine.imageTintList =
+                resources.getColorStateList(R.color.grey_700)
+            2->ImageViewGroupBig.imageTintList =
+                resources.getColorStateList(R.color.grey_700)
+            3->ImageViewGroupSmall.imageTintList =
+                resources.getColorStateList(R.color.grey_700)
         }
-    }
-
-    fun navigateNav(navigation: Int, bundle: Bundle?) {
-        findNavController().navigate(navigation, bundle)
     }
 
     override fun onRecyclerViewItemClick(view: View, list: Any?) {
@@ -166,10 +183,5 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
                 findNavController().navigate(R.id.action_navigation_profile_to_navigation_mangapage, bundle)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -10,6 +10,16 @@ class AuthRepository @Inject constructor(
     private val authApiService: AuthApiService,
 ) {
 
+    // Check Email
+    fun getCheckMail(post: String) = apiRequestFlow {
+        authApiService.getCheckMail(post)
+    }
+
+    // Check Email
+    fun getCheckLogin(post: String) = apiRequestFlow {
+        authApiService.getCheckLogin(post)
+    }
+
     // Get Token | Login
     fun postLogin(post: UserAuthPost) = apiRequestFlow {
         authApiService.postLogin(post)

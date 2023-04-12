@@ -3,7 +3,6 @@ package ru.android.hikanumaruapp.ui.auth.login
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
@@ -22,11 +21,11 @@ import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
 import ru.android.hikanumaruapp.api.api.token.AuthViewModel
 import ru.android.hikanumaruapp.api.init.ApiResponse
-import ru.android.hikanumaruapp.api.models.UserRegResponse
 import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentLoginBinding
-import ru.android.hikanumaruapp.local.storage.UserDataViewModel
+import ru.android.hikanumaruapp.local.user.UserDataViewModel
 import ru.android.hikanumaruapp.ui.auth.RulesNameAuth
+import ru.android.hikanumaruapp.ui.auth.registration.state.two.RegistrationStateTwoFragment
 import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
 
 
@@ -42,7 +41,6 @@ class LoginFragment : BaseFragment() {
     private val vmApi by viewModels<MainApiViewModel>()
     private val vmUser by viewModels<UserDataViewModel>()
 
-    private lateinit var handler: Handler
     private var isShowPass: Boolean = false
 
     override fun onCreateView(
@@ -57,15 +55,7 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressed()
-        vm.setupUserData(vmUser, UserRegResponse(
-            "c0d73c84-9b62-11ed-8abc-bf0c6260b682",
-            "McLOVIN@gmail.com",
-            "McLOVIN",
-            "Mac Fucker",
-            listOf<String>( "ROLE_USER"),
-            "2023-01-23T21:13:16+00:00",
-            "2023-01-23T21:13:16+00:00"
-        ))
+        getCheckErrorArgument()
         binding.apply {
             checkFillingEditTextToLogin()
 
@@ -78,6 +68,15 @@ class LoginFragment : BaseFragment() {
 
             observeLogin()
             observeUser()
+        }
+    }
+
+    private fun getCheckErrorArgument() {
+        val registrationError =
+            arguments?.getBoolean(RegistrationStateTwoFragment.BUNDLE_ERROR_CODE, false)
+        if (registrationError!!) {
+            val pop = PopAlertDialog(requireActivity(), lifecycleScope)
+            pop.setDataDialog("Ошибка При Ррегистрации Т_Т")
         }
     }
 
@@ -151,18 +150,8 @@ class LoginFragment : BaseFragment() {
                     val pop = PopAlertDialog(requireActivity(),lifecycleScope)
                     Log.d("ApiAuth","loginResponse falure - " + it.errorMessage)
                     when(it.code){
-                        400,401 -> {
-                            pop.setDataDialog("Неверная почта или пароль")
-                            pop.show()
-                        }
-                        502 -> {
-                            pop.setDataDialog("Ошибка сервера")
-                            pop.show()
-                        }
-                        else -> {
-                            pop.setDataDialog("Неверная почта или пароль")
-                            pop.show()
-                        }
+                        502 -> pop.setDataDialog("Ошибка сервера")
+                        else -> pop.setDataDialog("Неверная почта или пароль")
                     }
                 }
                 ApiResponse.Loading -> {
@@ -185,18 +174,8 @@ class LoginFragment : BaseFragment() {
                     Log.d("ApiMain","observeUser falure - " + it.errorMessage)
                     val pop = PopAlertDialog(requireActivity(),lifecycleScope)
                     when(it.code){
-                        400,401 -> {
-                            pop.setDataDialog("Неверная почта или пароль")
-                            pop.show()
-                        }
-                        502 -> {
-                            pop.setDataDialog("Ошибка сервера")
-                            pop.show()
-                        }
-                        else -> {
-                            pop.setDataDialog("Неверная почта или пароль")
-                            pop.show()
-                        }
+                        502 -> pop.setDataDialog("Ошибка сервера")
+                        else -> pop.setDataDialog("Неверная почта или пароль")
                     }
                 }
                 ApiResponse.Loading -> {
@@ -204,19 +183,13 @@ class LoginFragment : BaseFragment() {
                 }
                 is ApiResponse.Success -> {
                     Log.d("ApiMain","observeUser info - " + it.data)
-
-//                   saveUserReg(it, context)
-//                   saveToken(tokenResponse.value!!.token, tokenResponse.value!!.refresh, context)
-//                   changeModeGuest(false,context)
-//                   changeAuth(context,true)
+                    vm.apply {
+                        requireActivity().loginFinish(vmUser,it.data)
+                    }.let {
+                        findNavController().navigate(R.id.action_navigation_login_to_navigation_home)
+                    }
                 }
             }
-        }
-    }
-
-    private fun FragmentLoginBinding.observeUserData(){
-        vmUser.user.observe(viewLifecycleOwner) { user ->
-            Log.d("padaianf", user.toString())
         }
     }
     /////////////////////////////////////////////////////////////////
@@ -265,7 +238,6 @@ class LoginFragment : BaseFragment() {
         TVBtnLogInGuest.setOnClickListener {
             TVBtnLogInGuest.timerDoubleButton()
             // Todo DEV guest mode
-            TVBtnLogInGuest.timerDoubleButton()
 
             val sp = requireActivity().getPreferences(Context.MODE_PRIVATE)
             sp.edit().putBoolean("guest_mode", true).apply()

@@ -1,8 +1,7 @@
 package ru.android.hikanumaruapp.ui.auth.login
 
 import android.content.Context
-import android.util.Log
-import androidx.datastore.dataStore
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -12,32 +11,18 @@ import ru.android.hikanumaruapp.api.init.CoroutinesErrorHandler
 import ru.android.hikanumaruapp.api.models.ErrorResponse
 import ru.android.hikanumaruapp.api.models.UserAuthPost
 import ru.android.hikanumaruapp.api.models.UserRegResponse
-import ru.android.hikanumaruapp.local.storage.SharedPreferenceAdapter
-import ru.android.hikanumaruapp.local.storage.UserDataConst
-import ru.android.hikanumaruapp.local.storage.UserDataSingletonModule
-import ru.android.hikanumaruapp.local.storage.UserDataViewModel
+import ru.android.hikanumaruapp.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.ui.hellopage.HelloPageViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel(), SharedPreferenceAdapter {
-
-    companion object{
-        const val PK_FIRST_LAUNCH = "pref_first_launch"
-        const val PH_LOGIN_AUTH = "pref_login_auth"
-    }
+class LoginViewModel @Inject constructor() : ViewModel() {
 
     private lateinit var job: Job
 
     internal val error: MutableLiveData<ErrorResponse> by lazy { MutableLiveData<ErrorResponse>() }
 
-    //private val Context.dataStore by preferencesDataStore(name = UserDataConst.USER_PREFERENCES_NAME)
-    //private val Context.userPreferencesStore by dataStore(
-    //    fileName = UserDataConst.DATA_STORE_FILE_NAME,
-    //    serializer = UserPreferencesSerializer
-    //)
-
     internal fun postApiAuth(vmAuth: AuthViewModel,login: String, pass: String) {
-        //vmAuth.postLogin(UserAuthPost("McLOVIN", "80082"), //TODO DEBUG
         vmAuth.postLogin(UserAuthPost(login, pass),
             object: CoroutinesErrorHandler {
             override fun onError(message: String) {
@@ -57,10 +42,20 @@ class LoginViewModel @Inject constructor() : ViewModel(), SharedPreferenceAdapte
             })
     }
 
-    fun setupUserData(vmUser: UserDataViewModel,userRegResponse: UserRegResponse) {
-        Log.d("padaianf", "1 - " + userRegResponse.toString())
-        vmUser.saveUserDataAfterReg(userRegResponse)
-        vmUser.getUserData()
+    internal fun FragmentActivity.loginFinish(vmUser: UserDataViewModel, data: UserRegResponse) {
+        vmUser.apply{
+            createUserDataAfterReg(data)
+            changeVMModeGuest(false)
+        }.let {
+            onStartupEdit()
+        }
+    }
+
+    private fun FragmentActivity.onStartupEdit() {
+        getPreferences(Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(HelloPageViewModel.PK_FIRST_LAUNCH, true)
+            .apply()
     }
 
     override fun onCleared() {

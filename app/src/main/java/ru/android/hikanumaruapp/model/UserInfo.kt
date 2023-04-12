@@ -7,7 +7,7 @@ data class UserInfo(
     @Json(name = "email") var email:String = "",
     @Json(name = "login") var login:String = "",
     @Json(name = "usernames") var username:String = "",
-    @Json(name = "roles") var roles: List<Set<String>?> = listOf(setOf<String>()),
+    @Json(name = "roles") var roles: List<String> = listOf(),
     @Json(name = "createTime") var createdAt:String = "",
     @Json(name = "updateTime") var updateAt:String = "",
 

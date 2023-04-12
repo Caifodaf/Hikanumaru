@@ -82,6 +82,8 @@ class PopAlertDialog(
             imageViewStart.setImageDrawable(drawableIcon)
             imageViewEnd.setImageDrawable(drawableIcon)
         }
+
+        show()
     }
 
     /**

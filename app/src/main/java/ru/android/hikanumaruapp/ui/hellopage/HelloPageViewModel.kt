@@ -1,6 +1,8 @@
 package ru.android.hikanumaruapp.ui.hellopage
 
+import android.content.Context
 import android.content.SharedPreferences
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.android.hikanumaruapp.ui.auth.login.LoginViewModel
@@ -17,23 +19,7 @@ class HelloPageViewModel @Inject constructor(): ViewModel() {
         const val START = 0
     }
 
-    fun onStartup(sp: SharedPreferences) =
-        sp.getBoolean(PK_FIRST_LAUNCH, true)
-
-    fun getUser(ifFirstStart: Boolean, sp: SharedPreferences): Int =
-        when {
-            ifFirstStart -> START
-            else -> {
-                val token = sp.getBoolean(PH_LOGIN_AUTH, false)
-                if (token && checkToken()) MAIN else START
-            }
-        }
-
-    private fun checkToken(): Boolean {
-        //todo check token
-        return true
-    }
-
-
+    fun FragmentActivity.onStartup() =
+        getPreferences(Context.MODE_PRIVATE).getBoolean(PK_FIRST_LAUNCH, true)
 
 }

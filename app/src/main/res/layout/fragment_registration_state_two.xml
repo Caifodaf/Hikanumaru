@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/CCMain"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.auth.login.LoginFragment">
 
@@ -90,10 +91,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/TVTitleLogin"
             app:layout_constraintEnd_toStartOf="@+id/ImageEyePass"
-            android:autofillHints="username"
+            android:autofillHints="name"
             android:gravity="start"
             android:layout_marginTop="8dp"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:hint="@string/example_login_reg"
             android:maxEms="30"
             android:maxLines="1"

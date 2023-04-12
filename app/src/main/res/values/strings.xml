@@ -247,5 +247,13 @@
     <string name="login_password_hint">Введите пароль</string>
     <string name="skip_start_page_text">Пропустить</string>
     <string name="next_start_page_text">Продолжить</string>
+    <string name="role_user_user">читатель</string>
+    <string name="profile_age_start_text">в приложении уже:</string>
+    <string name="profile_age_date_zero_days">дней</string>
+    <string name="profile_age_date_ten_days">дня</string>
+    <string name="profile_age_date_days">дней</string>
+    <string name="profile_age_date_month">мес.</string>
+    <string name="profile_age_date_year">год</string>
+    <string name="profile_age_date_years">лет</string>
 
 </resources>

@@ -197,8 +197,8 @@
             android:id="@+id/action_navigation_registration_two_to_navigation_home"
             app:destination="@id/navigation_home" />
         <action
-            android:id="@+id/action_navigation_registration_two_to_navigation_start_page"
-            app:destination="@id/navigation_start_page" />
+            android:id="@+id/action_navigation_registration_two_to_navigation_login"
+            app:destination="@id/navigation_login" />
     </fragment>
     <fragment
         android:id="@+id/navigation_reset_password_stage_one"
