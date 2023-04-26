@@ -35,4 +35,24 @@ class AuthRepository @Inject constructor(
         authApiService.postUpdateJWT(post)
     }
 
+
+    // Get Genres | Home
+    fun getGenres() = apiRequestFlow {
+        authApiService.getGenres()
+    }
+
+    // Get Manga | Home
+    fun getMainPageManga() = apiRequestFlow {
+        authApiService.getMainPageManga()
+    }
+
+    // Get Manhva | Home
+    fun getMainPageManhva() = apiRequestFlow {
+        authApiService.getMainPageManhva()
+    }
+
+    // Get Popular | Home
+    fun getMainPagePopular() = apiRequestFlow {
+        authApiService.getMainPagePopular()
+    }
 }

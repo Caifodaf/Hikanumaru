@@ -8,8 +8,11 @@
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/circle.xml" value="0.1485" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/gradient_blue.xml" value="0.451" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/gradient_manga_page_back.xml" value="0.451" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/gradient_manga_page_description_back.xml" value="0.272" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/gradient_purple_blue.xml" value="0.1" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/gradient_test.xml" value="0.318" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_arrow_top.xml" value="0.272" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_circle.xml" value="0.2815" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_eye_hide.xml" value="0.4475" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_eye_show.xml" value="0.1985" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_home.xml" value="0.318" />
@@ -18,12 +21,14 @@
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_news.xml" value="0.318" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_random_dice.xml" value="0.365" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_right_arrow.xml" value="0.2295" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/ic_star_yellow.xml" value="0.1995" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/reader_seekbar_background.xml" value="0.2295" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/reader_thumb_cirle_white.xml" value="0.2565" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_registration_edit_name.xml" value="0.2565" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_registration_error_edit_name.xml" value="0.2565" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_rounded_all.xml" value="0.4475" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_rounded_all_11.xml" value="0.2555" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_rounded_all_12.xml" value="0.1325" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_rounded_all_15.xml" value="0.1915" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_rounded_all_16.xml" value="0.456" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_rounded_all_18.xml" value="0.1915" />
@@ -34,28 +39,35 @@
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/rectangle_rounded_all_8.xml" value="0.3555" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable-v24/selector_list_bottom_navigation.xml" value="0.2565" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/divided_12dp.xml" value="0.318" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/ic_add__manga_page_off.xml" value="0.197" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/ic_cancel_fill.xml" value="0.456" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/ic_donwload_manga_page_off.xml" value="0.197" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/ic_reader_mode_left_reader_menu_active.xml" value="0.1" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/ic_share_manga_page_off.xml" value="0.197" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/ic_submask_profile_back.xml" value="0.543" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/ic_thumb_seekbar_reade_menu.xml" value="0.2295" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/reader_setting_track_switch.xml" value="0.2565" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/reader_setting_track_switch_m3.xml" value="0.2565" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/drawable/selector_bnv.xml" value="0.2565" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/about_settings_fragment.xml" value="0.4548952543822146" />
-        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/big_snap_library_manga_item.xml" value="0.4548952543822146" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/bottom_sheet_manga_page.xml" value="0.3009833262077811" />
-        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/chapter_manga_page_item.xml" value="0.2907225309961522" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/chapter_manga_page_item.xml" value="0.33" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/chapter_manga_page_item_ph.xml" value="0.18" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/chapter_reader_menu_item.xml" value="0.34587488667271077" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/dialog_pop_alert_registration.xml" value="0.5" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/folder_tags_library_profile_item.xml" value="0.33" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_hello_page.xml" value="0.33" />
-        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_manga_page.xml" value="0.33" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_manga_page_ph.xml" value="0.33" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_manga_page_ph_old.xml" value="0.33" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_manga_page_placeholder.xml" value="0.3009833262077811" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_news.xml" value="0.24478694469628287" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_profile.xml" value="0.4466834592779177" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_radio.xml" value="0.44763670064874883" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_reader.xml" value="0.1753846153846154" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_registration.xml" value="0.33" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_registration_state_two.xml" value="0.33" />
@@ -63,16 +75,26 @@
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_reset_password_stage_three.xml" value="0.30440359127832406" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_reset_password_stage_two.xml" value="0.33" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_settings.xml" value="0.33" />
-        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_start_page.xml" value="0.5" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/fragment_start_page.xml" value="0.39814814814814814" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/general_tab_manga_page.xml" value="0.25" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/genres_main_item.xml" value="0.22231508566652738" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/info_tab_manga_page.xml" value="0.33" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/journals_main_item.xml" value="0.3009833262077811" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/large_library_manga_item.xml" value="0.4548952543822146" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/large_popular_main_manga_item.xml" value="0.8271144278606966" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/layout_error.xml" value="0.22231508566652738" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/manga_main_item.xml" value="0.67" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/manga_main_lasted_item.xml" value="0.43002780352177944" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/manga_page_text_item.xml" value="0.3009833262077811" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/search_lasted_item.xml" value="0.25" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/search_manga_item.xml" value="0.25" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/search_page_fragment.xml" value="0.33" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/sma;;_snap_library_manga_item.xml" value="0.4548952543822146" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/start_page_imagers_pager.xml" value="0.2" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/statistic_tab_manga_page.xml" value="0.33" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/tags_manga_page_flex_item.xml" value="1.5" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/translators_manga_page_item.xml" value="0.4548952543822146" />
+        <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/translators_manga_page_item_ph.xml" value="0.4548952543822146" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/trasitor_page_reader_item.xml" value="0.3442211055276382" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/layout/view_page_reader_item.xml" value="0.25" />
         <entry key="..\:/.android/HikanumaruApp_v2/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3009833262077811" />

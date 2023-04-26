@@ -1,7 +1,7 @@
 package ru.android.hikanumaruapp.model
 
-import ru.android.hikanumaruapp.ui.reader.model.ReaderChapter
-import ru.android.hikanumaruapp.ui.reader.model.ReaderChapterPage
+import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapterPage
 
 data class ResultData(
     val error: Boolean,

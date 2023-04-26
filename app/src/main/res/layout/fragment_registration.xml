@@ -8,7 +8,7 @@
     android:id="@+id/CCMain"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.auth.registration.state.one.RegistrationFragment">
+    tools:context=".presentasion.auth.registration.state.one.RegistrationFragment">
 
     <TextView
         android:id="@+id/TVTitleEmail"
@@ -254,6 +254,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:clickable="false"
+        android:windowSoftInputMode="adjustResize|stateAlwaysVisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/TVBtnBackReg"

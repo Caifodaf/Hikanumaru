@@ -1,10 +1,12 @@
 package ru.android.hikanumaruapp.api.init
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import ru.android.hikanumaruapp.model.GenresMainModel
 
 open class BaseViewModel : ViewModel() {
     private var mJob: Job? = null

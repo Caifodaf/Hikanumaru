@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="ru.android.hikanumaruapp.ui.home.page.HomeFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.home.page.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -16,11 +16,19 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_reader"
             app:destination="@id/navigation_reader" />
+        <action
+            android:id="@+id/action_navigation_home_to_searchPageFragment"
+            app:destination="@id/searchPageFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"
+            app:popEnterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_up"
+            />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="ru.android.hikanumaruapp.ui.profile.ProfileFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -33,7 +41,7 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="ru.android.hikanumaruapp.ui.settings.SettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -63,7 +71,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_news"
-        android:name="ru.android.hikanumaruapp.ui.news.NewsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.news.NewsFragment"
         android:label="@string/title_news"
         tools:layout="@layout/fragment_news" >
         <action
@@ -72,12 +80,12 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_radio"
-        android:name="ru.android.hikanumaruapp.ui.radio.RadioFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.radio.RadioFragment"
         android:label="@string/title_radio"
         tools:layout="@layout/fragment_radio" />
     <fragment
         android:id="@+id/navigation_hello_page"
-        android:name="ru.android.hikanumaruapp.ui.hellopage.HelloPageFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.hellopage.HelloPageFragment"
         android:label="@string/title_hello_page"
         tools:layout="@layout/fragment_hello_page" >
         <action
@@ -104,7 +112,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_mangapage"
-        android:name="ru.android.hikanumaruapp.ui.mangapage.MangaPageFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.mangapage.MangaPageFragment"
         android:label="@string/title_mangapage"
         tools:layout="@layout/fragment_manga_page">
         <action
@@ -119,7 +127,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_chapters_page"
-        android:name="ru.android.hikanumaruapp.ui.mangapage.chapterspage.ChaptersPageFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.mangapage.chapterspage.ChaptersPageFragment"
         android:label="@string/title_chapter_page_manga_page"
         tools:layout="@layout/fragment_chapters_page" >
         <action
@@ -128,47 +136,47 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_news_page"
-        android:name="ru.android.hikanumaruapp.ui.news.page.NewsPageFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.news.page.NewsPageFragment"
         android:label="@string/title_news_page"
         tools:layout="@layout/fragment_news_page" />
     <fragment
         android:id="@+id/navigation_notification_settings"
-        android:name="ru.android.hikanumaruapp.ui.settings.notification.NotificationSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.notification.NotificationSettingsFragment"
         android:label="@string/title_notification_settings"
         tools:layout="@layout/fragment_notification_settings" />
     <fragment
         android:id="@+id/navigation_profile_settings"
-        android:name="ru.android.hikanumaruapp.ui.settings.profile.ProfileSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.profile.ProfileSettingsFragment"
         android:label="@string/title_profile_settings"
         tools:layout="@layout/fragment_profile_settings" />
     <fragment
         android:id="@+id/navigation_storage_settings"
-        android:name="ru.android.hikanumaruapp.ui.settings.storage.StorageSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.storage.StorageSettingsFragment"
         android:label="@string/title_storage_settings"
         tools:layout="@layout/fragment_storage_settings" />
     <dialog
         android:id="@+id/navigation_mangapage_more_info_sheet_panel"
-        android:name="ru.android.hikanumaruapp.ui.mangapage.moredata.sheetdialog.FragmentMangaPageBottomSheetPanel"
+        android:name="ru.android.hikanumaruapp.presentasion.mangapage.moredata.sheetdialog.FragmentMangaPageBottomSheetPanel"
         android:label="@string/titile_mangapage_more_info_sheet_panel"
         tools:layout="@layout/bottom_sheet_manga_page"/>
     <fragment
         android:id="@+id/navigation_login"
-        android:name="ru.android.hikanumaruapp.ui.auth.login.LoginFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.login.LoginFragment"
         android:label="@string/title_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_navigation_login_to_navigation_home"
             app:destination="@id/navigation_home" />
         <action
-            android:id="@+id/action_navigation_login_to_navigation_reset_password_stage_three"
-            app:destination="@id/navigation_reset_password_stage_three" />
-        <action
             android:id="@+id/action_navigation_login_to_navigation_registration"
             app:destination="@id/navigation_registration" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_reset_password_stage_one"
+            app:destination="@id/navigation_reset_password_stage_one" />
     </fragment>
     <fragment
         android:id="@+id/navigation_start_page"
-        android:name="ru.android.hikanumaruapp.ui.auth.startpage.StartPageFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.startpage.StartPageFragment"
         android:label="@string/title_startpage"
         tools:layout="@layout/fragment_start_page" >
         <action
@@ -180,7 +188,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_registration"
-        android:name="ru.android.hikanumaruapp.ui.auth.registration.state.one.RegistrationFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.registration.state.one.RegistrationFragment"
         android:label="@string/title_registration"
         tools:layout="@layout/fragment_registration" >
         <action
@@ -190,7 +198,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_registration_two"
-        android:name="ru.android.hikanumaruapp.ui.auth.registration.state.two.RegistrationStateTwoFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.registration.state.two.RegistrationStateTwoFragment"
         android:label="@string/title_registration_two"
         tools:layout="@layout/fragment_registration_state_two" >
         <action
@@ -202,59 +210,60 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_reset_password_stage_one"
-        android:name="ru.android.hikanumaruapp.ui.auth.reset.password.ResetPasswordStageOneFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.reset.password.ResetPasswordStageOneFragment"
         android:label="@string/title_reset_password_stage_one"
         tools:layout="@layout/fragment_reset_password_stage_one" >
         <action
-            android:id="@+id/action_navigation_reset_password_stage_one_to_navigation_login"
-            app:destination="@id/navigation_login" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_reset_password_stage_two"
-        android:name="ru.android.hikanumaruapp.ui.auth.reset.password.ResetPasswordStageTwoFragment"
-        android:label="@string/title_reset_password_stage_two"
-        tools:layout="@layout/fragment_reset_password_stage_two">
-        <action
-            android:id="@+id/action_navigation_reset_password_stage_two_to_navigation_reset_password_stage_one"
-            app:destination="@id/navigation_reset_password_stage_one" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_reset_password_stage_three"
-        android:name="ru.android.hikanumaruapp.ui.auth.reset.password.ResetPasswordStageThreeFragment"
-        android:label="@string/title_reset_password_stage_three"
-        tools:layout="@layout/fragment_reset_password_stage_three">
-        <action
-            android:id="@+id/action_navigation_reset_password_stage_three_to_navigation_reset_password_stage_two"
+            android:id="@+id/action_navigation_reset_password_stage_one_to_navigation_reset_password_stage_two"
             app:destination="@id/navigation_reset_password_stage_two" />
     </fragment>
     <fragment
+        android:id="@+id/navigation_reset_password_stage_two"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.reset.password.ResetPasswordStageTwoFragment"
+        android:label="@string/title_reset_password_stage_two"
+        tools:layout="@layout/fragment_reset_password_stage_two">
+        <action
+            android:id="@+id/action_navigation_reset_password_stage_two_to_navigation_reset_password_stage_three"
+            app:destination="@id/navigation_reset_password_stage_three" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_reset_password_stage_three"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.reset.password.ResetPasswordStageThreeFragment"
+        android:label="@string/title_reset_password_stage_three"
+        tools:layout="@layout/fragment_reset_password_stage_three"/>
+    <fragment
         android:id="@+id/navigation_reader"
-        android:name="ru.android.hikanumaruapp.ui.reader.ReaderFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.reader.ReaderFragment"
         android:label="@string/navigation_reader_fragment"
         tools:layout="@layout/fragment_reader" />
     <fragment
         android:id="@+id/aboutSettingsFragment"
-        android:name="ru.android.hikanumaruapp.ui.settings.about.AboutSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.about.AboutSettingsFragment"
         android:label="about_settings_fragment"
         tools:layout="@layout/about_settings_fragment" />
     <fragment
         android:id="@+id/sourceSettingsFragment"
-        android:name="ru.android.hikanumaruapp.ui.settings.source.SourceSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.source.SourceSettingsFragment"
         android:label="source_settings_fragment"
         tools:layout="@layout/source_settings_fragment" />
     <fragment
         android:id="@+id/themeSettingsFragment"
-        android:name="ru.android.hikanumaruapp.ui.settings.theme.ThemeSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.theme.ThemeSettingsFragment"
         android:label="theme_settings_fragment"
         tools:layout="@layout/theme_settings_fragment" />
     <fragment
         android:id="@+id/supportSettingsFragment"
-        android:name="ru.android.hikanumaruapp.ui.settings.supprot.SupportSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.supprot.SupportSettingsFragment"
         android:label="support_settings_fragment"
         tools:layout="@layout/support_settings_fragment" />
     <fragment
         android:id="@+id/statsSettingsFragment"
-        android:name="ru.android.hikanumaruapp.ui.settings.stats.StatsSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.stats.StatsSettingsFragment"
         android:label="stats_settings_fragment"
         tools:layout="@layout/stats_settings_fragment" />
+    <fragment
+        android:id="@+id/searchPageFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.search.SearchPageFragment"
+        android:label="search_page_fragment"
+        tools:layout="@layout/search_page_fragment" />
 </navigation>

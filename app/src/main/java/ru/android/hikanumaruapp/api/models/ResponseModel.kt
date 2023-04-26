@@ -26,5 +26,5 @@ data class TokenJWT(
 )
 
 data class CheckAvailabilityResponse(
-    @Json(name = "available")var available:Boolean = false,
+    @Json(name = "isAvailable") var isAvailable:Boolean = false,
 )

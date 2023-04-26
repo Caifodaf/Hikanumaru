@@ -59,20 +59,20 @@ class DataSetDebug {
     }
 
     fun setGenresHome(list: MutableList<GenresMainModel>): MutableList<GenresMainModel> {
-        list.add(GenresMainModel("Сейнен", "1", "1"))
-        list.add(GenresMainModel("Комедия", "2", "1"))
-        list.add(GenresMainModel("Романтика", "3", "1"))
-        list.add(GenresMainModel("Shcoll", "4", "1"))
-        list.add(GenresMainModel("End", "5", "1"))
+        list.add(GenresMainModel("Сейнен", "1"))
+        list.add(GenresMainModel("Комедия", "2"))
+        list.add(GenresMainModel("Романтика", "3"))
+        list.add(GenresMainModel("Shcoll", "4"))
+        list.add(GenresMainModel("End", "5"))
         return list
     }
 
     fun setGenres2Home(list: MutableList<GenresMainModel>): MutableList<GenresMainModel> {
-        list.add(GenresMainModel("End", "5", "1"))
-        list.add(GenresMainModel("Shcoll", "4", "1"))
-        list.add(GenresMainModel("Романтика", "3", "1"))
-        list.add(GenresMainModel("Комедия", "2", "1"))
-        list.add(GenresMainModel("Сейнен", "1", "1"))
+        list.add(GenresMainModel("End", "5"))
+        list.add(GenresMainModel("Shcoll", "4"))
+        list.add(GenresMainModel("Романтика", "3"))
+        list.add(GenresMainModel("Комедия", "2"))
+        list.add(GenresMainModel("Сейнен", "1"))
         return list
     }
 

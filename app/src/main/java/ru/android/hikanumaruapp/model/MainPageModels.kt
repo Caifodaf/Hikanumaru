@@ -1,5 +1,7 @@
 package ru.android.hikanumaruapp.model
 
+import com.squareup.moshi.Json
+
 data class RecMainModel(
     var title: String = "",
     var description: String = "",
@@ -14,10 +16,16 @@ data class MangaMainModel(
     var linkImageView: String? = ""
 )
 
+
+data class BodyGenresApiModel(
+    @Json(name = "page")var page: Int = 1,
+)
+
 data class GenresMainModel(
-    var title: String = "",
-    var typeColor: String = "",
-    var linkPage: String = "",
+    @Json(name = "id")var id: String = "",
+    @Json(name = "title")var title: String = "",
+    @Json(name = "description")var description: String? = null,
+    @Json(name = "source")var source: String = "",
 )
 
 data class JournalMainModel(

@@ -19,4 +19,29 @@ class MainRepository @Inject constructor(
         mainApiService.getUserMe()
     }
 
+    // getMangaPage
+    fun getMangaPage(post: String) = apiRequestFlow {
+        mainApiService.getMangaPage(post)
+    }
+
+
+    // Get Genres | Home
+    fun getGenres() = apiRequestFlow {
+        mainApiService.getGenres()
+    }
+
+    // Get Manga | Home
+    fun getMainPageManga() = apiRequestFlow {
+        mainApiService.getMainPageManga()
+    }
+
+    // Get Manhva | Home
+    fun getMainPageManhva() = apiRequestFlow {
+        mainApiService.getMainPageManhva()
+    }
+
+    // Get Popular | Home
+    fun getMainPagePopular() = apiRequestFlow {
+        mainApiService.getMainPagePopular()
+    }
 }

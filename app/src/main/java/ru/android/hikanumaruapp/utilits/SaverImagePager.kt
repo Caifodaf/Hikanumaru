@@ -1,33 +1,14 @@
 package ru.android.hikanumaruapp.utilits
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.AsyncTask
 import android.os.Environment
-import android.os.Handler
-import android.util.Log
-import android.view.View
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat.getColorStateList
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.coroutines.delay
-import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.ui.reader.ReaderViewModel
-import ru.android.hikanumaruapp.ui.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
+import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
-import java.lang.ref.WeakReference
 import java.net.URL
 
 @SuppressLint("UseCompatLoadingForDrawables", "ResourceType", "ShowToast",

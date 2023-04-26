@@ -17,26 +17,26 @@
         >
 
         <ImageView
-            android:id="@+id/iv_btn_check_read_chapter_item"
+            android:id="@+id/ImageCheckReading"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:paddingEnd="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_chapter_number_manga_page_item"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_chapter_number_manga_page_item"
+            app:layout_constraintTop_toTopOf="@+id/TVChapterNumbers"
+            app:layout_constraintBottom_toBottomOf="@+id/TVChapterNumbers"
             android:src="@drawable/ic_circle"
             android:visibility="invisible"
             />
 
         <TextView
-            android:id="@+id/tv_chapter_number_manga_page_item"
+            android:id="@+id/TVChapterNumbers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_btn_check_read_chapter_item"
-            app:layout_constraintEnd_toStartOf="@+id/tv_date_publisher_chapter_manga_page_item"
+            app:layout_constraintStart_toEndOf="@+id/ImageCheckReading"
+            app:layout_constraintEnd_toStartOf="@+id/TVChapterDatePublish"
             android:maxLines="1"
             android:text="Том 1 — Глава 1"
             style="@style/Text.Callout"
@@ -44,15 +44,15 @@
             />
 
         <TextView
-            android:id="@+id/tv_chapter_description_manga_page_item"
+            android:id="@+id/TVCahpterDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chapter_number_manga_page_item"
-            app:layout_constraintStart_toEndOf="@+id/iv_btn_check_read_chapter_item"
-            app:layout_constraintEnd_toStartOf="@+id/tv_date_publisher_chapter_manga_page_item"
+            app:layout_constraintTop_toBottomOf="@+id/TVChapterNumbers"
+            app:layout_constraintStart_toEndOf="@+id/ImageCheckReading"
+            app:layout_constraintEnd_toStartOf="@+id/TVChapterDatePublish"
             android:maxLines="1"
             android:text="Тамаки"
             style="@style/Text.FootNote"
@@ -60,7 +60,7 @@
             />
 
         <TextView
-            android:id="@+id/tv_date_publisher_chapter_manga_page_item"
+            android:id="@+id/TVChapterDatePublish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"

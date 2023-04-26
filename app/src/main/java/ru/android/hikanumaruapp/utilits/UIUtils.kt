@@ -1,18 +1,12 @@
 package ru.android.hikanumaruapp.utilits
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.os.CountDownTimer
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
+import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import ru.android.hikanumaruapp.R
+import android.widget.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +22,26 @@ interface UIUtils {
    isClickable = true
   }, time)
  }
+
+ fun EditText.setOnEditorActionDoneListener(action: () -> Unit) {
+  this.setOnKeyListener(object : View.OnKeyListener {
+   override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+    if (event.action == KeyEvent.ACTION_DOWN &&
+     keyCode == KeyEvent.KEYCODE_ENTER
+    ) {
+     action.invoke()
+     // clear focus and hide cursor from edit text
+     clearFocus()
+     return true
+    }
+    return false
+   }
+  })
+ }
+
+ fun Context.pixelToDP(dp: Float) = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+ resources.displayMetrics).toInt()
+
 
  fun getDaysPassed(dateString: String): Int {
   //"2022-07-05T16:48:35+00:00"
@@ -86,8 +100,83 @@ return
 
 
 
-
-
+//
+// private val vm1 by viewModels<MangaPageViewModel>()
+// private lateinit var vpAdapter : MangaPageViewPagerAdapter
+//
+// private fun FragmentResetPasswordStageOneBinding.initPagerBlock() {
+//  vpAdapter = MangaPageViewPagerAdapter(vm1, childFragmentManager, lifecycle)
+//  ViewPager2.apply {
+//   adapter = vpAdapter
+//  }
+//
+//  var backLayout = ViewTabBackGround.width.toFloat()
+//  ViewTabBackGround.viewTreeObserver
+//   .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+//    override fun onGlobalLayout() {
+//     backLayout = ViewTabBackGround.width.toFloat()
+//     ViewTabBackGround.viewTreeObserver.removeOnGlobalLayoutListener(this)
+//    } })
+//
+//  ViewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//   override fun onPageScrolled(
+//    position: Int,
+//    positionOffset: Float,
+//    @Px positionOffsetPixels: Int,
+//   ) {
+////                ViewTab
+////                LLContainerTabs
+////                TVTabGeneral
+////                TVTabInfo
+////                TVTabStatistic
+//
+//    val selectorLayout = backLayout/3
+//    when(position){
+//     0->{
+//      val sectorS = 0f
+//      val sectorE = selectorLayout
+//
+//      ViewTab.x = sectorS + (sectorE/100)*(positionOffset*100)
+//     }
+//     1->{
+//      val sectorS = selectorLayout
+//      val sectorE = selectorLayout
+//
+//      ViewTab.x = sectorS + (sectorE/100)*(positionOffset*100)
+//     }
+//     2->{
+//      val sectorS = backLayout - selectorLayout*2
+//      val sectorE = selectorLayout
+//
+//      ViewTab.x = sectorS + (sectorE/100)*(positionOffset*100)
+//      if (positionOffset == 0f)
+//       ViewTab.x = (selectorLayout*2)
+//     }
+//    }
+//
+////                ViewPager2.viewTreeObserver.addOnGlobalLayoutListener {
+////
+////                }
+//
+//    Log.d("vlajkld","backLayout " + backLayout)
+//    Log.d("vlajkld","selectorLayout " + selectorLayout)
+//
+//    Log.d("vlajkld","position " + position)
+//    Log.d("vlajkld","positionOffset " + positionOffset)
+//    Log.d("vlajkld","@Px positionOffsetPixels " + positionOffsetPixels)
+//    Log.d("vlajkld","@Px positionOffsetPixels " + requireActivity().pixelToDP(positionOffsetPixels.toFloat()))
+//   }
+//
+//   override fun onPageSelected(position: Int) {
+//    val selectorLayout = backLayout/3
+//    when(position){
+//     0-> ViewTab.x = 0f
+//     1-> ViewTab.x = selectorLayout
+//     2-> ViewTab.x = (selectorLayout*2)
+//    }
+//   }
+//  })
+// }
 
 
 

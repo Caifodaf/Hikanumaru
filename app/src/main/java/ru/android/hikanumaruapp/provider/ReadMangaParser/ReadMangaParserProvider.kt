@@ -8,10 +8,8 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import ru.android.hikanumaruapp.model.Chapter
-import ru.android.hikanumaruapp.model.Manga
-import ru.android.hikanumaruapp.model.MangaInfo
 import ru.android.hikanumaruapp.provider.ReadMangaParser.Reader.ReaderRMP
-import ru.android.hikanumaruapp.ui.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
 import java.io.IOException
 
 data class MangaPageInfoModel(
@@ -121,221 +119,221 @@ class ReadMangaParserProvider {
         return null
     }
 
-    fun getDatMangaPage(url: String?): Flow<Manga> {
-        Log.d("daknxck", "par1 $url - $document")
-        if (uploadDocumentPage(url)) {
-            if (document != null) {
-                val list: Manga
-                val listChap: MutableList<Chapter> = mutableListOf()
-                val listInfo: MangaInfo
-                val element =
-                    document!!.select("table[class=table table-hover]").select("tr")
-                val chapterCount: Int = element.size
-
-                val typeR: String = document!!.select("h1[class=names]")
-                    .text()
-                val type = when (typeR) {
-                    //0-Manga 1-Manhva 2-Manhuya 3 -Comick 4-ru
-                    "Манга" -> 0
-                    "OLED-Манга" -> 0
-                    "Манхва" -> 1
-                    "Маньхуа" -> 2
-                    "Комикс" -> 3
-                    "Руманга" -> 4
-                    else -> 0
-                }
-                var title: String = document!!.select("span[class=name]")
-                    .text()
-                Log.d("dadad", "til - $title")
-                title = title.replace("\\s+".toRegex(), " ")
-                Log.d("dadad", "til - $title")
-                val alternativeName: String = document!!.select("span[class=eng-name]")
-                    .text()
-                var description: String = document!!.select("div[class=manga-description]")
-                    .eq(0)
-                    .select("p")
-                    .eq(0)
-                    .text()
-                if (description.isEmpty()) {
-                    description = document!!.select("div[class=manga-description]")
-                        .eq(0)
-                        .select("span")
-                        .eq(0)
-                        .text()
-                }
-                if (description.isEmpty()) {
-                    description = document!!.select("div[class=manga-description]")
-                        .eq(0)
-                        .select("div")
-                        .eq(0)
-                        .text()
-                }
-                val score: String? =
-                    document!!.select("span[class=rating-block]")
-                        .attr("data-score")
-                        .toString()
-
-                val statusPageD = document!!.select("div[class=subject-meta ]")
-                    .select("p")
-                    .text()
-
-                var statusPage = 1
-                var statusTranslatedPag = 1
-
-                if (statusPageD.indexOf("выпуск продолжается") != -1) {
-                    statusPage = 1
-                    statusTranslatedPag = 1
-                } else {
-                    statusPage = 3
-                    statusTranslatedPag = 3
-                }
-//                    val statusTranslatedPageD = document!!.select("div[class=subject-meta ]")
-//                        .select("p")
-//                        .eq(1)
+//    fun getDatMangaPage(url: String?): Flow<Manga> {
+//        Log.d("daknxck", "par1 $url - $document")
+//        if (uploadDocumentPage(url)) {
+//            if (document != null) {
+//                val list: Manga
+//                val listChap: MutableList<Chapter> = mutableListOf()
+//                val listInfo: MangaInfo
+//                val element =
+//                    document!!.select("table[class=table table-hover]").select("tr")
+//                val chapterCount: Int = element.size
+//
+//                val typeR: String = document!!.select("h1[class=names]")
+//                    .text()
+//                val type = when (typeR) {
+//                    //0-Manga 1-Manhva 2-Manhuya 3 -Comick 4-ru
+//                    "Манга" -> 0
+//                    "OLED-Манга" -> 0
+//                    "Манхва" -> 1
+//                    "Маньхуа" -> 2
+//                    "Комикс" -> 3
+//                    "Руманга" -> 4
+//                    else -> 0
+//                }
+//                var title: String = document!!.select("span[class=name]")
+//                    .text()
+//                Log.d("dadad", "til - $title")
+//                title = title.replace("\\s+".toRegex(), " ")
+//                Log.d("dadad", "til - $title")
+//                val alternativeName: String = document!!.select("span[class=eng-name]")
+//                    .text()
+//                var description: String = document!!.select("div[class=manga-description]")
+//                    .eq(0)
+//                    .select("p")
+//                    .eq(0)
+//                    .text()
+//                if (description.isEmpty()) {
+//                    description = document!!.select("div[class=manga-description]")
+//                        .eq(0)
+//                        .select("span")
+//                        .eq(0)
 //                        .text()
-
-                var lodRatingPage = document!!.select("span[class=elem_limitation]")
-                    .select("a")
-                    .text()
-                if (lodRatingPage.isNullOrEmpty())
-                    lodRatingPage = "G"
-
-                val yearPage = document!!.select("span[class=elem_year ]")
-                    .select("a")
-                    .text()
-
-                val linkImageTop: String? =
-                    document!!.select("div[class=picture-fotorama]")
-                        .select("img")
-                        .attr("src")
-
-                // ----------------------CHAPTER-----------------------------
-
-                if (document!!.select("h3").eq(1)
-                        .text() != "В этой манге еще нет ни одной главы."
-                ) {
-                    if (chapterCount <= 8) {
-                        Log.d("daknxck", "chap < 8")
-                        chapterMangaPageSelect(chapterCount, 0, element, listChap)
-                    } else if (chapterCount > 8) {
-                        Log.d("daknxck", "chap more")
-                        chapterMangaPageSelect(chapterCount, 1, element, listChap)
-                    }
-
-                } else {
-                    Log.d("daknxck", "chap null")
-                    listChap.add(
-                        Chapter(
-                            notChapter = true,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
-                        )
-                    )
-                }
-
-
-                var dateRelise: String = ""
-                var last: MutableList<Chapter>
-
-                if (!listChap.isNullOrEmpty()) {
-                    if (!listChap[0].notChapter) {
-                        last = listChap.takeLast(1).toMutableList()
-                        dateRelise = last[0].datePublished.toString()
-                    } else
-                        dateRelise = yearPage
-                }
-                // -------------------------INFO---------------------------
-
-
-                val elementInfo =
-                    document!!.select("p[class=elementList]")
-
-                val author: MutableList<String> = mutableListOf()
-                var elementsAuthor = elementInfo.select("span[class=elem_author ]")
-                if (elementsAuthor.isNullOrEmpty()) {
-                    elementsAuthor = elementInfo.select("span[class=elem_screenwriter ]")
-                }
-
-                for (i in 0 until elementsAuthor.size) {
-                    val addA = elementsAuthor.select("a").text()
-                    author.add(i, addA)
-                }
-
-                val art: MutableList<String> = mutableListOf()
-                val elementsArt = elementInfo.select("span[class=elem_illustrator ]")
-
-                for (i in 0 until elementsArt.size) {
-                    val addA = elementsArt.select("a").text()
-                    art.add(i, addA)
-                }
-
-                val publisher: MutableList<String> = mutableListOf()
-                val elementsPublisher = elementInfo.select("span[class=elem_publisher ]")
-
-                for (i in 0 until elementsPublisher.size) {
-                    val addA = elementsPublisher.text()
-                    publisher.add(i, addA)
-                }
-
-                val translators: MutableList<String> = mutableListOf()
-                val elementsTranslators = elementInfo.select("span[class=elem_translator ]")
-
-                for (i in 0 until elementsTranslators.size) {
-                    val addA = elementsTranslators.text()
-                    translators.add(i, addA)
-                }
-
-
-                listInfo =
-                    MangaInfo(
-                        scoreCount = "0",
-                        viewCount = "0",
-                        likesCount = "0",
-                        commentCount = "0",
-                        author = author,
-                        art = art,
-                        publisher = publisher,
-                        dateRelise = dateRelise,
-                        translators = translators
-                    )
-
-                list = Manga(
-                        id = title.hashCode().toString(),
-                        type = type,
-                        name = title,
-                        alternativeName = alternativeName,
-                        description = description,
-                        score = score,
-                        status = statusPage,
-                        statusTranslated = statusTranslatedPag,
-                        oldRating = lodRatingPage,
-                        year = yearPage,
-                        image = linkImageTop,
-                        imageBack = linkImageTop,
-                        urlManga = url,
-                        bookmark = false,
-                        bookmarkName = 0,
-                        lastRead = "first",
-                        chapterCount = chapterCount,
-                        info = listInfo,
-                        chapters = listChap
-                    )
-
-                Log.e("ErrorApi",list.toString())
-
-                return flow { emit(list) }
-            }
-        }
-        return flow {}
-    }
+//                }
+//                if (description.isEmpty()) {
+//                    description = document!!.select("div[class=manga-description]")
+//                        .eq(0)
+//                        .select("div")
+//                        .eq(0)
+//                        .text()
+//                }
+//                val score: String? =
+//                    document!!.select("span[class=rating-block]")
+//                        .attr("data-score")
+//                        .toString()
+//
+//                val statusPageD = document!!.select("div[class=subject-meta ]")
+//                    .select("p")
+//                    .text()
+//
+//                var statusPage = 1
+//                var statusTranslatedPag = 1
+//
+//                if (statusPageD.indexOf("выпуск продолжается") != -1) {
+//                    statusPage = 1
+//                    statusTranslatedPag = 1
+//                } else {
+//                    statusPage = 3
+//                    statusTranslatedPag = 3
+//                }
+////                    val statusTranslatedPageD = document!!.select("div[class=subject-meta ]")
+////                        .select("p")
+////                        .eq(1)
+////                        .text()
+//
+//                var lodRatingPage = document!!.select("span[class=elem_limitation]")
+//                    .select("a")
+//                    .text()
+//                if (lodRatingPage.isNullOrEmpty())
+//                    lodRatingPage = "G"
+//
+//                val yearPage = document!!.select("span[class=elem_year ]")
+//                    .select("a")
+//                    .text()
+//
+//                val linkImageTop: String? =
+//                    document!!.select("div[class=picture-fotorama]")
+//                        .select("img")
+//                        .attr("src")
+//
+//                // ----------------------CHAPTER-----------------------------
+//
+//                if (document!!.select("h3").eq(1)
+//                        .text() != "В этой манге еще нет ни одной главы."
+//                ) {
+//                    if (chapterCount <= 8) {
+//                        Log.d("daknxck", "chap < 8")
+//                        chapterMangaPageSelect(chapterCount, 0, element, listChap)
+//                    } else if (chapterCount > 8) {
+//                        Log.d("daknxck", "chap more")
+//                        chapterMangaPageSelect(chapterCount, 1, element, listChap)
+//                    }
+//
+//                } else {
+//                    Log.d("daknxck", "chap null")
+//                    listChap.add(
+//                        Chapter(
+//                            notChapter = true,
+//                            null,
+//                            null,
+//                            null,
+//                            null,
+//                            null,
+//                            null,
+//                            null,
+//                            null,
+//                            null,
+//                            null
+//                        )
+//                    )
+//                }
+//
+//
+//                var dateRelise: String = ""
+//                var last: MutableList<Chapter>
+//
+//                if (!listChap.isNullOrEmpty()) {
+//                    if (!listChap[0].notChapter) {
+//                        last = listChap.takeLast(1).toMutableList()
+//                        dateRelise = last[0].datePublished.toString()
+//                    } else
+//                        dateRelise = yearPage
+//                }
+//                // -------------------------INFO---------------------------
+//
+//
+//                val elementInfo =
+//                    document!!.select("p[class=elementList]")
+//
+//                val author: MutableList<String> = mutableListOf()
+//                var elementsAuthor = elementInfo.select("span[class=elem_author ]")
+//                if (elementsAuthor.isNullOrEmpty()) {
+//                    elementsAuthor = elementInfo.select("span[class=elem_screenwriter ]")
+//                }
+//
+//                for (i in 0 until elementsAuthor.size) {
+//                    val addA = elementsAuthor.select("a").text()
+//                    author.add(i, addA)
+//                }
+//
+//                val art: MutableList<String> = mutableListOf()
+//                val elementsArt = elementInfo.select("span[class=elem_illustrator ]")
+//
+//                for (i in 0 until elementsArt.size) {
+//                    val addA = elementsArt.select("a").text()
+//                    art.add(i, addA)
+//                }
+//
+//                val publisher: MutableList<String> = mutableListOf()
+//                val elementsPublisher = elementInfo.select("span[class=elem_publisher ]")
+//
+//                for (i in 0 until elementsPublisher.size) {
+//                    val addA = elementsPublisher.text()
+//                    publisher.add(i, addA)
+//                }
+//
+//                val translators: MutableList<String> = mutableListOf()
+//                val elementsTranslators = elementInfo.select("span[class=elem_translator ]")
+//
+//                for (i in 0 until elementsTranslators.size) {
+//                    val addA = elementsTranslators.text()
+//                    translators.add(i, addA)
+//                }
+//
+//
+//                listInfo =
+//                    MangaInfo(
+//                        scoreCount = "0",
+//                        viewCount = "0",
+//                        likesCount = "0",
+//                        commentCount = "0",
+//                        author = author,
+//                        art = art,
+//                        publisher = publisher,
+//                        dateRelise = dateRelise,
+//                        translators = translators
+//                    )
+//
+//                list = Manga(
+//                        id = title.hashCode().toString(),
+//                        type = type,
+//                        name = title,
+//                        alternativeName = alternativeName,
+//                        description = description,
+//                        score = score,
+//                        status = statusPage,
+//                        statusTranslated = statusTranslatedPag,
+//                        oldRating = lodRatingPage,
+//                        year = yearPage,
+//                        image = linkImageTop,
+//                        imageBack = linkImageTop,
+//                        urlManga = url,
+//                        bookmark = false,
+//                        bookmarkName = 0,
+//                        lastRead = "first",
+//                        chapterCount = chapterCount,
+//                        info = listInfo,
+//                        chapters = listChap
+//                    )
+//
+//                Log.e("ErrorApi",list.toString())
+//
+//                return flow { emit(list) }
+//            }
+//        }
+//        return flow {}
+//    }
 
     private fun chapterMangaPageSelect(count:Int,type:Int,element:Elements,list:MutableList<Chapter>):MutableList<Chapter> {
         //More 8  == 1

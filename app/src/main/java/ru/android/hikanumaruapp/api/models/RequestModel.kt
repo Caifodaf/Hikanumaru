@@ -6,7 +6,7 @@ data class UserRegPost(
     @Json(name = "email")var email:String = "",
     @Json(name = "login")var login:String = "",
     @Json(name = "username")var username:String = "",
-    @Json(name = "password")var password:String = ""
+    @Json(name = "password")var password:String = "",
 )
 
 data class UserAuthPost(

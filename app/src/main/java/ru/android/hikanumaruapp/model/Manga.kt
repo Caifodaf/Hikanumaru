@@ -3,6 +3,7 @@ package ru.android.hikanumaruapp.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.squareup.moshi.Json
 import ru.android.hikanumaruapp.utilits.room.ConvertersRoom
 
 data class MangaInfo (
@@ -22,33 +23,54 @@ data class MangaInfo (
 @TypeConverters
 data class Manga (
     @PrimaryKey
-    var id: String = "0", // id Manga
-    var type: Int? = 0, // Type 0-Manga 1-Manhva 2-Manhuya 3-Web 4-Comick 5-ru
-    var name: String = "",
-    var alternativeName: String? = "",
-    var description: String? = "",
-    var score: String? = "0.0",
-    var status: Int = 1, // State published manga 0-non 1-translate 2- stoped 3 - finish
-    var statusTranslated: Int? = 1,
-    var oldRating:String? = "",
-    var year: String? = "",
-
-    var urlManga: String? = "",
-
-    var image: String? = "",
-    var imageBack: String? = "",
-
-    var bookmark: Boolean = false,
-    var bookmarkName: Int = 0,
-    var lastRead: String? = "",
-    var chapterCount: Int? = 0,
-
-    var chapterCountLoadLocal: Int? = 0,
-    var chapterCountViewLocal: Int? = 0,
-
-
+    @Json(name = "id")var id: String = "", // id Manga
+    @Json(name = "title")var title: String = "",
+    @Json(name = "additionalTitle")var additionalTitle: String? = null,
     @field:TypeConverters(ConvertersRoom::class)
-    val info: MangaInfo?, // List Info
+    @Json(name = "othersTitle")var othersTitle: List<String>? = null,
+    @field:TypeConverters(ConvertersRoom::class)
+    @Json(name = "coverLinks")var coverLinks: List<String>? = null,
+    @Json(name = "description")var description: String? = null,
+    @Json(name = "releaseYear")var releaseYear: Int? = null,
+    @Json(name = "ageRating")var ageRating: Int? = null,
+    @Json(name = "type")var type: String? = null,
+    @Json(name = "publicationStatus")var publicationStatus: String? = null,
+    @Json(name = "translationStatus")var translationStatus: String? = null,
+    @field:TypeConverters(ConvertersRoom::class)
+    @Json(name = "genres")var genres: List<GenresMainModel>? = null,
+    @Json(name = "sourceLink")var sourceLink: String = "",
+    @Json(name = "source")var source: String = "",
+    @Json(name = "createTime")var createTime: String = "",
+    @Json(name = "updateTime")var updateTime: String = "",
+
+    var userStatus: String? = null,
+
+    //var score: String? = "0.0",
+    //var bookmarkName: Int = 0,
+    //var lastRead: String? = "",
+    //var chapterCount: Int? = 0,
+    //@field:TypeConverters(ConvertersRoom::class)
+    //val info: MangaInfo?, // List Info
+
+    var lastReadChapter: String? = "",
     @field:TypeConverters(ConvertersRoom::class)
     var chapters: MutableList<Chapter>? // List Pages
+)
+
+@Entity
+@TypeConverters
+data class MangaList (
+    @PrimaryKey
+    @Json(name = "id")var id: String = "", // id Manga
+    @Json(name = "title")var title: String = "",
+    @Json(name = "coverLinks.first")var coverLinksFirst: String? = null,
+    @Json(name = "coverLinks.last")var coverLinksLast: String? = null,
+    @Json(name = "description")var description: String? = null,
+    @Json(name = "releaseYear")var releaseYear: Int? = null,
+    @Json(name = "type")var type: String? = null,
+    @Json(name = "sourceLink")var sourceLink: String = "",
+    @field:TypeConverters(ConvertersRoom::class)
+    @Json(name = "mainGenres")var genres: List<GenresMainModel>? = null,
+
+    @Json(name = "userStatus")var userStatus: String? = null,
 )

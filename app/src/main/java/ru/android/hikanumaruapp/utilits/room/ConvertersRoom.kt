@@ -4,12 +4,45 @@ import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
 import ru.android.hikanumaruapp.model.Chapter
+import ru.android.hikanumaruapp.model.GenresMainModel
 import ru.android.hikanumaruapp.model.MangaInfo
 
 @ProvidedTypeConverter
 class ConvertersRoom (
     private val jsonParser: GsonParser
 ) {
+    @TypeConverter
+    fun toStringArray(list: List<String>) : String? {
+        return jsonParser.toJson(
+            list,
+            object : TypeToken<ArrayList<String>>(){}.type
+        ) ?: "[]"
+    }
+
+    @TypeConverter
+    fun fromStringArray(json: String): List<String>?{
+        return jsonParser.fromJson<ArrayList<String>>(
+            json,
+            object: TypeToken<ArrayList<String>>(){}.type
+        ) ?: emptyList()
+    }
+
+    @TypeConverter
+    fun toGenresMainModelJson(genresMainModel: List<GenresMainModel>) : String? {
+        return jsonParser.toJson(
+            genresMainModel,
+            object : TypeToken<ArrayList<GenresMainModel>>(){}.type
+        ) ?: "[]"
+    }
+
+    @TypeConverter
+    fun fromGenresMainModelJson(json: String): List<GenresMainModel>?{
+        return jsonParser.fromJson<ArrayList<GenresMainModel>>(
+            json,
+            object: TypeToken<ArrayList<GenresMainModel>>(){}.type
+        ) ?: emptyList()
+    }
+
     @TypeConverter
     fun toChaptersJson(chapters: List<Chapter>) : String? {
         return jsonParser.toJson(

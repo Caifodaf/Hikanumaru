@@ -424,7 +424,7 @@
                                 android:textColor="@color/grey_light_alternative_6"
                                 style="@style/Text.Headline_3"/>
                             <TextView
-                                android:id="@+id/tv_see_more_popular_home"
+                                android:id="@+id/TVSeePopualar"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignBottom="@+id/tv_popular_home_ph"
@@ -439,7 +439,7 @@
                                 android:id="@+id/shimmer_home_popular"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_below="@+id/tv_see_more_popular_home"
+                                android:layout_below="@+id/TVSeePopualar"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="14dp"
                                 app:shimmer_auto_start="true"

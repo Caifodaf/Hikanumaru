@@ -6,15 +6,122 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.home.page.HomeFragment">
+    tools:context=".presentasion.home.page.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CCSearchTab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="1000dp"
+        android:layout_marginBottom="62dp"
+        android:paddingBottom="10dp"
+        android:visibility="visible"
+        android:clickable="false"
+        android:windowSoftInputMode="adjustResize|stateAlwaysVisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <net.orandja.shadowlayout.ShadowLayout
+            android:id="@+id/ContainerSearchBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:shadow_radius="8"
+            app:shadow_downscale="1"
+            app:shadow_color="#0D000000"
+            app:shadow_y_shift="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ImageRandom"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:background="@drawable/rectangle_rounded_all_15"
+                android:backgroundTint="@color/white"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginEnd="20dp"
+                android:padding="5dp"
+                android:paddingBottom="12dp"
+                >
+
+                <ImageView
+                    android:id="@+id/ImageSearch"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/ic_search"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    app:tint="@color/grey_light_alternative_3" />
+
+                <EditText
+                    android:id="@+id/ETSearchBar"
+                    style="@style/Text.Subheadline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ImageFilters"
+                    android:layout_marginStart="43dp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="13dp"
+                    android:maxEms="100"
+                    android:maxLines="1"
+                    android:hint="@string/search"
+                    android:inputType="text"
+                    android:textColor="@color/grey_900"
+                    android:textColorHint="@color/grey_300"
+                    android:background="@android:color/transparent"
+                    android:gravity="start" />
+
+                <ImageView
+                    android:id="@+id/ImageFilters"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:src="@drawable/ic_filters"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    app:tint="@color/grey_light_alternative_3"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </net.orandja.shadowlayout.ShadowLayout>
+
+        <ImageView
+            android:id="@+id/ImageRandom"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintTop_toTopOf="@id/ContainerSearchBar"
+            app:layout_constraintBottom_toBottomOf="@id/ContainerSearchBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_random_dice"
+            android:layout_margin="24dp"
+            app:tint="@color/grey_light_alternative_3"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_home"
+        android:id="@+id/SwipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -27,39 +134,47 @@
                     android:orientation="vertical"
                     android:paddingBottom="100dp">
 
-                     <include layout="@layout/layout_error"/>
-
-                    <RelativeLayout
-                        android:id="@+id/placeholder_home_page"
+                    <FrameLayout
+                        android:id="@+id/FramePlaceholder"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         tools:visibility="gone">
 
                         <include layout="@layout/fragment_home_placeholder" />
-                    </RelativeLayout>
+                    </FrameLayout>
 
-                    <TextView
-                        android:id="@+id/tv_error_home"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="250dp"
-                        android:fontFamily="@font/font_semi_bold"
-                        android:text="@string/error_load"
-                        android:textColor="@color/black_news_text"
-                        android:textSize="20sp"
-                        android:visibility="gone" />
+                    <FrameLayout
+                        android:id="@+id/FrameError"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        tools:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/TVErrorHome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="250dp"
+                            android:fontFamily="@font/font_semi_bold"
+                            android:text="@string/error_load"
+                            android:textColor="@color/black_news_text"
+                            android:textSize="20sp"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="60dp"
+                        android:layout_marginTop="30dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="58dp"
                         android:visibility="visible">
 
                         <TextView
-                            android:id="@+id/tv_title_home_top_one"
+                            android:id="@+id/TVTitleTopOne"
                             style="@style/Text.Headline_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -69,11 +184,11 @@
                             android:textColor="@color/black" />
 
                         <TextView
-                            android:id="@+id/tv_title_home_top_two"
+                            android:id="@+id/TVTitleTopTwo"
                             style="@style/Text.Headline_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/tv_title_home_top_one"
+                            app:layout_constraintTop_toBottomOf="@id/TVTitleTopOne"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginTop="-10dp"
                             android:text="@string/title_home_top_two"
@@ -81,19 +196,20 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
+                        android:id="@+id/LLMainBlock"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/ll_recommendation_block"
+                            android:id="@+id/LLRecommendationBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:visibility="gone">
 
                             <TextView
-                                android:id="@+id/tv_rec_home"
+                                android:id="@+id/TVRecommendation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -107,12 +223,12 @@
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:id="@+id/tv_see_more_rec_home"
+                                android:id="@+id/TVSeeRecommendation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_rec_home"
+                                app:layout_constraintBottom_toBottomOf="@id/TVRecommendation"
                                 android:layout_marginEnd="16dp"
                                 android:clickable="false"
                                 android:fontFamily="@font/font_medium"
@@ -122,10 +238,10 @@
                                 android:textSize="14sp" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_recommendation_list"
+                                android:id="@+id/RVRecommendation"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/tv_rec_home"
+                                app:layout_constraintTop_toBottomOf="@id/TVRecommendation"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="14dp"
@@ -135,13 +251,13 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/ll_history_block"
+                            android:id="@+id/LLHistoryBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tv_history_home"
+                                android:id="@+id/TVHistory"
                                 style="@style/Text.Headline_3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -153,13 +269,13 @@
                                 android:textColor="@color/grey_light_alternative_6" />
 
                             <TextView
-                                android:id="@+id/tv_see_more_history_home"
+                                android:id="@+id/TVSeeHistory"
                                 style="@style/Text.Callout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_history_home"
+                                app:layout_constraintBottom_toBottomOf="@id/TVHistory"
                                 android:layout_marginEnd="16dp"
                                 android:clickable="false"
                                 android:gravity="end"
@@ -167,10 +283,10 @@
                                 android:textColor="@color/blue" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_history_list"
+                                android:id="@+id/RVHistory"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/tv_history_home"
+                                app:layout_constraintTop_toBottomOf="@id/TVHistory"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="14dp"
@@ -179,29 +295,17 @@
                                 tools:listitem="@layout/manga_main_item">
 
                             </androidx.recyclerview.widget.RecyclerView>
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_new_list_upper"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/rv_history_list"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                android:layout_marginTop="14dp"
-                                android:visibility="gone"
-                                android:orientation="horizontal">
-
-                            </androidx.recyclerview.widget.RecyclerView>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/ll_genres_block"
+                            android:id="@+id/LLGenresBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tv_genres_home"
+                                android:id="@+id/TVGenres"
                                 style="@style/Text.Headline_3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -213,13 +317,13 @@
                                 android:textColor="@color/grey_light_alternative_6" />
 
                             <TextView
-                                android:id="@+id/tv_see_more_genres_home"
+                                android:id="@+id/TVSeeGenres"
                                 style="@style/Text.Callout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_genres_home"
+                                app:layout_constraintBottom_toBottomOf="@id/TVGenres"
                                 android:layout_marginEnd="16dp"
                                 android:clickable="false"
                                 android:gravity="end"
@@ -227,10 +331,10 @@
                                 android:textColor="@color/blue" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_genres_list"
+                                android:id="@+id/RVGenres"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/tv_genres_home"
+                                app:layout_constraintTop_toBottomOf="@id/TVGenres"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="14dp"
@@ -241,10 +345,10 @@
                             </androidx.recyclerview.widget.RecyclerView>
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_genres_list2"
+                                android:id="@+id/RVGenres2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/rv_genres_list"
+                                app:layout_constraintTop_toBottomOf="@id/RVGenres"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="8dp"
@@ -256,14 +360,14 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/ll_special_block"
+                            android:id="@+id/LLMangaBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tv_special_home"
+                                android:id="@+id/TVManga"
                                 style="@style/Text.Headline_3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -271,17 +375,17 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 android:layout_marginStart="16dp"
                                 android:clickable="false"
-                                android:text="@string/special_for_you"
+                                android:text="Манга"
                                 android:textColor="@color/grey_light_alternative_6" />
 
                             <TextView
-                                android:id="@+id/tv_see_more_special_home"
+                                android:id="@+id/TVSeeManga"
                                 style="@style/Text.Callout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_special_home"
+                                app:layout_constraintBottom_toBottomOf="@id/TVManga"
                                 android:layout_marginEnd="16dp"
                                 android:clickable="false"
                                 android:gravity="end"
@@ -289,10 +393,10 @@
                                 android:textColor="@color/blue" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_special_list"
+                                android:id="@+id/RVManga"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/tv_special_home"
+                                app:layout_constraintTop_toBottomOf="@id/TVManga"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="14dp"
@@ -304,14 +408,15 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/ll_journal_block"
+                            android:id="@+id/LLJournal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
+                            android:visibility="gone"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tv_journal_home"
+                                android:id="@+id/TVJournalHome"
                                 style="@style/Text.Headline_3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -323,13 +428,13 @@
                                 android:textColor="@color/grey_light_alternative_6" />
 
                             <TextView
-                                android:id="@+id/tv_see_more_journal_home"
+                                android:id="@+id/TVSeeJournal"
                                 style="@style/Text.Callout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_journal_home"
+                                app:layout_constraintBottom_toBottomOf="@id/TVJournalHome"
                                 android:layout_marginEnd="16dp"
                                 android:clickable="false"
                                 android:gravity="end"
@@ -337,10 +442,10 @@
                                 android:textColor="@color/blue" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_journal_list"
+                                android:id="@+id/RVJournal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/tv_journal_home"
+                                app:layout_constraintTop_toBottomOf="@id/TVJournalHome"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="14dp"
@@ -352,14 +457,14 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/ll_new_block"
+                            android:id="@+id/LLManhvaBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tv_new_home"
+                                android:id="@+id/TVManhva"
                                 style="@style/Text.Headline_3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -367,17 +472,17 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 android:layout_marginStart="16dp"
                                 android:clickable="false"
-                                android:text="@string/new_main_page"
+                                android:text="Манхва"
                                 android:textColor="@color/grey_light_alternative_6" />
 
                             <TextView
-                                android:id="@+id/tv_see_more_new_home"
+                                android:id="@+id/TVSeeManhva"
                                 style="@style/Text.Callout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_new_home"
+                                app:layout_constraintBottom_toBottomOf="@id/TVManhva"
                                 android:layout_marginEnd="16dp"
                                 android:clickable="false"
                                 android:gravity="end"
@@ -385,10 +490,10 @@
                                 android:textColor="@color/blue" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_new_list"
+                                android:id="@+id/RVManhva"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/tv_new_home"
+                                app:layout_constraintTop_toBottomOf="@id/TVManhva"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="14dp"
@@ -400,14 +505,14 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/ll_popular_block"
+                            android:id="@+id/LLPopularBLock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tv_popular_home"
+                                android:id="@+id/TVPopular"
                                 style="@style/Text.Headline_3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -419,13 +524,13 @@
                                 android:textColor="@color/grey_light_alternative_6" />
 
                             <TextView
-                                android:id="@+id/tv_see_more_popular_home"
+                                android:id="@+id/TVSeePopualar"
                                 style="@style/Text.Callout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_popular_home"
+                                app:layout_constraintBottom_toBottomOf="@id/TVPopular"
                                 android:layout_marginEnd="16dp"
                                 android:clickable="false"
                                 android:gravity="end"
@@ -433,10 +538,10 @@
                                 android:textColor="@color/blue" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_popular_list"
+                                android:id="@+id/RVPopular"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/tv_popular_home"
+                                app:layout_constraintTop_toBottomOf="@id/TVPopular"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="14dp"

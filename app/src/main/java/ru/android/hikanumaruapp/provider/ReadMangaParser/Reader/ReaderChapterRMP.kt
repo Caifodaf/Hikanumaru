@@ -1,12 +1,9 @@
 package ru.android.hikanumaruapp.provider.ReadMangaParser.Reader
 
 import android.util.Log
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.flow
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import ru.android.hikanumaruapp.ui.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
 import java.io.IOException
 
 class ReaderChapterRMP(val document: Document, val url:String){

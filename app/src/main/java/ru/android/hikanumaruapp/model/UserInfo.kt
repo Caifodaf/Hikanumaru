@@ -10,11 +10,11 @@ data class UserInfo(
     @Json(name = "roles") var roles: List<String> = listOf(),
     @Json(name = "createTime") var createdAt:String = "",
     @Json(name = "updateTime") var updateAt:String = "",
+    var imageAvatar: String? = null,
+    var imageCover: String? = null,
 
 //    @Json(name = "type") var type: String = "", // todo
-//    @Json(name = "imageCover") var imageCover: String = "",
 //    @Json(name = "imageCoverUpdatedAt") var imageCoverUpdatedAt: String = "",
-//    @Json(name = "imageAvatar") var imageAvatar: String = "",
 //    @Json(name = "imageAvatarUpdatedAt") var imageAvatarUpdatedAt: String = "",
 //    @Json(name = "statusCheckMail") var statusCheckMail: String = "", // todo
 //    @Json(name = "sex") var sex: String = "",

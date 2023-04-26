@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.ui.reader.viewer.pager;
+package ru.android.hikanumaruapp.presentasion.reader.viewer.pager;
 
 import android.view.View;
 

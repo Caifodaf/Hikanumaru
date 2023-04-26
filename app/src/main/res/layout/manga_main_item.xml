@@ -1,73 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_block_manga_main_item"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/CCMainMangaBlock"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="0dp"
+    android:layout_marginEnd="12dp"
     android:clipToPadding="false"
     android:elevation="0dp"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_manga_item"
-        android:layout_width="116dp"
-        android:layout_height="180dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CCManga"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:elevation="0dp">
 
         <ImageView
-            android:id="@+id/iv_manga_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/ImageManga"
+            android:layout_width="115dp"
+            android:layout_height="180dp"
             android:elevation="30dp"
-            android:padding="4dp"
             android:scaleType="fitXY"
-            android:src="@drawable/manga_solo" />
+            app:layout_constraintDimensionRatio="H,128:200"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/rectangle_rounded_all_8"
+            android:backgroundTint="@color/grey_100"
+            />
 
         <TextView
-            android:id="@+id/tv_manga_state_main_item"
+            android:id="@+id/TVMangaUserStatus"
             style="@style/Text.Caption_2"
             android:layout_width="wrap_content"
             android:layout_height="16dp"
-            android:layout_alignStart="@id/iv_manga_item"
-            android:layout_alignBottom="@id/iv_manga_item"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="9dp"
             android:layout_marginBottom="9dp"
-            android:background="@drawable/rectangle_rounded_all_5"
-            android:backgroundTint="#F0000000"
+            android:background="@drawable/rectangle_rounded_all_8"
+            android:backgroundTint="#CC000000"
             android:elevation="50dp"
             android:gravity="center"
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
+            android:visibility="gone"
             android:text="Читаю"
             android:textColor="@color/white" />
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/tv_title_manga_item"
+        android:id="@+id/TVMangaTitle"
         style="@style/Text.Caption_1_1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_manga_item"
-        android:layout_alignEnd="@+id/rl_manga_item"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toBottomOf="@id/CCManga"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/CCManga"
+        android:layout_marginTop="10dp"
         android:lines="2"
         android:maxLines="2"
+        android:ellipsize="end"
         android:text="Моя девушка совсем не милая"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/tv_type_manga_item"
+        android:id="@+id/TVTypeManga"
         style="@style/Text.FootNote"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_title_manga_item"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/TVMangaTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/CCManga"
+        android:layout_marginTop="6dp"
         android:lines="1"
         android:text="@string/manga"
         android:textColor="@color/grey_light_alternative_5" />
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

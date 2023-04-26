@@ -6,7 +6,7 @@
     android:id="@+id/CCMain"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.auth.login.LoginFragment">
+    tools:context=".presentasion.auth.login.LoginFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

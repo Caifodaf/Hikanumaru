@@ -142,7 +142,7 @@
     <string name="status_read_dropped_manga_item">Брошенно</string>
 
     <string name="error_message_load_page">Ошибка загрузки. Проверте подключение к сети и повторите попытку</string>
-    <string name="again_load_error">Повторить попытку</string>
+    <string name="again_load_error">Обновить страницу</string>
 
     <string name="type_manga_text_item">Тип: Манга</string>
     <string name="type_manhya_text_item">Тип: Маньхуа</string>
@@ -255,5 +255,8 @@
     <string name="profile_age_date_month">мес.</string>
     <string name="profile_age_date_year">год</string>
     <string name="profile_age_date_years">лет</string>
+    <string name="title_search_top">Поиск</string>
+    <string name="title_search_top_lasted">Вы искали</string>
+    <string name="title_search_result">Результаты поиска</string>
 
 </resources>

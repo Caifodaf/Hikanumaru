@@ -6,7 +6,7 @@
     android:id="@+id/CCMain"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.auth.login.LoginFragment">
+    tools:context=".presentasion.auth.login.LoginFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -157,6 +157,7 @@
             android:layout_marginBottom="20dp"
             android:text="@string/log_in"
             android:textColor="@color/grey_400"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible"
             app:layout_constraintBottom_toTopOf="@+id/TVBtnLogInGuest"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
