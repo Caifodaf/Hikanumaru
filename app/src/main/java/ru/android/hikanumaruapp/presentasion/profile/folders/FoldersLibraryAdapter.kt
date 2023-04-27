@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.data.model.library.FolderLibraryModel
 import ru.android.hikanumaruapp.databinding.FolderTagsLibraryProfileItemBinding
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 

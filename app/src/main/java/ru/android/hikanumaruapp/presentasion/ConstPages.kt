@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp
+package ru.android.hikanumaruapp.presentasion
 
 interface ConstPages {
     companion object {

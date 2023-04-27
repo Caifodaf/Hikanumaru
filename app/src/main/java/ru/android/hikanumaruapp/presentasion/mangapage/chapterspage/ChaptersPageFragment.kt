@@ -15,7 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.databinding.FragmentChaptersPageBinding
-import ru.android.hikanumaruapp.model.Chapter
+import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 import ru.android.hikanumaruapp.utilits.recyclerviews.snappy.SnappyLinearLayoutManager

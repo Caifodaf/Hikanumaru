@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentHelloPageBinding
-import ru.android.hikanumaruapp.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
 import ru.android.hikanumaruapp.utilits.NetworkUtils
 
 @AndroidEntryPoint

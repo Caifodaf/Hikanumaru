@@ -2,7 +2,7 @@ package ru.android.hikanumaruapp.provider.ReadMangaParser.Reader
 
 import android.util.Log
 import org.jsoup.nodes.Document
-import ru.android.hikanumaruapp.model.Chapter
+import ru.android.hikanumaruapp.data.model.Chapter
 import java.io.IOException
 
 class ReaderChaptersListRMP(

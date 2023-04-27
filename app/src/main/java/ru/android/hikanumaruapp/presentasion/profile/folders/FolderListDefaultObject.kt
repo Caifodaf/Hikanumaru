@@ -1,5 +1,7 @@
 package ru.android.hikanumaruapp.presentasion.profile.folders
 
+import ru.android.hikanumaruapp.data.model.library.FolderLibraryModel
+
 interface FolderListDefaultObject {
 
     fun setListDefaultTags() : MutableList<FolderLibraryModel>{

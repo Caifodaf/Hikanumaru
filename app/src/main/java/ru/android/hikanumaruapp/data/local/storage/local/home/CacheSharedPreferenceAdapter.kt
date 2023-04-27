@@ -1,11 +1,10 @@
-package ru.android.hikanumaruapp.local.storage.local.home
+package ru.android.hikanumaruapp.data.local.storage.local.home
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.android.hikanumaruapp.local.user.UserSharedPreferenceAdapter
-import ru.android.hikanumaruapp.model.UserInfo
 
 interface CacheSharedPreferenceAdapter {
 
@@ -52,14 +51,10 @@ interface CacheSharedPreferenceAdapter {
     fun Context.getHomeCache(): Flow<HomeCacheModel?> {
         val serializedUser = getSharedPreferences(CACHE_PREFERENCES, Context.MODE_PRIVATE)
             .getString(CACHE_HOME_DATA_PREFERENCES, null)
-
-        val result = if (serializedUser != null)
-            Gson().fromJson(serializedUser, HomeCacheModel::class.java)
-        else
-            null
-
-        return flow<HomeCacheModel> {
-            result?.let { emit(it) }
+        return flow {
+            emit(
+                if (serializedUser != null) Gson().fromJson(serializedUser, HomeCacheModel::class.java) else null
+            )
         }
     }
 

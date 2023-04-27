@@ -2,13 +2,10 @@ package ru.android.hikanumaruapp.presentasion.search.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.transform.RoundedCornersTransformation
-import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.MangaMainItemBinding
-import ru.android.hikanumaruapp.model.MangaMainModel
+import ru.android.hikanumaruapp.data.model.MangaMainModel
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 
 class LastedSearchAdapter(

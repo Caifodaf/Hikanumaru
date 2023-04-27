@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,10 +24,11 @@ import ru.android.hikanumaruapp.api.api.token.AuthViewModel
 import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentLoginBinding
-import ru.android.hikanumaruapp.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.databinding.FragmentHomeBinding
+import ru.android.hikanumaruapp.presentasion.ConstPages
 import ru.android.hikanumaruapp.presentasion.auth.RulesNameAuth
 import ru.android.hikanumaruapp.presentasion.auth.registration.state.two.RegistrationStateTwoFragment
-import ru.android.hikanumaruapp.utilits.NetworkUtils
 import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
 
 @AndroidEntryPoint
@@ -68,6 +70,7 @@ class LoginFragment : BaseFragment() {
 
             observeLogin()
             observeUser()
+            observeErrors()
         }
     }
 
@@ -144,6 +147,19 @@ class LoginFragment : BaseFragment() {
     }
 
     /////////////////////////////////////////////////////////////////
+
+    private fun FragmentLoginBinding.observeErrors() {
+        vm.error.observe(viewLifecycleOwner, Observer { error->
+            val pop = PopAlertDialog(requireActivity(),lifecycleScope)
+            when(error.code){
+                502 -> pop.setDataDialog("Ошибка сервера")
+                504 -> pop.setDataDialog("Время ожидания первышенно")
+                -1 -> pop.setDataDialog("Нестабильная работа сети")
+                else -> pop.setDataDialog("Неверная почта или пароль")
+            }
+            btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
+        })
+    }
 
     private fun FragmentLoginBinding.observeLogin() {
         vmAuth.loginResponse.observe(viewLifecycleOwner) {
@@ -268,7 +284,7 @@ class LoginFragment : BaseFragment() {
         ImageBtnTwitter.setOnClickListener{
             // todo add fun
         }
-        ImageBtnShikimori.setOnClickListener{
+        ImageBtnShikimori.setOnClickListener {
             // todo add fun
         }
     }

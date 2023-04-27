@@ -28,7 +28,6 @@ class NewsFragment : BaseFragment() {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
         return root
     }
 

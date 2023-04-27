@@ -1,12 +1,10 @@
 package ru.android.hikanumaruapp.api.init
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import ru.android.hikanumaruapp.model.GenresMainModel
 
 open class BaseViewModel : ViewModel() {
     private var mJob: Job? = null
@@ -14,7 +12,7 @@ open class BaseViewModel : ViewModel() {
     protected fun <T> baseRequest(liveData: MutableLiveData<T>, errorHandler: CoroutinesErrorHandler, request: () -> Flow<T>) {
         mJob = viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, error ->
             viewModelScope.launch(Dispatchers.Main) {
-                errorHandler.onError(error.localizedMessage ?: "Error occured! Please try again.")
+                errorHandler.onError(error,error.localizedMessage ?: "Error occured! Please try again.")
             }
         }){
             request().collect {
@@ -36,5 +34,5 @@ open class BaseViewModel : ViewModel() {
 }
 
 interface CoroutinesErrorHandler {
-    fun onError(message:String)
+    fun onError(cause: Throwable?, message: String)
 }

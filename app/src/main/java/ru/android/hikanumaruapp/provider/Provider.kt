@@ -2,8 +2,8 @@ package ru.android.hikanumaruapp.provider
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.android.hikanumaruapp.model.Chapter
-import ru.android.hikanumaruapp.model.Manga
+import ru.android.hikanumaruapp.data.model.Chapter
+import ru.android.hikanumaruapp.data.model.Manga
 import ru.android.hikanumaruapp.provider.SourceProvider.MANGALIB_SOURCE
 import ru.android.hikanumaruapp.provider.SourceProvider.RANOBELIB_SOURCE
 import ru.android.hikanumaruapp.provider.SourceProvider.READMANGA_SOURCE

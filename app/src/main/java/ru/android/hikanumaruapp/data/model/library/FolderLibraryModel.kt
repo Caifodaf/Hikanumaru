@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.presentasion.profile.folders
+package ru.android.hikanumaruapp.data.model.library
 
 data class FolderLibraryModel(
     val idName: String = "none",

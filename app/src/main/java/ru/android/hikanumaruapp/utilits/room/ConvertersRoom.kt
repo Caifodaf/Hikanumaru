@@ -3,9 +3,9 @@ package ru.android.hikanumaruapp.utilits.room
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
-import ru.android.hikanumaruapp.model.Chapter
-import ru.android.hikanumaruapp.model.GenresMainModel
-import ru.android.hikanumaruapp.model.MangaInfo
+import ru.android.hikanumaruapp.data.model.Chapter
+import ru.android.hikanumaruapp.data.model.GenresMainModel
+import ru.android.hikanumaruapp.data.model.MangaInfo
 
 @ProvidedTypeConverter
 class ConvertersRoom (

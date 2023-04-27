@@ -13,7 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.model.Chapter
+import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.provider.ReaderProvider
 import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
 import ru.android.hikanumaruapp.utilits.SaverImagePager

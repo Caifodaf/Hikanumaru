@@ -11,10 +11,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import ru.android.hikanumaruapp.local.user.UserSharedPreferenceAdapter
-import ru.android.hikanumaruapp.local.storage.library.LibraryBase
-import ru.android.hikanumaruapp.local.user.UserDataViewModel
-import ru.android.hikanumaruapp.model.Manga
+import ru.android.hikanumaruapp.data.local.user.UserSharedPreferenceAdapter
+import ru.android.hikanumaruapp.data.local.storage.library.LibraryBase
+import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.data.model.Manga
 import ru.android.hikanumaruapp.presentasion.profile.folders.FolderListDefaultObject
 import ru.android.hikanumaruapp.presentasion.profile.folders.FoldersLibraryAdapter
 import ru.android.hikanumaruapp.presentasion.profile.folders.LibraryAdapter

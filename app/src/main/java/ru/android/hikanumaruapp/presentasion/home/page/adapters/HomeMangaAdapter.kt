@@ -11,7 +11,7 @@ import coil.load
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.MangaMainItemBinding
 import ru.android.hikanumaruapp.databinding.MangaMainLastedItemBinding
-import ru.android.hikanumaruapp.model.MangaList
+import ru.android.hikanumaruapp.data.model.MangaList
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 
 class HomeMangaAdapter(private val context: Context,

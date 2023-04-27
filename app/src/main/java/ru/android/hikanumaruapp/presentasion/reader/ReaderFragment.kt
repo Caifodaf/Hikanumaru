@@ -25,7 +25,7 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentReaderBinding
-import ru.android.hikanumaruapp.model.Chapter
+import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.presentasion.reader.ViewTapConst.LEFT_REGION
 import ru.android.hikanumaruapp.presentasion.reader.ViewTapConst.RIGHT_REGION
 import ru.android.hikanumaruapp.presentasion.reader.chapterList.ChapterListAdapter

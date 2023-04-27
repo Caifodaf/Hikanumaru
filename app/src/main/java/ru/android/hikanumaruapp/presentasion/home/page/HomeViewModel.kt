@@ -1,22 +1,26 @@
 package ru.android.hikanumaruapp.presentasion.home.page
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.util.ArrayUtils.contains
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.api.init.CoroutinesErrorHandler
-import ru.android.hikanumaruapp.data.debug.DataSetDebug
-import ru.android.hikanumaruapp.model.*
-import ru.android.hikanumaruapp.utilits.navigation.Events
+import ru.android.hikanumaruapp.api.models.CreativeWorksRequestModel
+import ru.android.hikanumaruapp.api.models.ErrorResponse
+import ru.android.hikanumaruapp.data.model.*
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListener {
+
+    val error: MutableLiveData<ErrorResponse> by lazy { MutableLiveData<ErrorResponse>() }
 
     val listHistoryData: MutableLiveData<List<MangaPageTextDate>> by lazy { MutableLiveData<List<MangaPageTextDate>>() }
 
@@ -30,32 +34,42 @@ class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListene
     val mainManhvaList: MutableLiveData<List<MangaList>> by lazy { MutableLiveData<List<MangaList>>() }
     val mainPopularList: MutableLiveData<List<MangaList>> by lazy { MutableLiveData<List<MangaList>>() }
 
-
     private lateinit var job: Job
-    val emitter = Events.Emitter()
-    private var dataDebug = DataSetDebug()
 
     internal fun getMainPage(vmMain: MainApiViewModel, block: String) {
         when(block) {
             "Genres" ->
                 vmMain.getMainPageGenres(mainGenresResponse,object: CoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            // TODO ERROR
-                            //_error.postValue(ErrorResponse(1, message.toString()))
+                        override fun onError(cause: Throwable?, message: String) {
+                            when(cause.toString().substringBefore(':')){
+                                "java.net.SocketTimeoutException" -> error.postValue(ErrorResponse(504, message.toString()))
+                                "java.net.UnknownHostException"  ->  error.postValue(ErrorResponse(-1, message.toString()))
+                                else  ->  error.postValue(ErrorResponse(502, message.toString()))
+                            }
                         }
                     })
             "Manga" ->
-                vmMain.getMainPageManga(mainMangaResponse,object: CoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            // TODO ERROR
-                            //_error.postValue(ErrorResponse(1, message.toString()))
+                vmMain.getCreativeWorksCollection(mainMangaResponse,
+                    CreativeWorksRequestModel(type = listOf("manga")),
+                    object: CoroutinesErrorHandler {
+                        override fun onError(cause: Throwable?, message: String) {
+                            when(cause.toString().substringBefore(':')){
+                                "java.net.SocketTimeoutException" -> error.postValue(ErrorResponse(504, message.toString()))
+                                "java.net.UnknownHostException"  ->  error.postValue(ErrorResponse(-1, message.toString()))
+                                else  ->  error.postValue(ErrorResponse(502, message.toString()))
+                            }
                         }
                     })
             "Manhva" ->
-                vmMain.getMainPageManhva(mainManhvaResponse,object: CoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            // TODO ERROR
-                            //_error.postValue(ErrorResponse(1, message.toString()))
+                vmMain.getCreativeWorksCollection(mainManhvaResponse,
+                    CreativeWorksRequestModel(type = listOf("manhva")),
+                    object: CoroutinesErrorHandler {
+                        override fun onError(cause: Throwable?, message: String) {
+                            when(cause.toString().substringBefore(':')){
+                                "java.net.SocketTimeoutException" -> error.postValue(ErrorResponse(504, message.toString()))
+                                "java.net.UnknownHostException"  ->  error.postValue(ErrorResponse(-1, message.toString()))
+                                else  ->  error.postValue(ErrorResponse(502, message.toString()))
+                            }
                         }
                     })
         }

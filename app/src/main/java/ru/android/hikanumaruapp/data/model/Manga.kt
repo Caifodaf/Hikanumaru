@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.model
+package ru.android.hikanumaruapp.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

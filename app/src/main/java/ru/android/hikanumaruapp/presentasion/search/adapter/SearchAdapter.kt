@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.android.hikanumaruapp.databinding.SearchMangaItemBinding
-import ru.android.hikanumaruapp.model.MangaMainModel
+import ru.android.hikanumaruapp.data.model.MangaMainModel
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 
 class SearchAdapter(

@@ -20,9 +20,9 @@ import kotlinx.coroutines.flow.catch
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
 import ru.android.hikanumaruapp.api.init.CoroutinesErrorHandler
-import ru.android.hikanumaruapp.local.storage.library.LibraryBase
+import ru.android.hikanumaruapp.data.local.storage.library.LibraryBase
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageTextAdapter
-import ru.android.hikanumaruapp.model.*
+import ru.android.hikanumaruapp.data.model.*
 import ru.android.hikanumaruapp.provider.Provider
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.model.TagsMangaPageModel
 import ru.android.hikanumaruapp.utilits.*
@@ -150,7 +150,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
     internal fun getDataPage(vmApi: MainApiViewModel, mangaId: String) {
         vmApi.getMangaPage(mangaId,
             object: CoroutinesErrorHandler {
-                override fun onError(message: String) {
+                override fun onError(cause: Throwable?, message: String) {
                     // TODO ERROR
                     //_error.postValue(ErrorResponse(1, message.toString()))
                 }

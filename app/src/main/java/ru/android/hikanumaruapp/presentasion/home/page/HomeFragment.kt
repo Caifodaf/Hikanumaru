@@ -9,24 +9,25 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.presentasion.BaseFragment
-import ru.android.hikanumaruapp.ConstPages
+import ru.android.hikanumaruapp.presentasion.ConstPages
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
 import ru.android.hikanumaruapp.api.api.token.AuthViewModel
 import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.databinding.FragmentHomeBinding
-import ru.android.hikanumaruapp.local.storage.local.home.LocalCacheHomeViewModel
-import ru.android.hikanumaruapp.model.GenresMainModel
-import ru.android.hikanumaruapp.model.MangaMainModel
-import ru.android.hikanumaruapp.model.MangaPopularMainModel
+import ru.android.hikanumaruapp.data.local.storage.local.home.HomeCacheModel
+import ru.android.hikanumaruapp.data.local.storage.local.home.LocalCacheHomeViewModel
+import ru.android.hikanumaruapp.data.model.MangaMainModel
+import ru.android.hikanumaruapp.data.model.MangaPopularMainModel
 import ru.android.hikanumaruapp.presentasion.home.page.adapters.*
 import ru.android.hikanumaruapp.presentasion.search.SearchTabViewModel
-import ru.android.hikanumaruapp.utilits.NetworkUtils
+import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.utilits.recyclerviews.SpaceItemDecoration
 
@@ -67,6 +68,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
             //move to vm
             loadPage()
             observeAllPageData()
+            observeErrors()
 
             getEndleesList()
 
@@ -84,6 +86,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
             } else{
                 vmCache.apply {requireActivity().getHomeCacheVM()}
                 vmCache.homeListModelCache.observe(viewLifecycleOwner, Observer { list ->
+                    Log.d("apiRequestFlow", "homeListModelCache - $list") //todo
                     if (list != null) {
                         vm.mainGenresList.value = list.genresList
                         vm.mainMangaList.value = list.mangaList
@@ -139,6 +142,19 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
             if (block != "History")
                 vm.getMainPage(vmApi,block)
         }
+    }
+
+    private fun FragmentHomeBinding.observeErrors() {
+        vm.error.observe(viewLifecycleOwner, Observer { error->
+            val pop = PopAlertDialog(requireActivity(),lifecycleScope)
+            when(error.code){
+                502 -> pop.setDataDialog("Ошибка сервера")
+                504 -> pop.setDataDialog("Время ожидания первышенно")
+                -1 -> pop.setDataDialog("Нестабильная работа сети")
+                else -> pop.setDataDialog("Неверная почта или пароль")
+            }
+            statePage(ConstPages.ERROR_PAGE_VIEW)
+        })
     }
 
     private fun FragmentHomeBinding.observeAllPageData() {
@@ -267,6 +283,16 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
             ::mangaAdapter.isInitialized && ::manhvaAdapter.isInitialized
             //::popularAdapter.isInitialized
         ){
+            if(!vm.mainGenresList.value.isNullOrEmpty() &&
+                !vm.mainMangaList.value.isNullOrEmpty() &&
+                !vm.mainManhvaList.value.isNullOrEmpty()
+            ) {
+                vmCache.apply { requireActivity().saveHomeCacheVM(HomeCacheModel(
+                    vm.mainGenresList.value!!,vm.mainMangaList.value!!,
+                    vm.mainManhvaList.value!!
+                ))
+                }
+            }
             statePage(ConstPages.DEFAULT_PAGE_VIEW)
         }else{
             statePage(ConstPages.LOADING_PAGE_VIEW)

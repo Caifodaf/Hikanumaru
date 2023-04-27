@@ -15,6 +15,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,8 @@ import ru.android.hikanumaruapp.api.api.token.AuthViewModel
 import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationStateTwoBinding
-import ru.android.hikanumaruapp.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.databinding.FragmentRegistrationBinding
 import ru.android.hikanumaruapp.presentasion.auth.RulesNameAuth
 import ru.android.hikanumaruapp.presentasion.auth.registration.RegistrationViewModel
 import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
@@ -68,6 +70,7 @@ class RegistrationStateTwoFragment() : BaseFragment() {
             edNameListener()
 
             observeLogin()
+            observeErrors()
         }
     }
 
@@ -145,6 +148,19 @@ class RegistrationStateTwoFragment() : BaseFragment() {
     }
 
     /////////////////////////////////////////////////////////////////
+    private fun FragmentRegistrationStateTwoBinding.observeErrors() {
+        vm.error.observe(viewLifecycleOwner, Observer { error->
+            val pop = PopAlertDialog(requireActivity(),lifecycleScope)
+            when(error.code){
+                502 -> pop.setDataDialog("Ошибка сервера")
+                504 -> pop.setDataDialog("Время ожидания первышенно")
+                -1 -> pop.setDataDialog("Нестабильная работа сети")
+                else -> pop.setDataDialog("Неверная почта или пароль")
+            }
+            btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
+        })
+    }
+
     private fun FragmentRegistrationStateTwoBinding.observeLogin() {
         vmAuth.checkLoginResponse.observe(viewLifecycleOwner) {
             val pop = PopAlertDialog(requireActivity(), lifecycleScope)

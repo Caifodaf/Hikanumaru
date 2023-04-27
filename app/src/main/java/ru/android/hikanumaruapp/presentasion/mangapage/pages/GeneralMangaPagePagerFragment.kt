@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
-import ru.android.hikanumaruapp.ConstPages
+import ru.android.hikanumaruapp.presentasion.ConstPages
 import ru.android.hikanumaruapp.databinding.GeneralTabMangaPageBinding
-import ru.android.hikanumaruapp.model.Chapter
+import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.presentasion.mangapage.MangaPageViewModel
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageChapterAdapter
 import ru.android.hikanumaruapp.utilits.UIUtils

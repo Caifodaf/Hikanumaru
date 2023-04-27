@@ -24,7 +24,6 @@ class SettingsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }

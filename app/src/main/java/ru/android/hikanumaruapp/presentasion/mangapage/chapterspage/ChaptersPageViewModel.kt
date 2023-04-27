@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.model.Chapter
+import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.provider.Provider
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageChapterAdapter
 import ru.android.hikanumaruapp.utilits.navigation.Events

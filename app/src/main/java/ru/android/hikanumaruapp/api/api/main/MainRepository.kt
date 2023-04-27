@@ -1,6 +1,8 @@
 package ru.android.hikanumaruapp.api.api.main
 
+import retrofit2.http.Query
 import ru.android.hikanumaruapp.api.init.apiRequestFlow
+import ru.android.hikanumaruapp.api.models.CreativeWorksRequestModel
 import ru.android.hikanumaruapp.api.models.UserRegPost
 import javax.inject.Inject
 
@@ -24,24 +26,35 @@ class MainRepository @Inject constructor(
         mainApiService.getMangaPage(post)
     }
 
+    // Get Genres | Home
+    fun getCreativeWorksCollection(filter: CreativeWorksRequestModel?)
+    = apiRequestFlow {
+        if (filter == null)
+            mainApiService.getCreativeWorksCollection(
+                page = 1,
+                itemsPerPage = 10,
+            )
+        else
+            mainApiService.getCreativeWorksCollection(
+                page = filter.page,
+                search = filter.search,
+                type = filter.type,
+                publicationStatus = filter.publicationStatus,
+                translationStatus = filter.translationStatus,
+                source = filter.source,
+                itemsPerPage = filter.itemsPerPage,
+                genres = filter.genres,
+                releaseYear = filter.releaseYear,
+                releaseYearStart = filter.releaseYearStart,
+                releaseYearEnd = filter.releaseYearEnd,
+                orderSortTitle = filter.orderSortTitle,
+                orderSortYear = filter.orderSortYear,
+            )
+    }
+
 
     // Get Genres | Home
     fun getGenres() = apiRequestFlow {
         mainApiService.getGenres()
-    }
-
-    // Get Manga | Home
-    fun getMainPageManga() = apiRequestFlow {
-        mainApiService.getMainPageManga()
-    }
-
-    // Get Manhva | Home
-    fun getMainPageManhva() = apiRequestFlow {
-        mainApiService.getMainPageManhva()
-    }
-
-    // Get Popular | Home
-    fun getMainPagePopular() = apiRequestFlow {
-        mainApiService.getMainPagePopular()
     }
 }

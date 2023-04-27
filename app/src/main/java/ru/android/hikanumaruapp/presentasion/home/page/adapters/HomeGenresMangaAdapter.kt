@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.databinding.GenresMainItemBinding
-import ru.android.hikanumaruapp.model.GenresMainModel
+import ru.android.hikanumaruapp.data.model.GenresMainModel
 
 class HomeGenresMangaAdapter(
     private val listenerClick: RecyclerViewClickListener

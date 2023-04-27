@@ -9,7 +9,7 @@ import ru.android.hikanumaruapp.databinding.BigSnapLibraryMangaItemBinding
 import ru.android.hikanumaruapp.databinding.LargeLibraryMangaItemBinding
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.databinding.SmallSnapLibraryMangaItemBinding
-import ru.android.hikanumaruapp.model.Manga
+import ru.android.hikanumaruapp.data.model.Manga
 
 class LibraryAdapter(
     private val listenerClick: RecyclerViewClickListener,

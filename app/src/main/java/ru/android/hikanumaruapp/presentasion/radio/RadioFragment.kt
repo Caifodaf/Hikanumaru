@@ -31,7 +31,7 @@ class RadioFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
+
         setupOnBackPressed()
     }
 

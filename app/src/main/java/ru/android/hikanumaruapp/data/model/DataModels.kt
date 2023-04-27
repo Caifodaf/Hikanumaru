@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.model
+package ru.android.hikanumaruapp.data.model
 
 import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
 import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapterPage

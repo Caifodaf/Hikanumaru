@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.databinding.LargePopularMainMangaItemBinding
-import ru.android.hikanumaruapp.model.MangaPopularMainModel
+import ru.android.hikanumaruapp.data.model.MangaPopularMainModel
 
 class HomePopularMangaAdapter(
     private val listenerClick: RecyclerViewClickListener

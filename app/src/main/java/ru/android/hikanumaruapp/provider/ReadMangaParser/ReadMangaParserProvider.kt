@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import ru.android.hikanumaruapp.model.Chapter
+import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.provider.ReadMangaParser.Reader.ReaderRMP
 import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
 import java.io.IOException

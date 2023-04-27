@@ -6,10 +6,8 @@ import ru.android.hikanumaruapp.api.models.CheckAvailabilityResponse
 import ru.android.hikanumaruapp.api.models.TokenJWT
 import ru.android.hikanumaruapp.api.models.UserAuthPost
 import ru.android.hikanumaruapp.api.models.UserRegPost
-import ru.android.hikanumaruapp.model.BodyGenresApiModel
-import ru.android.hikanumaruapp.model.GenresMainModel
-import ru.android.hikanumaruapp.model.Manga
-import ru.android.hikanumaruapp.model.MangaList
+import ru.android.hikanumaruapp.data.model.GenresMainModel
+import ru.android.hikanumaruapp.data.model.MangaList
 
 interface AuthApiService {
     // Check Email

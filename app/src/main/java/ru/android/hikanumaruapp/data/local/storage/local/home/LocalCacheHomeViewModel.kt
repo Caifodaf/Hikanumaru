@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.local.storage.local.home
+package ru.android.hikanumaruapp.data.local.storage.local.home
 
 import android.content.Context
 import android.util.Log
@@ -9,9 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.android.hikanumaruapp.api.models.UserRegPost
-import ru.android.hikanumaruapp.model.GenresMainModel
-import ru.android.hikanumaruapp.model.MangaList
 import java.lang.Exception
 import javax.inject.Inject
 

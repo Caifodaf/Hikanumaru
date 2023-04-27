@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.BottomSheetMangaPageBinding
-import ru.android.hikanumaruapp.model.Manga
+import ru.android.hikanumaruapp.data.model.Manga
 import java.lang.reflect.Type
 
 

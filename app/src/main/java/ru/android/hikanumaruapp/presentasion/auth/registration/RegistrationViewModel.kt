@@ -3,6 +3,7 @@ package ru.android.hikanumaruapp.presentasion.auth.registration
 import android.content.Context
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -10,7 +11,7 @@ import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
 import ru.android.hikanumaruapp.api.api.token.AuthViewModel
 import ru.android.hikanumaruapp.api.init.CoroutinesErrorHandler
 import ru.android.hikanumaruapp.api.models.*
-import ru.android.hikanumaruapp.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
 import ru.android.hikanumaruapp.presentasion.hellopage.HelloPageViewModel
 import javax.inject.Inject
 
@@ -19,6 +20,8 @@ import javax.inject.Inject
 class RegistrationViewModel @Inject constructor() : ViewModel(){
 
     private lateinit var job: Job
+
+    val error: MutableLiveData<ErrorResponse> by lazy { MutableLiveData<ErrorResponse>() }
 
     private var email: String = ""
     private var pass: String = ""
@@ -47,9 +50,12 @@ class RegistrationViewModel @Inject constructor() : ViewModel(){
         // val emailLoad = email
         vmAuth.getCheckMail(post = email,
             object : CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    // TODO ERROR
-                    //_error.postValue(ErrorResponse(1, message.toString()))
+                override fun onError(cause: Throwable?, message: String) {
+                    when(cause.toString().substringBefore(':')){
+                        "java.net.SocketTimeoutException" -> error.postValue(ErrorResponse(504, message.toString()))
+                        "java.net.UnknownHostException"  ->  error.postValue(ErrorResponse(-1, message.toString()))
+                        else  ->  error.postValue(ErrorResponse(502, message.toString()))
+                    }
                 }
             })
     }
@@ -57,9 +63,12 @@ class RegistrationViewModel @Inject constructor() : ViewModel(){
     internal fun getCheckLoginStateTwo(vmAuth: AuthViewModel,login: String) {
         vmAuth.getCheckLogin(post = login,
             object : CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    // TODO ERROR
-                    //_error.postValue(ErrorResponse(1, message.toString()))
+                override fun onError(cause: Throwable?, message: String) {
+                    when(cause.toString().substringBefore(':')){
+                        "java.net.SocketTimeoutException" -> error.postValue(ErrorResponse(504, message.toString()))
+                        "java.net.UnknownHostException"  ->  error.postValue(ErrorResponse(-1, message.toString()))
+                        else  ->  error.postValue(ErrorResponse(502, message.toString()))
+                    }
                 }
             })
     }
@@ -68,9 +77,12 @@ class RegistrationViewModel @Inject constructor() : ViewModel(){
         Log.d("postApiCreateUser", "postApiCreateUser body - ${UserRegPost(email, login, userName, pass)}")
         vmAuth.postCreateUser(UserRegPost(email, login, userName, pass),
             object : CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    // TODO ERROR
-                    //_error.postValue(ErrorResponse(1, message.toString()))
+                override fun onError(cause: Throwable?, message: String) {
+                    when(cause.toString().substringBefore(':')){
+                        "java.net.SocketTimeoutException" -> error.postValue(ErrorResponse(504, message.toString()))
+                        "java.net.UnknownHostException"  ->  error.postValue(ErrorResponse(-1, message.toString()))
+                        else  ->  error.postValue(ErrorResponse(502, message.toString()))
+                    }
                 }
             })
     }
@@ -78,9 +90,12 @@ class RegistrationViewModel @Inject constructor() : ViewModel(){
     internal fun apiAuthGetUser(vmApi: MainApiViewModel) {
         vmApi.getUserInfo(
             object: CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    // TODO ERROR
-                    //_error.postValue(ErrorResponse(1, message.toString()))
+                override fun onError(cause: Throwable?, message: String) {
+                    when(cause.toString().substringBefore(':')){
+                        "java.net.SocketTimeoutException" -> error.postValue(ErrorResponse(504, message.toString()))
+                        "java.net.UnknownHostException"  ->  error.postValue(ErrorResponse(-1, message.toString()))
+                        else  ->  error.postValue(ErrorResponse(502, message.toString()))
+                    }
                 }
             })
     }

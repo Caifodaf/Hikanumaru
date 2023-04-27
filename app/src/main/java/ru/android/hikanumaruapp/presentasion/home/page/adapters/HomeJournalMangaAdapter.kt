@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.JournalsMainItemBinding
-import ru.android.hikanumaruapp.model.JournalMainModel
+import ru.android.hikanumaruapp.data.model.JournalMainModel
 
 class HomeJournalMangaAdapter(
     private val listenerClick: RecyclerViewClickListener

@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.presentasion.BaseFragment
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.FragmentProfileBinding
-import ru.android.hikanumaruapp.local.user.UserDataViewModel
+import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
 import ru.android.hikanumaruapp.presentasion.profile.folders.FoldersLibraryAdapter
 import ru.android.hikanumaruapp.presentasion.profile.folders.LibraryAdapter
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
@@ -38,8 +38,7 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.GONE
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+       _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 

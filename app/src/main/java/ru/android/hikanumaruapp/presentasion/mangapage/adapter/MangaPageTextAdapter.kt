@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.MangaPageTextItemBinding
-import ru.android.hikanumaruapp.model.MangaPageTextDate
+import ru.android.hikanumaruapp.data.model.MangaPageTextDate
 
 class MangaPageTextAdapter(
     private val listenerClick: RecyclerViewClickListener

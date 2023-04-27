@@ -1,8 +1,7 @@
-package ru.android.hikanumaruapp.local.storage.library
+package ru.android.hikanumaruapp.data.local.storage.library
 
 import androidx.room.*
-import ru.android.hikanumaruapp.model.Manga
-import ru.android.hikanumaruapp.utilits.room.ConvertersRoom
+import ru.android.hikanumaruapp.data.model.Manga
 
 @Dao
 interface LibraryDao {

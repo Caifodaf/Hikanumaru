@@ -17,6 +17,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +25,7 @@ import ru.android.hikanumaruapp.presentasion.BaseFragment
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.api.token.AuthViewModel
 import ru.android.hikanumaruapp.api.init.ApiResponse
+import ru.android.hikanumaruapp.databinding.FragmentLoginBinding
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationBinding
 import ru.android.hikanumaruapp.presentasion.auth.RulesNameAuth
 import ru.android.hikanumaruapp.presentasion.auth.registration.RegistrationViewModel
@@ -63,6 +65,7 @@ class RegistrationFragment : BaseFragment() {
             edPassAgainListener()
 
             observeEmail()
+            observeErrors()
         }
     }
 
@@ -161,6 +164,19 @@ class RegistrationFragment : BaseFragment() {
         }
     }
 /////////////////////////////////////////////////////////////////
+    private fun FragmentRegistrationBinding.observeErrors() {
+        vm.error.observe(viewLifecycleOwner, Observer { error->
+            val pop = PopAlertDialog(requireActivity(),lifecycleScope)
+            when(error.code){
+                502 -> pop.setDataDialog("Ошибка сервера")
+                504 -> pop.setDataDialog("Время ожидания первышенно")
+                -1 -> pop.setDataDialog("Нестабильная работа сети")
+                else -> pop.setDataDialog("Неверная почта или пароль")
+            }
+            btnNextStageView(RulesNameAuth.DEFAULT_BUTTON_VIEW)
+        })
+    }
+
     private fun FragmentRegistrationBinding.observeEmail() {
         vmAuth.checkEmailResponse.observe(viewLifecycleOwner) {
             val pop = PopAlertDialog(requireActivity(),lifecycleScope)

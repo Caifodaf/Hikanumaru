@@ -5,9 +5,9 @@ import retrofit2.http.*
 import ru.android.hikanumaruapp.api.models.TokenJWT
 import ru.android.hikanumaruapp.api.models.UserRegPost
 import ru.android.hikanumaruapp.api.models.UserRegResponse
-import ru.android.hikanumaruapp.model.GenresMainModel
-import ru.android.hikanumaruapp.model.Manga
-import ru.android.hikanumaruapp.model.MangaList
+import ru.android.hikanumaruapp.data.model.GenresMainModel
+import ru.android.hikanumaruapp.data.model.Manga
+import ru.android.hikanumaruapp.data.model.MangaList
 
 interface MainApiService {
     // Create User after registration
@@ -28,24 +28,29 @@ interface MainApiService {
 
 
 
+    // Get CreativeWorks Collection
+    @GET("creativeWorks")
+    @Headers("Content-Type: application/json")
+    suspend fun getCreativeWorksCollection(
+        @Query("page") page:Int = 1,
+        @Query("search") search:String? = null,
+        @Query("type[]") type:List<String>? = null,
+        @Query("publicationStatus[]") publicationStatus:List<String>? = null,
+        @Query("translationStatus[]") translationStatus:List<String>? = null,
+        @Query("source") source:String? = null,
+        @Query("itemsPerPage") itemsPerPage:Int? = 10,
+        @Query("genres.id[]") genres:List<String>? = null,
+        @Query("releaseYear[]") releaseYear:List<Int>? = null,
+        @Query("releaseYear[gte]") releaseYearStart:Int? = null,
+        @Query("releaseYear[lte]") releaseYearEnd:Int? = null,
+        @Query("order[title]") orderSortTitle:String? = null,
+        @Query("order[releaseYear]") orderSortYear:String? = null,
+    ): Response<List<MangaList>>
+
+
     // Get Main Page Genres
     @GET("genres")
     @Headers("Content-Type: application/json")
     //suspend fun getGenres(@Body body: BodyGenresApiModel): Response<GenresMainModel>
     suspend fun getGenres(): Response<List<GenresMainModel>>
-
-    // Get Main Page Manga
-    @GET("creativeWorks")
-    @Headers("Content-Type: application/json")
-    suspend fun getMainPageManga(): Response<List<MangaList>>
-
-    // Get Main Page Manhva
-    @GET("creativeWorks")
-    @Headers("Content-Type: application/json")
-    suspend fun getMainPageManhva(): Response<List<MangaList>>
-
-    // Get Main Page Popular
-    @GET("creativeWorks")
-    @Headers("Content-Type: application/json")
-    suspend fun getMainPagePopular(): Response<List<MangaList>>
 }
