@@ -29,20 +29,20 @@ class AuthAuthenticator @Inject constructor(
     }
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        val token = runBlocking {
-            tokenManager.getToken().first()
+        val refresh = runBlocking {
+            tokenManager.getRefresh().first()
         }
         return runBlocking {
-            val newToken = getNewToken(token)
+            val newToken = getNewToken(refresh)
 
             if (!newToken.isSuccessful || newToken.body() == null) { //Couldn't refresh the token, so restart the login process
                 tokenManager.deleteToken()
             }
 
-            newToken.body()?.let {
-                tokenManager.saveToken(it.token)
+            newToken.body()?.let { jwt ->
+                tokenManager.saveToken(jwt)
                 response.request.newBuilder()
-                    .header("Authorization", "Bearer ${it.token}")
+                    .header("Authorization", "Bearer ${jwt.token}")
                     .build()
             }
         }
@@ -59,6 +59,7 @@ class AuthAuthenticator @Inject constructor(
             .client(okHttpClient)
             .build()
         val service = retrofit.create(AuthApiService::class.java)
-        return service.postUpdateJWT("Bearer $refreshToken")
+        //return service.postUpdateJWT("Bearer $refreshToken")
+        return service.postUpdateJWT(refreshToken?:"")
     }
 }

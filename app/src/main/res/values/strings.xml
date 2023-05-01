@@ -83,8 +83,6 @@
     <string name="search">Поиск</string>
     <string name="vertical_stick">|</string>
     <string name="podcasts">Подкасты</string>
-    <string name="ranobe">Ранобэ</string>
-    <string name="manga">Манга</string>
     <string name="see_more">См. все</string>
     <string name="recomendations">Рекомендации</string>
     <string name="history">Вы читали</string>
@@ -103,6 +101,84 @@
     <string name="news_and_actuality">Новое и актуальное</string>
     <string name="history_user_news">Истории</string>
     <string name="news_and_announcement">Анонсы и трейлеры</string>
+
+    <string-array name="creativeworks_types">
+        <item>manga</item>
+        <item>manhwa</item>
+        <item>manhua</item>
+        <item>ranobe</item>
+        <item>oel_manga</item>
+        <item>yonkoma</item>
+        <item>comics</item>
+        <item>doujinshi</item>
+        <item>art</item>
+    </string-array>
+
+    <string name="art">Арт</string>
+    <string name="doujinshi">Додси</string>
+    <string name="comics">Комикс</string>
+    <string name="yonkoma">Йонкома</string>
+    <string name="oel_manga">Oel-Манга</string>
+    <string name="manga">Манга</string>
+    <string name="manhwa">Манхва</string>
+    <string name="manhua">Манхьуа</string>
+    <string name="ranobe">Ранобэ</string>
+
+    <string-array name="creativeworks_type_texts">
+        <item>@string/manga</item>
+        <item>@string/manhwa</item>
+        <item>@string/manhua</item>
+        <item>@string/ranobe</item>
+        <item>@string/oel_manga</item>
+        <item>@string/yonkoma</item>
+        <item>@string/comics</item>
+        <item>@string/doujinshi</item>
+        <item>@string/art</item>
+    </string-array>
+
+    <string-array name="creativeworks_status_types">
+        <item>ongoing</item>
+        <item>hiatus</item>
+        <item>completed</item>
+        <item>planned</item>
+        <item>cancelled</item>
+    </string-array>
+
+    <string name="ongoing">Онгоинг</string>
+    <string name="hiatus">Приостановлен</string>
+    <string name="completed">Завершен</string>
+    <string name="planned">Анонс</string>
+    <string name="cancelled">Выпуск прекращен</string>
+
+    <string-array name="creativeworks_status_type_texts">
+        <item>@string/ongoing</item>
+        <item>@string/hiatus</item>
+        <item>@string/completed</item>
+        <item>@string/planned</item>
+        <item>@string/cancelled</item>
+    </string-array>
+
+    <string-array name="creativeworks_translation_status_types">
+        <item>translation_started</item>
+        <item>translation_absent</item>
+        <item>translation_completed</item>
+        <item>translation_suspended</item>
+        <item>translation_continues</item>
+    </string-array>
+
+    <string name="translation_started">Продолжается</string>
+    <string name="translation_absent">Заморожен</string>
+    <string name="translation_completed">Завершен</string>
+    <string name="translation_suspended">Приостоновлен</string>
+    <string name="translation_continues">Продолжается</string>
+
+    <string-array name="creativeworks_translation_status_type_texts">
+        <item>@string/translation_started</item>
+        <item>@string/translation_absent</item>
+        <item>@string/translation_completed</item>
+        <item>@string/translation_suspended</item>
+        <item>@string/translation_continues</item>
+    </string-array>
 
 
     <string name="chapter_tom">Том</string>

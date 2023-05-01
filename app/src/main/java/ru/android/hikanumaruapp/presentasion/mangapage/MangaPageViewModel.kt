@@ -20,11 +20,11 @@ import kotlinx.coroutines.flow.catch
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
 import ru.android.hikanumaruapp.api.init.CoroutinesErrorHandler
+import ru.android.hikanumaruapp.api.models.ErrorResponse
 import ru.android.hikanumaruapp.data.local.storage.library.LibraryBase
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageTextAdapter
 import ru.android.hikanumaruapp.data.model.*
 import ru.android.hikanumaruapp.provider.Provider
-import ru.android.hikanumaruapp.presentasion.mangapage.adapter.model.TagsMangaPageModel
 import ru.android.hikanumaruapp.utilits.*
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
@@ -37,6 +37,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MangaPageViewModel @Inject constructor(private val provider:Provider) : ViewModel(),
     RecyclerViewClickListener, UIUtils {
+
+    val error: MutableLiveData<ErrorResponse> by lazy { MutableLiveData<ErrorResponse>() }
 
     private lateinit var job: Job
     private lateinit var jobBookmark: Job
@@ -54,12 +56,14 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
     var isErrorLoadChapters = false
 
     var mangaId: String = ""
+    var mangaSource: String = ""
+    var mangaLink: String = ""
 
     private val textAdapter = MangaPageTextAdapter( this)
 
     private val listChaptersLoad = mutableListOf<Chapter>()
 
-    val listTagsDataLoad: MutableLiveData<List<TagsMangaPageModel>> by lazy { MutableLiveData<List<TagsMangaPageModel>>() }
+    //val listTagsDataLoad: MutableLiveData<List<TagsMangaPageModel>> by lazy { MutableLiveData<List<TagsMangaPageModel>>() }
 
     val listPage: MutableLiveData<Manga> by lazy { MutableLiveData<Manga>() }
     val listChapters: MutableLiveData<List<Chapter>> by lazy { MutableLiveData<List<Chapter>>() }
@@ -68,7 +72,16 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
     private var tryLoadPage = 0
     private var isLoadChapter: Boolean = false
 
-
+    fun getArguments(arguments: Bundle?) {
+        if (arguments == null) {
+            error.value = ErrorResponse(-2, "Unknown creative works")
+        } else {
+            mangaId = arguments.getString("id").toString()
+            mangaLink = arguments.getString("url").toString()
+            //mangaSource = arguments.getString("source").toString()
+            mangaSource = "readmanga"
+        }
+    }
 
     fun initBDLibrary(context: FragmentActivity) {
         if (libraryDB == null) {
@@ -147,7 +160,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
 //        }
 //    }
 
-    internal fun getDataPage(vmApi: MainApiViewModel, mangaId: String) {
+    internal fun getDataPage(vmApi: MainApiViewModel) {
         vmApi.getMangaPage(mangaId,
             object: CoroutinesErrorHandler {
                 override fun onError(cause: Throwable?, message: String) {
@@ -157,12 +170,12 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
             })
     }
 
-    fun getDataChapter(source: String, sourceLink: String) {
+    fun getDataChapter() {
         isLoadingChapterList = true
         isErrorLoadChapters = false
 
         job = viewModelScope.launch(Dispatchers.IO) {
-            provider.downloadMangaPageChapters(source, sourceLink, listChaptersLoad)
+            provider.downloadMangaPageChapters(mangaSource, mangaLink)
                 .catch { exception ->
                     Log.e("ErrorApi", exception.message.toString())
                     isErrorLoadChapters = true
@@ -178,49 +191,49 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
 
     @SuppressLint("UseCompatLoadingForDrawables")
     fun initBtn(button: LinearLayout,context: Context? = null,view: Any? = null){
-        button.timerDoubleButton()
-        button.setOnClickListener{
-            when (button.id) {
-                // Sorting btn
-                R.id.ll_sort_btn -> {
-                    if (!listPage.value!!.chapters.isNullOrEmpty()) {
-                        if (!listPage.value!!.chapters!![0].notChapter) {
-                            val list: MutableList<Chapter> = listPage.value!!.chapters!!
-                            list.reverse()
-                            when (isReversedList) {
-                                true -> {
-                                    (view as ImageView).setImageDrawable(context!!.resources.getDrawable(
-                                        R.drawable.ic_sort_arrow_l))
-                                    false
-                                }
-                                false -> {
-                                    (view as ImageView).setImageDrawable(context!!.resources.getDrawable(
-                                        R.drawable.ic_sort_arrow_r))
-                                    true
-                                }
-                            }.also { isReversedList = it }
-                            //chapterAdapter.setMain(list)
-                        }
-                    }
-                }
-                // See more chapter nav btn todo rework
-                R.id.tv_btn_more_chapter_list_ph -> {
-                    val bundle = Bundle()
-                    val model = listPage.value!!
-
-                    val str = Gson().toJson(model.chapters!!)
-                    bundle.putString("list", str)
-                    bundle.putBoolean("checkLoadList", isLoadingChapterList)
-                    bundle.putBoolean("reverse", isReversedList)
-                    //bundle.putString("name", model.name)
-                    //bundle.putString("url", mangaId)
-                    //bundle.putString("count", (model.chapterCount?.minus(1)).toString())
-
-                    emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
-                        R.id.action_navigation_mangapage_to_navigation_chapters_page, bundle))
-                }
-            }
-        }
+//        button.timerDoubleButton()
+//        button.setOnClickListener{
+//            when (button.id) {
+//                // Sorting btn
+//                R.id.ll_sort_btn -> {
+//                    if (!listPage.value!!.chapters.isNullOrEmpty()) {
+//                        if (!listPage.value!!.chapters!![0].notChapter) {
+//                            val list: MutableList<Chapter> = listPage.value!!.chapters!!
+//                            list.reverse()
+//                            when (isReversedList) {
+//                                true -> {
+//                                    (view as ImageView).setImageDrawable(context!!.resources.getDrawable(
+//                                        R.drawable.ic_sort_arrow_l))
+//                                    false
+//                                }
+//                                false -> {
+//                                    (view as ImageView).setImageDrawable(context!!.resources.getDrawable(
+//                                        R.drawable.ic_sort_arrow_r))
+//                                    true
+//                                }
+//                            }.also { isReversedList = it }
+//                            //chapterAdapter.setMain(list)
+//                        }
+//                    }
+//                }
+//                // See more chapter nav btn todo rework
+//                R.id.tv_btn_more_chapter_list_ph -> {
+//                    val bundle = Bundle()
+//                    val model = listPage.value!!
+//
+//                    val str = Gson().toJson(model.chapters!!)
+//                    bundle.putString("list", str)
+//                    bundle.putBoolean("checkLoadList", isLoadingChapterList)
+//                    bundle.putBoolean("reverse", isReversedList)
+//                    //bundle.putString("name", model.name)
+//                    //bundle.putString("url", mangaId)
+//                    //bundle.putString("count", (model.chapterCount?.minus(1)).toString())
+//
+//                    emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
+//                        R.id.action_navigation_mangapage_to_navigation_chapters_page, bundle))
+//                }
+//            }
+//        }
     }
 
     //fun initRecyclerView(recyclerView: RecyclerView ) {
@@ -271,7 +284,6 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
 
         val urlChapter = list.url.toString()
 
-
         toInfoReader.putString("url",urlChapter)
         //toInfoReader.putString("title",listManga.name)
         toInfoReader.putInt("type",listManga.type!!.toInt())
@@ -293,6 +305,14 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
             NavigationFragmentinViewModel.NavigationFrag(
                 R.id.action_navigation_mangapage_to_navigation_reader, toInfoReader))
 
+    }
+
+    internal fun openChapterListFromGeneralPage() {
+        val toChapterPage = Bundle()
+        toChapterPage.putString("page", Gson().toJson(listPage.value))
+        emitter.emitAndExecute(
+            NavigationFragmentinViewModel.NavigationFrag(
+                R.id.action_navigation_mangapage_to_navigation_chapters_page))
     }
 
     override fun onRecyclerViewItemClick(view: View, list: Any?) {

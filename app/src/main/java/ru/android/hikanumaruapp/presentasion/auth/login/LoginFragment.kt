@@ -25,8 +25,6 @@ import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentLoginBinding
 import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
-import ru.android.hikanumaruapp.databinding.FragmentHomeBinding
-import ru.android.hikanumaruapp.presentasion.ConstPages
 import ru.android.hikanumaruapp.presentasion.auth.RulesNameAuth
 import ru.android.hikanumaruapp.presentasion.auth.registration.state.two.RegistrationStateTwoFragment
 import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
@@ -77,7 +75,7 @@ class LoginFragment : BaseFragment() {
     private fun getCheckErrorArgument() {
         val registrationError =
             arguments?.getBoolean(RegistrationStateTwoFragment.BUNDLE_ERROR_CODE, false)
-        if (registrationError!=null) {
+        if (registrationError == true) {
             val pop = PopAlertDialog(requireActivity(), lifecycleScope)
             pop.setDataDialog("Ошибка При Ррегистрации Т_Т")
         }
@@ -177,7 +175,7 @@ class LoginFragment : BaseFragment() {
                     Log.d("ApiAuth","loginResponse Loading")
                 }
                 is ApiResponse.Success -> {
-                    vmToken.saveToken(it.data.token)
+                    vmToken.saveToken(it.data)
                     vm.apiAuthGetUser(vmApi )
                     Log.d("ApiAuth","loginResponse token - " + it.data.token)
                     Log.d("ApiAuth","loginResponse refresh - " + it.data.refresh)

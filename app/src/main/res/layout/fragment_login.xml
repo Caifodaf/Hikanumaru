@@ -51,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="28dp"
-            android:autofillHints="username"
+            android:autofillHints="name"
             android:inputType="textPersonName"
             android:background="@android:color/transparent"
             android:gravity="start"

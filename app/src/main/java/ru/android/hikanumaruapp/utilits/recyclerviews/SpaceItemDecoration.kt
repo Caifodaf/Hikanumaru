@@ -13,7 +13,6 @@ class SpaceItemDecoration(var margin:Int = 16) : RecyclerView.ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State,
     ) {
-        // вычисление пикселей по DP. Здесь отступ будет *8dp*
         val space = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             margin.toFloat(),

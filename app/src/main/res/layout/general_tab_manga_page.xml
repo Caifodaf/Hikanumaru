@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
+    android:paddingBottom="70dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!--                        android:text="Нет описания 	(｡•́︿•̀｡)"-->
@@ -45,7 +46,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
-            android:maxLines="3"
             android:ellipsize="end"
             android:text="Старшеклассница Гото Хитори начала учиться играть на гитаре, чтобы создать свою группу, но она настолько стеснительна,Старшеклассница Гото Хитори начала учиться играть на гитаре, чтобы создать свою группу, но она настолько стеснительна,"
             android:textColor="@color/grey_700" />

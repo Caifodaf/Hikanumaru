@@ -2,8 +2,10 @@ package ru.android.hikanumaruapp.presentasion.hellopage
 
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ru.android.hikanumaruapp.api.models.ErrorResponse
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +18,10 @@ class HelloPageViewModel @Inject constructor(): ViewModel() {
         const val LOGIN = 1
         const val START = 0
     }
+
+    var isUserLoad: Boolean = false
+    var isTokenLoad: Boolean = false
+
 
     fun FragmentActivity.onStartup() =
         getPreferences(Context.MODE_PRIVATE).getBoolean(PK_FIRST_LAUNCH, true)

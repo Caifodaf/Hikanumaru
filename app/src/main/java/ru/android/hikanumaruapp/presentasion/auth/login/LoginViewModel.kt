@@ -60,7 +60,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     private fun FragmentActivity.onStartupEdit() {
         getPreferences(Context.MODE_PRIVATE)
             .edit()
-            .putBoolean(HelloPageViewModel.PK_FIRST_LAUNCH, true)
+            .putBoolean(HelloPageViewModel.PK_FIRST_LAUNCH, false)
             .apply()
     }
 

@@ -40,14 +40,19 @@ class MangaPageChapterAdapter(
         notifyDataSetChanged()
     }
 
+    fun reverseList() {
+        val itemViewModelsReverse = itemViewModels.reversed()
+        itemViewModels.clear()
+        itemViewModels.addAll(itemViewModelsReverse)
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(val binding: ChapterMangaPageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
         fun bind() {
-            Log.d("ListT", "Load in bind holder history - $itemViewModels")
             val model = itemViewModels[absoluteAdapterPosition]
-
             binding.TVChapterNumbers.text =
                 itemView.context.getString(R.string.tom_chapter_manga_page_item) +
                         " " + model.tom + " — " +

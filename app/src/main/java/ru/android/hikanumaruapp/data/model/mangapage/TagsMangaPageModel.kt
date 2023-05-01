@@ -1,4 +1,4 @@
-package ru.android.hikanumaruapp.presentasion.mangapage.adapter.model
+package ru.android.hikanumaruapp.data.model.mangapage
 
 interface TagsMangaPageId {
     companion object {

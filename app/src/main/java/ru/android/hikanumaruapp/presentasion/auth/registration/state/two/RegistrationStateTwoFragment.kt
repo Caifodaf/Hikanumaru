@@ -27,7 +27,6 @@ import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.api.token.TokenViewModel
 import ru.android.hikanumaruapp.databinding.FragmentRegistrationStateTwoBinding
 import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
-import ru.android.hikanumaruapp.databinding.FragmentRegistrationBinding
 import ru.android.hikanumaruapp.presentasion.auth.RulesNameAuth
 import ru.android.hikanumaruapp.presentasion.auth.registration.RegistrationViewModel
 import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
@@ -222,7 +221,7 @@ class RegistrationStateTwoFragment() : BaseFragment() {
                     Log.d("vmToken","token - " + it.data.token)
                     Log.d("vmToken","refresh - " + it.data.refresh)
                     vm.apiAuthGetUser(vmApi)
-                    vmToken.saveToken(it.data.token)
+                    vmToken.saveToken(it.data)
                 }
             }
         }

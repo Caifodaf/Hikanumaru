@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import ru.android.hikanumaruapp.presentasion.mangapage.MangaPageViewModel
 import ru.android.hikanumaruapp.utilits.UIUtils
 
 abstract class BaseInnerFragment: Fragment(),UIUtils {

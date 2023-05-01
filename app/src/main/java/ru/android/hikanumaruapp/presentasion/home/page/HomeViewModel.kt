@@ -1,11 +1,11 @@
 package ru.android.hikanumaruapp.presentasion.home.page
 
+import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.util.ArrayUtils.contains
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
@@ -14,11 +14,12 @@ import ru.android.hikanumaruapp.api.init.ApiResponse
 import ru.android.hikanumaruapp.api.init.CoroutinesErrorHandler
 import ru.android.hikanumaruapp.api.models.CreativeWorksRequestModel
 import ru.android.hikanumaruapp.api.models.ErrorResponse
+import ru.android.hikanumaruapp.data.local.storage.local.home.LocalCacheHomeViewModel
 import ru.android.hikanumaruapp.data.model.*
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListener {
+class HomeViewModel @Inject constructor(): ViewModel() {
 
     val error: MutableLiveData<ErrorResponse> by lazy { MutableLiveData<ErrorResponse>() }
 
@@ -35,8 +36,28 @@ class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListene
     val mainPopularList: MutableLiveData<List<MangaList>> by lazy { MutableLiveData<List<MangaList>>() }
 
     private lateinit var job: Job
+    internal var isLoadedPages : Boolean = false
 
-    internal fun getMainPage(vmMain: MainApiViewModel, block: String) {
+    fun Context.loadPage(
+        vmCache: LocalCacheHomeViewModel, mainBlocks: List<String>,
+        vmApi: MainApiViewModel
+    ) {
+        getPage(mainBlocks, vmApi)
+        //if (!isLoadedPages) {
+        //    vmCache.apply {
+        //        if (checkUpdateTimeHomeCacheVM()) getPage(mainBlocks, vmApi) else getHomeCacheVM()
+        //    }
+        //}
+    }
+
+    fun getPage(mainBlocks: List<String>, vmApi: MainApiViewModel) {
+        mainBlocks.forEachIndexed { index, block ->
+            if (block != "History")
+                getMainPage(vmApi,block)
+        }
+    }
+
+    private fun getMainPage(vmMain: MainApiViewModel, block: String) {
         when(block) {
             "Genres" ->
                 vmMain.getMainPageGenres(mainGenresResponse,object: CoroutinesErrorHandler {
@@ -62,7 +83,7 @@ class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListene
                     })
             "Manhva" ->
                 vmMain.getCreativeWorksCollection(mainManhvaResponse,
-                    CreativeWorksRequestModel(type = listOf("manhva")),
+                    CreativeWorksRequestModel(type = listOf("manhwa")),
                     object: CoroutinesErrorHandler {
                         override fun onError(cause: Throwable?, message: String) {
                             when(cause.toString().substringBefore(':')){
@@ -116,8 +137,6 @@ class HomeViewModel @Inject constructor(): ViewModel(), RecyclerViewClickListene
         }
         return scrollListenersGenres
     }
-
-    override fun onRecyclerViewItemClick(view: View, list: Any?) {}
 
     override fun onCleared() {
         if(::job.isInitialized) job.cancel()

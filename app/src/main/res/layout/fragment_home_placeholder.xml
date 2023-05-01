@@ -15,6 +15,7 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:scrollbars="none"
+                android:paddingBottom="70dp"
                 tools:ignore="MissingConstraints">
                 <LinearLayout
                     android:layout_width="match_parent"

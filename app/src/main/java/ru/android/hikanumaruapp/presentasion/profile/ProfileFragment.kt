@@ -45,10 +45,10 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressed()
-        vm.apply {
-            requireContext().getUser(vmUser)
-            initBDLibrary(this@ProfileFragment)
-        }
+        //vm.apply {
+        //    requireContext().getUser(vmUser)
+        //    initBDLibrary(this@ProfileFragment)
+        //}
         binding.apply {
             observeList()
 

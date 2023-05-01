@@ -12,10 +12,8 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_navigation_mangapage"
-            app:destination="@id/navigation_mangapage" />
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_reader"
-            app:destination="@id/navigation_reader" />
+            app:destination="@id/navigation_mangapage"
+            app:popUpTo="@id/navigation_home" />
         <action
             android:id="@+id/action_navigation_home_to_searchPageFragment"
             app:destination="@id/searchPageFragment"
@@ -23,7 +21,7 @@
             app:exitAnim="@anim/slide_down"
             app:popEnterAnim="@anim/slide_up"
             app:popExitAnim="@anim/slide_up"
-            />
+            app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment
@@ -117,13 +115,12 @@
         tools:layout="@layout/fragment_manga_page">
         <action
             android:id="@+id/action_navigation_mangapage_to_navigation_chapters_page"
-            app:destination="@id/navigation_chapters_page" />
-        <action
-            android:id="@+id/action_navigation_mangapage_to_fragmentMangaPageBottomSheetPanel"
-            app:destination="@id/navigation_mangapage_more_info_sheet_panel" />
+            app:destination="@id/navigation_chapters_page"
+            app:popUpTo="@id/navigation_mangapage" />
         <action
             android:id="@+id/action_navigation_mangapage_to_navigation_reader"
-            app:destination="@id/navigation_reader" />
+            app:destination="@id/navigation_reader"
+            app:popUpTo="@id/navigation_mangapage" />
     </fragment>
     <fragment
         android:id="@+id/navigation_chapters_page"
@@ -132,7 +129,8 @@
         tools:layout="@layout/fragment_chapters_page" >
         <action
             android:id="@+id/action_navigation_chapters_page_to_navigation_reader"
-            app:destination="@id/navigation_reader" />
+            app:destination="@id/navigation_reader"
+            app:popUpTo="@id/navigation_chapters_page" />
     </fragment>
     <fragment
         android:id="@+id/navigation_news_page"
@@ -154,11 +152,6 @@
         android:name="ru.android.hikanumaruapp.presentasion.settings.storage.StorageSettingsFragment"
         android:label="@string/title_storage_settings"
         tools:layout="@layout/fragment_storage_settings" />
-    <dialog
-        android:id="@+id/navigation_mangapage_more_info_sheet_panel"
-        android:name="ru.android.hikanumaruapp.presentasion.mangapage.moredata.sheetdialog.FragmentMangaPageBottomSheetPanel"
-        android:label="@string/titile_mangapage_more_info_sheet_panel"
-        tools:layout="@layout/bottom_sheet_manga_page"/>
     <fragment
         android:id="@+id/navigation_login"
         android:name="ru.android.hikanumaruapp.presentasion.auth.login.LoginFragment"
@@ -173,6 +166,7 @@
         <action
             android:id="@+id/action_navigation_login_to_navigation_reset_password_stage_one"
             app:destination="@id/navigation_reset_password_stage_one" />
+        <argument android:name="vm" />
     </fragment>
     <fragment
         android:id="@+id/navigation_start_page"

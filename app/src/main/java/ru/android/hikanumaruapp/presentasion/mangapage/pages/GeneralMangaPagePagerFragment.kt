@@ -2,6 +2,7 @@ package ru.android.hikanumaruapp.presentasion.mangapage.pages
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,8 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
     }
 
     private lateinit var chapterAdapter: MangaPageChapterAdapter
+    private var isDescriptionOpen = false
+    private var isChapterReverse = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,24 +43,40 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
             observeChapterList()
             initBtn()
         }
-        vm.getDataChapter(vm.listPage.value!!.source,vm.listPage.value!!.sourceLink)
+        vm.getDataChapter()
     }
 
     private fun GeneralTabMangaPageBinding.initBtn() {
         LLSortBtn.setOnClickListener{ // Sort
-            it.timerDoubleButton()
-
+            it.timerDoubleButton(100)
+            isChapterReverse = when(isChapterReverse) {
+                true -> {
+                    ImageSort.rotation = 0f
+                    false
+                }
+                false -> {
+                    ImageSort.rotation = 180f
+                    true
+                }
+            }
+            chapterAdapter.reverseList()
         }
         ImageMoreDescription.setOnClickListener{ // Description
-            it.timerDoubleButton()
-            if (TVDescriptionDetail.maxLines == 4)
+            it.timerDoubleButton(100)
+            isDescriptionOpen = if (TVDescriptionDetail.maxLines == 4) {
                 TVDescriptionDetail.maxLines = Int.MAX_VALUE
-            else
+                ViewDescriptionAlpha.visibility = View.GONE
+                ImageMoreDescription.visibility = View.VISIBLE
+                ImageMoreDescription.rotation = 180f
+                true
+            } else {
                 TVDescriptionDetail.maxLines = 4
+                false
+            }
         }
-        TVBtnMoreChapterList.setOnClickListener{ // Description
+        TVBtnMoreChapterList.setOnClickListener{
             it.timerDoubleButton()
-
+            vm.openChapterListFromGeneralPage()
         }
 
         val btnLoadChapters = listOf(
@@ -68,7 +87,7 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
                 vm.listPage.value!!.chapters = null
 
                 vm.isErrorLoadChapters = false
-                vm.getDataChapter(vm.listPage.value!!.source,vm.listPage.value!!.sourceLink)
+                vm.getDataChapter()
                 stateChapterList(ConstPages.LOADING_PAGE_VIEW)
             }
         }
@@ -78,18 +97,21 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
         val data = vm.listPage.value!!
         if (!data.description.isNullOrBlank()){
             TVDescriptionDetail.viewTreeObserver.addOnGlobalLayoutListener {
-                if (TVDescriptionDetail.lineCount > 4) {
-                    ViewDescriptionAlpha.visibility = View.VISIBLE
-                    ImageMoreDescription.visibility = View.VISIBLE
-                    TVDescriptionDetail.maxLines = 4
-                }else{
-                    ViewDescriptionAlpha.visibility = View.GONE
-                    ImageMoreDescription.visibility = View.GONE
+                if (!isDescriptionOpen) {
+                    if (TVDescriptionDetail.lineCount >= 4) {
+                        ViewDescriptionAlpha.visibility = View.VISIBLE
+                        ImageMoreDescription.visibility = View.VISIBLE
+                        TVDescriptionDetail.maxLines = 4
+                        ImageMoreDescription.rotation = 0f
+                    } else {
+                        ViewDescriptionAlpha.visibility = View.GONE
+                        ImageMoreDescription.visibility = View.GONE
+                    }
                 }
             }
-            TVDescriptionDetail.text = data.description
         }
 
+        TVDescriptionDetail.text = data.description
         // Rating score
         TVScoreRating.text = "0.0/5.0"
         TVScoreRatingCounter.text = "0 оценок"
@@ -118,6 +140,7 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
     private fun GeneralTabMangaPageBinding.updateChapters(){
         val chaptersList = vm.listPage.value!!.chapters!!
         if (!chaptersList.isNullOrEmpty()) {
+            Log.d("ListT", "Load in bind holder history - $chaptersList")
             // Load 1-8 chapter for page
             chapterAdapter.setMain(chaptersList)
             // Load other chapters
@@ -151,7 +174,7 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
                 RVChapterList.layoutParams = rlChapterParams
             }
 
-            TVCountChapter.text = "${chaptersList.size+1}"
+            TVCountChapter.text = "${chaptersList.size}"
         }
     }
 

@@ -45,13 +45,6 @@ data class Manga (
 
     var userStatus: String? = null,
 
-    //var score: String? = "0.0",
-    //var bookmarkName: Int = 0,
-    //var lastRead: String? = "",
-    //var chapterCount: Int? = 0,
-    //@field:TypeConverters(ConvertersRoom::class)
-    //val info: MangaInfo?, // List Info
-
     var lastReadChapter: String? = "",
     @field:TypeConverters(ConvertersRoom::class)
     var chapters: MutableList<Chapter>? // List Pages
@@ -63,8 +56,8 @@ data class MangaList (
     @PrimaryKey
     @Json(name = "id")var id: String = "", // id Manga
     @Json(name = "title")var title: String = "",
-    @Json(name = "coverLinks.first")var coverLinksFirst: String? = null,
-    @Json(name = "coverLinks.last")var coverLinksLast: String? = null,
+    @field:TypeConverters(ConvertersRoom::class)
+    @Json(name = "coverLinks")var coverLinks: MangaListCoverLinks? = null,
     @Json(name = "description")var description: String? = null,
     @Json(name = "releaseYear")var releaseYear: Int? = null,
     @Json(name = "type")var type: String? = null,
@@ -73,4 +66,9 @@ data class MangaList (
     @Json(name = "mainGenres")var genres: List<GenresMainModel>? = null,
 
     @Json(name = "userStatus")var userStatus: String? = null,
+)
+
+data class MangaListCoverLinks(
+    @Json(name = "first")var first: String? = null,
+    @Json(name = "last")var last: String? = null,
 )

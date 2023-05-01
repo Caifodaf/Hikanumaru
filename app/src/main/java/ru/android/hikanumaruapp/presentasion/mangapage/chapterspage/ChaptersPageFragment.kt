@@ -16,13 +16,14 @@ import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.databinding.FragmentChaptersPageBinding
 import ru.android.hikanumaruapp.data.model.Chapter
+import ru.android.hikanumaruapp.presentasion.mangapage.MangaPageViewModel
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 import ru.android.hikanumaruapp.utilits.recyclerviews.snappy.SnappyLinearLayoutManager
 import java.lang.reflect.Type
 
 @AndroidEntryPoint
-class ChaptersPageFragment : Fragment() {
+class ChaptersPageFragment(val vm: MangaPageViewModel) : Fragment() {
 
     private var _binding: FragmentChaptersPageBinding? = null
     private val binding get() = _binding!!

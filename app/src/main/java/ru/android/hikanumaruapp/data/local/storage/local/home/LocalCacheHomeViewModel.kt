@@ -50,6 +50,7 @@ class LocalCacheHomeViewModel@Inject constructor() : ViewModel(),CacheSharedPref
             applicationContext.checkUpdateTimeHomeCache{ isAllow ->
                 isUpdateAllow = isAllow ?: false
             } }.let {
+            Log.e("saveHomeCacheVM", "isUpdateAllow - $isUpdateAllow")
             return isUpdateAllow
         }
     }

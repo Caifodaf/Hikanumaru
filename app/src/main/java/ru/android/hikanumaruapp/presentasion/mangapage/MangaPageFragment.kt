@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import coil.load
+import coil.size.Dimension
+import coil.size.Scale
 import coil.transform.RoundedCornersTransformation
 import com.commit451.coiltransformations.BlurTransformation
 import com.google.android.flexbox.FlexDirection
@@ -26,17 +29,18 @@ import ru.android.hikanumaruapp.presentasion.ConstPages.Companion.LOADING_PAGE_V
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
 import ru.android.hikanumaruapp.api.init.ApiResponse
+import ru.android.hikanumaruapp.data.debugModels
 import ru.android.hikanumaruapp.databinding.FragmentMangaPageBinding
 import ru.android.hikanumaruapp.data.local.user.UserDataViewModel
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageFlexTagsAdapter
-import ru.android.hikanumaruapp.presentasion.mangapage.adapter.model.TagsMangaPageId
-import ru.android.hikanumaruapp.presentasion.mangapage.adapter.model.TagsMangaPageModel
+import ru.android.hikanumaruapp.data.model.mangapage.TagsMangaPageId
+import ru.android.hikanumaruapp.data.model.mangapage.TagsMangaPageModel
 import ru.android.hikanumaruapp.presentasion.mangapage.pages.MangaPageViewPagerAdapter
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 
 @AndroidEntryPoint
-class MangaPageFragment : BaseInnerFragment() {
+class MangaPageFragment : BaseInnerFragment(), debugModels {
 
     private var _binding: FragmentMangaPageBinding? = null
     private val binding get() = _binding!!
@@ -44,8 +48,6 @@ class MangaPageFragment : BaseInnerFragment() {
     private val vm by viewModels<MangaPageViewModel>()
     private val vmApi by viewModels<MainApiViewModel>()
     private val vmUser by viewModels<UserDataViewModel>()
-
-    private lateinit var mangaId: String
 
     private lateinit var vpAdapter : MangaPageViewPagerAdapter
     private lateinit var tagsAdapter: MangaPageFlexTagsAdapter
@@ -69,15 +71,13 @@ class MangaPageFragment : BaseInnerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mangaId = arguments?.getString("mangaId").toString()
-        vm.mangaId = mangaId
+        vm.getArguments(arguments)
 
         binding.apply {
             stateMangaPage(LOADING_PAGE_VIEW)
 
             getMangaPage()
-            vm.getDataChapter(vm.listPage.value!!.source,vm.listPage.value!!.sourceLink)
+            vm.getDataChapter()
 
             observeListPage()
 
@@ -85,7 +85,15 @@ class MangaPageFragment : BaseInnerFragment() {
 
             //observeBookmark()
             vm.emitter.observe(viewLifecycleOwner, navigationEventsObserver)
+            dbInit()
         }
+    }
+
+    private fun FragmentMangaPageBinding.dbInit() {
+        vm.listPage.value = mangaPage()
+        binding.root.postDelayed({
+            stateMangaPage(ConstPages.DEFAULT_PAGE_VIEW)
+        }, 1000L)
     }
 
     private fun FragmentMangaPageBinding.btnInitLoad() {
@@ -110,7 +118,7 @@ class MangaPageFragment : BaseInnerFragment() {
     }
 
     private fun FragmentMangaPageBinding.getMangaPage() {
-        vm.getDataPage(vmApi,mangaId)
+        vm.getDataPage(vmApi)
     }
 
     private fun FragmentMangaPageBinding.observeListPage() {
@@ -134,41 +142,48 @@ class MangaPageFragment : BaseInnerFragment() {
                         listPage.value = it.data
                         initBDLibrary(requireActivity())
                     }
-                    updatePage()
-                    initFlexTags()
-                    initPagerBlock()
                 }
             }
         })
+
+        vm.listPage.observe(viewLifecycleOwner) {
+            Log.d("vm", "listPage - ${vm.listPage.value}")
+            updatePage()
+            initFlexTags()
+            initPagerBlock()
+        }
     }
 
     private fun FragmentMangaPageBinding.initFlexTags() {
         val listPage = vm.listPage.value
         val tags: MutableList<TagsMangaPageModel> = mutableListOf()
         if (!listPage!!.genres.isNullOrEmpty())
-            listPage!!.genres!!.forEachIndexed { index, genres ->
+            listPage.genres!!.forEachIndexed { index, genres ->
                 tags.add(TagsMangaPageModel(type = TagsMangaPageId.GENRE_TAG,
                     genres.id, genres.title))
                 tags.add(TagsMangaPageModel(type = TagsMangaPageId.DIVIDE))
             }
 
-        //tags.add(TagsMangaPageModel(type = TagsMangaPageId.RATING_TAG, text = "0.0"))
-        //tags.add(TagsMangaPageModel(type = TagsMangaPageId.DIVIDE))
-
-        tags.add(TagsMangaPageModel(type = TagsMangaPageId.YEAR_TAG, text = "2000"))
+        tags.add(TagsMangaPageModel(type = TagsMangaPageId.RATING_TAG, text = "0.0"))
         tags.add(TagsMangaPageModel(type = TagsMangaPageId.DIVIDE))
 
-        tags.add(TagsMangaPageModel(type = TagsMangaPageId.TYPE_WORK_TAG, text = "manga"))
+        tags.add(TagsMangaPageModel(type = TagsMangaPageId.YEAR_TAG, text = listPage.releaseYear.toString()))
         tags.add(TagsMangaPageModel(type = TagsMangaPageId.DIVIDE))
 
-        //tags.add(TagsMangaPageModel(type = TagsMangaPageId.AGE_RATING_TAG, text = "13+"))
-        //tags.add(TagsMangaPageModel(type = TagsMangaPageId.DIVIDE))
+        val crTypes = resources.getStringArray(R.array.creativeworks_types)
+        var positionCRTypes = crTypes.indexOf(listPage.type)
+        if (positionCRTypes == -1) positionCRTypes = 0
+        tags.add(TagsMangaPageModel(type = TagsMangaPageId.TYPE_WORK_TAG, text =
+            resources.getStringArray(R.array.creativeworks_type_texts)[positionCRTypes]))
+        tags.add(TagsMangaPageModel(type = TagsMangaPageId.DIVIDE))
+
+        tags.add(TagsMangaPageModel(type = TagsMangaPageId.AGE_RATING_TAG, text = "13+"))
+        tags.add(TagsMangaPageModel(type = TagsMangaPageId.DIVIDE))
 
         tags.add(TagsMangaPageModel(type = TagsMangaPageId.PUBLISH_STATUS_TAG, text = "ongoing"))
 
-        vm.listTagsDataLoad.value = tags
-
-        tagsAdapter = MangaPageFlexTagsAdapter(vm.listTagsDataLoad.value!!,vm,requireActivity().applicationContext)
+        //vm.listTagsDataLoad.value = tags
+        tagsAdapter = MangaPageFlexTagsAdapter(vm)
         val ll = FlexboxLayoutManager(requireActivity().applicationContext)
         ll.apply{
             flexDirection = FlexDirection.ROW
@@ -178,6 +193,7 @@ class MangaPageFragment : BaseInnerFragment() {
             layoutManager = ll
             adapter = tagsAdapter
         }
+        tagsAdapter.setMain(tags)
     }
 
     private fun FragmentMangaPageBinding.initPagerBlock() {
@@ -241,15 +257,26 @@ class MangaPageFragment : BaseInnerFragment() {
         TVAlternativeNameManga.text = vm.listPage.value!!.additionalTitle
 
         if (!vm.listPage.value!!.coverLinks.isNullOrEmpty()) {
-            val dpRounded = requireContext().pixelToDP(16f)
-            ImageManga.load(vm.listPage.value!!.coverLinks!!.last()) {
-                //scale(Scale.FILL)
-                transformations(RoundedCornersTransformation(dpRounded.toFloat()))
+            //TODO
+            val source = when(vm.listPage.value!!.source){
+                "" -> "https://staticrm.rmr.rocks"
+                else -> "https://staticrm.rmr.rocks"
             }
-            ImageBack.load(vm.listPage.value!!.coverLinks!!.last()) {
+
+            ImageManga.load(source+vm.listPage.value!!.coverLinks!!.last()) {
+                //scale(Scale.FILL)
+                //size(
+                //    width = 1000,
+                //    height = requireContext().pixelToDP(560f))
+                placeholder(R.drawable.ic_rectangle_error)
+                error(R.drawable.ic_rectangle_error)
+                transformations(RoundedCornersTransformation(
+                    requireContext().pixelToDP(16f).toFloat()))
+            }
+            ImageBack.load(source+vm.listPage.value!!.coverLinks!!.last()) {
                 // todo add place and error
-                //placeholder(R.color.grey_light_alternative_2)
-                //error(R.drawable.placeholder)
+                placeholder(R.color.light_grey_3)
+                error(R.color.light_grey_3)
                 //scale(Scale.FILL)
                 transformations(BlurTransformation(requireContext(), sampling = 0.8f))
             }

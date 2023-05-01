@@ -37,7 +37,7 @@ class InformationMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fr
         val data = vm.listPage.value!!
 
         TVName.visibility = if(data.title.isNotBlank()){
-            TVName.text = data.description
+            TVName.text = data.title
             View.VISIBLE
         }else
             View.GONE
@@ -46,46 +46,32 @@ class InformationMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fr
             TVAltName.text = data.additionalTitle
             if (!data.othersTitle.isNullOrEmpty()){
                 data.othersTitle!!.forEachIndexed { index, othersTitle ->
-                    TVAltName.text = TVAltName.text.toString() + "/n" + othersTitle
+                    TVAltName.text = TVAltName.text.toString() + "\n" + othersTitle
                 }
             }
             View.VISIBLE
         }else
             View.GONE
 
-        TVType.text = when(data.type){
-            "manga" -> resources.getString(R.string.manga)
-            "manhwa" -> resources.getString(R.string.manhva_text)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            else -> ""
-        }
+        val crTypes = resources.getStringArray(R.array.creativeworks_types)
+        var positionCRTypes = crTypes.indexOf(data.type)
+        if (positionCRTypes == -1) positionCRTypes = 0
+        TVType.text = resources.getStringArray(R.array.creativeworks_type_texts)[positionCRTypes]
 
         TVReleaseYear.text = data.releaseYear.toString()
 
-        TVStatus.text = when(data.publicationStatus){
-            "ongoing" -> resources.getString(R.string.ongoing_text)
-            "" -> resources.getString(R.string.manhva_text)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            else -> ""
-        }
+        val crStatus = resources.getStringArray(R.array.creativeworks_status_types)
+        var positionCRStatus = crStatus.indexOf(data.publicationStatus)
+        if (positionCRStatus == -1) positionCRStatus = 0
+        TVStatus.text = resources.getStringArray(R.array.creativeworks_status_type_texts)[positionCRStatus]
 
-        TVStatusTranslate.text = when(data.publicationStatus){
-            "continues" -> resources.getString(R.string.contines)
-            "" -> resources.getString(R.string.manhva_text)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            "" -> resources.getString(R.string.manga)
-            else -> ""
-        }
+        val crTranslate = resources.getStringArray(R.array.creativeworks_translation_status_types)
+        var positionCRTranslate = crTranslate.indexOf(data.translationStatus)
+        if (positionCRTranslate == -1) positionCRTranslate = 0
+        TVStatusTranslate.text = resources.getStringArray(R.array.creativeworks_translation_status_type_texts)[positionCRTranslate]
 
-        TVAgeRating.text = data.ageRating.toString()
+        //TVAgeRating.text = data.ageRating.toString()
+        TVAgeRating.text = "13+"
     }
 
 }

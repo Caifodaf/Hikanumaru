@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.presentasion.BaseFragment
 import ru.android.hikanumaruapp.presentasion.ConstPages
@@ -20,28 +23,55 @@ import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.api.api.main.MainApiViewModel
 import ru.android.hikanumaruapp.api.api.token.AuthViewModel
 import ru.android.hikanumaruapp.api.init.ApiResponse
+import ru.android.hikanumaruapp.data.debugModels
 import ru.android.hikanumaruapp.databinding.FragmentHomeBinding
 import ru.android.hikanumaruapp.data.local.storage.local.home.HomeCacheModel
 import ru.android.hikanumaruapp.data.local.storage.local.home.LocalCacheHomeViewModel
+import ru.android.hikanumaruapp.data.model.MangaList
 import ru.android.hikanumaruapp.data.model.MangaMainModel
 import ru.android.hikanumaruapp.data.model.MangaPopularMainModel
+import ru.android.hikanumaruapp.presentasion.hellopage.HelloPageViewModel
 import ru.android.hikanumaruapp.presentasion.home.page.adapters.*
 import ru.android.hikanumaruapp.presentasion.search.SearchTabViewModel
+import ru.android.hikanumaruapp.utilits.ItemSnapHelper
 import ru.android.hikanumaruapp.utilits.popdialog.PopAlertDialog
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 import ru.android.hikanumaruapp.utilits.recyclerviews.SpaceItemDecoration
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment(), RecyclerViewClickListener {
+class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val vm by viewModels<HomeViewModel>()
+    private val vm by activityViewModels<HomeViewModel>()
 
     private val vmApi by viewModels<MainApiViewModel>()
     private val vmCache by viewModels<LocalCacheHomeViewModel>()
     private val vmAuth by viewModels<AuthViewModel>()
     private val vmSearch by viewModels<SearchTabViewModel>()
+
+    //// Сохраняем данные в Bundle
+    //override fun onSaveInstanceState(outState: Bundle) {
+    //    super.onSaveInstanceState(outState)
+//
+    //    outState.putStringArrayList("mainBlocks", ArrayList(mainBlocks))
+    //    // Сохраняем состояние RecyclerView
+    //    val layoutManager = RVGenres.layoutManager as LinearLayoutManager
+    //    val position = layoutManager.findFirstVisibleItemPosition()
+    //    outState.putInt("rvGenresPosition", position)
+    //}
+//
+    //// Восстанавливаем данные из Bundle
+    //override fun onViewStateRestored(savedInstanceState: Bundle?) {
+    //    super.onViewStateRestored(savedInstanceState)
+//
+    //    if (savedInstanceState != null) {
+    //        mainBlocks = savedInstanceState.getStringArrayList("mainBlocks")!!
+    //        // Восстанавливаем состояние RecyclerView
+    //        val position = savedInstanceState.getInt("rvGenresPosition")
+    //        RVGenres.post { RVGenres.scrollToPosition(position) }
+    //    }
+    //}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +95,6 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
             initMainList()
             statePage(ConstPages.LOADING_PAGE_VIEW)
 
-            //move to vm
             loadPage()
             observeAllPageData()
             observeErrors()
@@ -73,29 +102,30 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
             getEndleesList()
 
             initMoreBtn()
+
+            dbInit()
         }
     }
 
+    private fun FragmentHomeBinding.dbInit() {
+        vm.mainMangaList.value = home().toMutableList()
+        binding.root.postDelayed({
+            statePage(ConstPages.DEFAULT_PAGE_VIEW)
+        }, 1000L)
+    }
+
     private fun  FragmentHomeBinding.loadPage() {
-        var isCacheUpdate: Boolean
-        vmCache.apply {
-            isCacheUpdate = requireActivity().checkUpdateTimeHomeCacheVM()
-        }.let {
-            if (isCacheUpdate){
-                getPage()
-            } else{
-                vmCache.apply {requireActivity().getHomeCacheVM()}
-                vmCache.homeListModelCache.observe(viewLifecycleOwner, Observer { list ->
-                    Log.d("apiRequestFlow", "homeListModelCache - $list") //todo
-                    if (list != null) {
-                        vm.mainGenresList.value = list.genresList
-                        vm.mainMangaList.value = list.mangaList
-                        vm.mainManhvaList.value = list.manhvaList
-                    } else
-                        getPage()
-                })
-            }
-        }
+        vm.apply { requireActivity().loadPage(vmCache,mainBlocks,vmApi)}
+
+        vmCache.homeListModelCache.observe(viewLifecycleOwner, Observer { list ->
+            Log.d("apiRequestFlow", "homeListModelCache - $list") //todo
+            if (list != null) {
+                vm.mainGenresList.value = list.genresList
+                vm.mainMangaList.value = list.mangaList
+                vm.mainManhvaList.value = list.manhvaList
+            } else
+                vm.getPage(mainBlocks,vmApi)
+        })
     }
 
     private var mainBlocks = listOf<String>()
@@ -134,13 +164,6 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
     private fun FragmentHomeBinding.getEndleesList() {
         mainEndlessBlocks.forEachIndexed { index, block ->
             //todo
-        }
-    }
-
-    private fun FragmentHomeBinding.getPage() {
-        mainBlocks.forEachIndexed { index, block ->
-            if (block != "History")
-                vm.getMainPage(vmApi,block)
         }
     }
 
@@ -191,11 +214,13 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
                         RVGenres.apply {
                             addOnScrollListener(scrollListenersGenres[0]!!)
                             adapter = genresAdapter
+                            addItemDecoration(SpaceItemDecoration())
                             genresAdapter.setMain(listTop)
                         }
                         RVGenres2.apply {
                             addOnScrollListener(scrollListenersGenres[1]!!)
                             adapter = genres2Adapter
+                            addItemDecoration(SpaceItemDecoration())
                             genres2Adapter.setMain(listBot)
                         }
                         checkInitRecyclerViews()
@@ -216,7 +241,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
                     vm.mainMangaList.observe(viewLifecycleOwner, Observer { list ->
                         mangaAdapter = HomeMangaAdapter(requireActivity(), this@HomeFragment)
                         mainRV[index].apply {
-                            val snapHelper = LinearSnapHelper()
+                            val snapHelper = ItemSnapHelper()
                             snapHelper.attachToRecyclerView(this)
                             addItemDecoration(SpaceItemDecoration())
                             adapter = mangaAdapter
@@ -233,16 +258,14 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
                                     "mainManhvaResponse falure -  ${it.code}:" + it.errorMessage)
                                 statePage(ConstPages.ERROR_PAGE_VIEW)
                             }
-                            is ApiResponse.Loading -> Log.d("vmApi",
-                                "mainManhvaResponse loading - ")
+                            is ApiResponse.Loading -> Log.d("vmApi", "mainManhvaResponse loading - ")
                             is ApiResponse.Success -> vm.mainManhvaList.value = it.data
                         }
                     })
                     vm.mainManhvaList.observe(viewLifecycleOwner, Observer { list ->
-                        manhvaAdapter =
-                            HomeMangaAdapter(requireActivity(), this@HomeFragment)
+                        manhvaAdapter = HomeMangaAdapter(requireActivity(), this@HomeFragment)
                         mainRV[index].apply {
-                            val snapHelper = LinearSnapHelper()
+                            val snapHelper:SnapHelper = ItemSnapHelper()
                             snapHelper.attachToRecyclerView(this)
                             addItemDecoration(SpaceItemDecoration())
                             adapter = manhvaAdapter
@@ -256,25 +279,26 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
     }
 
     override fun onRecyclerViewItemClick(view: View, list: Any?) {
-        val bundle = Bundle()
-
         when (view.id) {
             R.id.CCMainMangaBlock -> {
-                bundle.putString("url", (list as MangaMainModel).linkPage)
-                //emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
-                //    R.id.action_navigation_home_to_navigation_mangapage, bundle))
+                val bundle = Bundle()
+                bundle.putString("id", (list as MangaList).id)
+                bundle.putString("url", (list as MangaList).sourceLink)
+                bundle.putString("source", (list as MangaList).sourceLink)
+
+                findNavController().navigate(R.id.action_navigation_home_to_navigation_mangapage, bundle)
             }
-            R.id.rl_back_genres_item -> {
-                Log.d("testCrated", "rl_back_genres_item click $list")
-            }
-            R.id.rl_back_journal_item -> {
-                Log.d("testCrated", "rl_back_genres_item click")
-            }
-            R.id.CCMainLargeMangaBlock -> {
-                bundle.putString("url", (list as MangaPopularMainModel).linkPage)
-                //emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
-                //    R.id.action_navigation_home_to_navigation_mangapage, bundle))
-            }
+            //R.id.rl_back_genres_item -> {
+            //    Log.d("testCrated", "rl_back_genres_item click $list")
+            //}
+            //R.id.rl_back_journal_item -> {
+            //    Log.d("testCrated", "rl_back_genres_item click")
+            //}
+            //R.id.CCMainLargeMangaBlock -> {
+            //    bundle.putString("url", (list as MangaPopularMainModel).linkPage)
+            //    //emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
+            //    //    R.id.action_navigation_home_to_navigation_mangapage, bundle))
+            //}
         }
     }
 
@@ -287,6 +311,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener {
                 !vm.mainMangaList.value.isNullOrEmpty() &&
                 !vm.mainManhvaList.value.isNullOrEmpty()
             ) {
+                vm.isLoadedPages = true
                 vmCache.apply { requireActivity().saveHomeCacheVM(HomeCacheModel(
                     vm.mainGenresList.value!!,vm.mainMangaList.value!!,
                     vm.mainManhvaList.value!!

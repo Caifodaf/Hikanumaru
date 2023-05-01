@@ -6,11 +6,13 @@ import com.google.gson.reflect.TypeToken
 import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.data.model.GenresMainModel
 import ru.android.hikanumaruapp.data.model.MangaInfo
+import ru.android.hikanumaruapp.data.model.MangaListCoverLinks
 
 @ProvidedTypeConverter
 class ConvertersRoom (
     private val jsonParser: GsonParser
 ) {
+
     @TypeConverter
     fun toStringArray(list: List<String>) : String? {
         return jsonParser.toJson(
@@ -57,6 +59,22 @@ class ConvertersRoom (
             json,
             object: TypeToken<ArrayList<Chapter>>(){}.type
         ) ?: emptyList()
+    }
+
+    @TypeConverter
+    fun toMangaListCoverLinksJson(json: MangaListCoverLinks) : String? {
+        return jsonParser.toJson(
+            json,
+            object : TypeToken<MangaListCoverLinks>(){}.type
+        ) ?: "[]"
+    }
+
+    @TypeConverter
+    fun fromMangaListCoverLinksJson(json: String): MangaListCoverLinks?{
+        return jsonParser.fromJson<MangaListCoverLinks>(
+            json,
+            object: TypeToken<MangaListCoverLinks>(){}.type
+        ) ?: MangaListCoverLinks(null,null)
     }
 
     @TypeConverter

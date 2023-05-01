@@ -24,8 +24,10 @@ import me.everything.android.ui.overscroll.IOverScrollState
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
 import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.data.local.storage.local.home.HomeCacheModel
 import ru.android.hikanumaruapp.databinding.FragmentReaderBinding
 import ru.android.hikanumaruapp.data.model.Chapter
+import ru.android.hikanumaruapp.data.model.Manga
 import ru.android.hikanumaruapp.presentasion.reader.ViewTapConst.LEFT_REGION
 import ru.android.hikanumaruapp.presentasion.reader.ViewTapConst.RIGHT_REGION
 import ru.android.hikanumaruapp.presentasion.reader.chapterList.ChapterListAdapter
@@ -93,17 +95,18 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
 
-        urlChapter = arguments?.getString("url").toString()
-        titleChapter = arguments?.getString("title").toString()
-        typeManga = arguments?.getInt("type")!!.toInt()
-        countChapters = arguments?.getString("count").toString()
-        urlPage = arguments?.getString("urlPage").toString()
+        val page = arguments?.getString("page").toString()
+        val pageOut =  Gson().fromJson(page, Manga::class.java)
 
-        val str: String? = arguments?.getString("list")
+        //urlChapter = arguments?.getString("url").toString()
+        //titleChapter = arguments?.getString("title").toString()
+        //typeManga = arguments?.getInt("type")!!.toInt()
+        //countChapters = arguments?.getString("count").toString()
+        //urlPage = arguments?.getString("urlPage").toString()
+//
+        //val str: String? = arguments?.getString("list")
 
-        val collectionType: Type = object : TypeToken<Collection<Chapter?>?>() {}.type
-        val enums: Collection<Chapter> = Gson().fromJson(str, collectionType)
-        chapterList = enums.toMutableList()
+        //chapterList = enums.toMutableList()
 
         vm.getDataChapter(urlChapter)
         observeList()

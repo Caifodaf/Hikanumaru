@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.android.hikanumaruapp.api.models.UserRegResponse
+import ru.android.hikanumaruapp.data.local.storage.local.home.HomeCacheModel
 import ru.android.hikanumaruapp.data.model.UserInfo
 
 interface UserSharedPreferenceAdapter {
@@ -48,14 +49,8 @@ interface UserSharedPreferenceAdapter {
     fun Context.getUserInfo(): Flow<UserInfo?> {
         val serializedUser = getSharedPreferences(USER_PREFERENCES_NAME, MODE_PRIVATE)
             .getString(USER_DATA_PREFERENCES, null)
-
-        val result = if (serializedUser != null)
-            Gson().fromJson(serializedUser, UserInfo::class.java)
-        else
-            null
-
-        return flow<UserInfo> {
-            result?.let { emit(it) }
+        return flow {
+            emit(if (serializedUser != null) Gson().fromJson(serializedUser, UserInfo::class.java) else null)
         }
     }
 

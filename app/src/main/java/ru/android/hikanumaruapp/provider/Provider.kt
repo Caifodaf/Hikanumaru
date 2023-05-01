@@ -30,19 +30,20 @@ class Provider @Inject constructor(){
         }
     }
 
-    fun downloadMangaPageChapters(source: String, sourceLink: String, list: MutableList<Chapter>): Flow<MutableList<Chapter>> {
+    fun downloadMangaPageChapters(source: String, sourceLink: String): Flow<MutableList<Chapter>> {
+
         return when (source) {
-            READMANGA_SOURCE -> loadDataMangaPageChapters(sourceLink, list)
-            MANGALIB_SOURCE -> flow { emit(list) }
-            RANOBELIB_SOURCE -> flow { emit(list) }
-            else -> flow { emit(list) }
+            READMANGA_SOURCE -> loadDataMangaPageChapters("https://readmanga.live/$sourceLink")
+            MANGALIB_SOURCE -> flow { emit(mutableListOf(Chapter(notChapter = true, null, null, null, null, null, null, null, null, null, null))) }
+            RANOBELIB_SOURCE -> flow { emit(mutableListOf(Chapter(notChapter = true, null, null, null, null, null, null, null, null, null, null))) }
+            else -> flow { emit(mutableListOf(Chapter(notChapter = true, null, null, null, null, null, null, null, null, null, null))) }
         }
     }
 
     //private fun loadDataMangaPage(url: String): Flow<Manga> =
         //readmanga.getDatMangaPage(url)
 
-    private fun loadDataMangaPageChapters(url: String, list: MutableList<Chapter>): Flow<MutableList<Chapter>> =
-        readmanga.getDatMangaChapters(url, list)
+    private fun loadDataMangaPageChapters(url: String): Flow<MutableList<Chapter>> =
+        readmanga.getDatMangaChapters(url)
 
 }

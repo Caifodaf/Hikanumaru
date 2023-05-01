@@ -8,15 +8,17 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.databinding.MangaMainItemBinding
 import ru.android.hikanumaruapp.databinding.MangaMainLastedItemBinding
 import ru.android.hikanumaruapp.data.model.MangaList
+import ru.android.hikanumaruapp.utilits.UIUtils
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
 
 class HomeMangaAdapter(private val context: Context,
     private val listenerClick: RecyclerViewClickListener,
-): RecyclerView.Adapter<RecyclerView.ViewHolder>()
+): RecyclerView.Adapter<RecyclerView.ViewHolder>(),UIUtils
 {
     private val itemViewModels = mutableListOf<MangaList>()
 
@@ -93,10 +95,13 @@ class HomeMangaAdapter(private val context: Context,
     inner class MangaViewHolder(val binding: MangaMainItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(model: MangaList) {
-            Log.d("ListT", "Load in bind holder history - $itemViewModels")
+            //Log.d("ListT", "Load in bind holder history - $itemViewModels")
+            val readmangaUrlImage = "https://staticrm.rmr.rocks"
             binding.apply {
-                ImageManga.load(model.coverLinksLast){
-                    CornerRadius(8f)
+                ImageManga.load(readmangaUrlImage+model.coverLinks?.last){
+                    crossfade(true)
+                    crossfade(500)
+                    transformations(RoundedCornersTransformation(itemView.context.pixelToDP(8f).toFloat()))
                 }
 
                // TVMangaUserStatus // todo

@@ -489,14 +489,14 @@ class ReadMangaParserProvider {
         return list
     }
 
-    fun getDatMangaChapters(urlPage: String?, listPage: MutableList<Chapter>):Flow<MutableList<Chapter>>{
-        Log.d("daknxck", "chap list all")
+    fun getDatMangaChapters(urlPage: String?):Flow<MutableList<Chapter>>{
+        val listPage = mutableListOf<Chapter>()
+
         if (uploadDocumentPage(urlPage)) {
             if (document != null) {
                 if (document!!.select("h3").eq(1)
                         .text() != "В этой манге еще нет ни одной главы."
                 ) {
-
                     val element =
                         document!!.select("table[class=table table-hover]").select("tr")
                     val title = document!!.select("span[class=name]").text()
