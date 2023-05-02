@@ -86,10 +86,10 @@ class HelloPageFragment : Fragment() {
 
     private fun routeToAppropriatePage(user: Int) {
         when(user) {
-            HelloPageViewModel.START -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_start_page)
-            HelloPageViewModel.LOGIN -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_login)
-            HelloPageViewModel.MAIN -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_home)
-            else -> findNavController().navigate(R.id.action_navigation_hello_page_to_navigation_start_page)
+            HelloPageViewModel.START -> findNavController().navigate(R.id.authNavDestination)
+            HelloPageViewModel.LOGIN -> findNavController().navigate(R.id.authNavDestination)
+            HelloPageViewModel.MAIN -> findNavController().navigate(R.id.homeNavDestination)
+            else -> findNavController().navigate(R.id.authNavDestination)
         }
     }
 

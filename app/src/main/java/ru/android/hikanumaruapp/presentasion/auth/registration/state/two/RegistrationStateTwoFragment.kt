@@ -246,7 +246,8 @@ class RegistrationStateTwoFragment() : BaseFragment() {
                     vm.apply {
                         requireActivity().registrationFinish(vmUser,it.data)
                     }.let {
-                        findNavController().navigate(R.id.action_navigation_registration_two_to_navigation_home)
+                        // TODO NAVIGATION EDIT
+                        findNavController().navigate(R.id.homeNavDestination)
                     }
                 }
             }

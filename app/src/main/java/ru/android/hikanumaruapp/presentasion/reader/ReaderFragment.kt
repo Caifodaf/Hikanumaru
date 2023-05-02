@@ -17,22 +17,21 @@ import androidx.viewpager2.widget.ViewPager2
 import com.github.chrisbanes.photoview.OnViewTapListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.IOverScrollState
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
 import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.data.local.storage.local.home.HomeCacheModel
 import ru.android.hikanumaruapp.databinding.FragmentReaderBinding
 import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.data.model.Manga
 import ru.android.hikanumaruapp.presentasion.reader.ViewTapConst.LEFT_REGION
 import ru.android.hikanumaruapp.presentasion.reader.ViewTapConst.RIGHT_REGION
 import ru.android.hikanumaruapp.presentasion.reader.chapterList.ChapterListAdapter
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapterPage
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
+import ru.android.hikanumaruapp.presentasion.BaseInnerFragment
 import ru.android.hikanumaruapp.presentasion.reader.viewer.SimpleSeekBarListener
 import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerConst
 import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerConst.Companion.READ_MODE_BOTTOM
@@ -40,12 +39,11 @@ import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerCons
 import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerConst.Companion.READ_MODE_RIGHT
 import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ViewPager2ReaderAdapter
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
-import java.lang.reflect.Type
 import kotlin.math.abs
 
 
 @AndroidEntryPoint
-class ReaderFragment : Fragment(), RecyclerViewClickListener {
+class ReaderFragment : BaseInnerFragment(), RecyclerViewClickListener {
 
     private var _binding: FragmentReaderBinding? = null
     private val binding get() = _binding!!
@@ -59,13 +57,13 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
         return binding.root
     }
 
-    private var urlChapter: String = ""
-    private var titleChapter: String = ""
-    private var typeManga = 0
-    private var countChapters = ""
+    //private var urlChapter: String = ""
+    //private var titleChapter: String = ""
+    //private var typeManga = 0
+    //private var countChapters = ""
     //private var isReversedList = false
-    private var urlPage = ""
-    private lateinit var chapterList: MutableList<Chapter>
+    //private var urlPage = ""
+    //private lateinit var chapterList: MutableList<Chapter>
 
     private var readModeType = 0
     private var  isNavigateRevesed = false
@@ -89,41 +87,47 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
     private var currentPage: Int? = 0
     private var maxCountSeekBar: Int = 1
 
-    init { onBack() }
+    init { setupOnBackPressed() }
+
+    private lateinit var creativeWorkPage: Manga
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
+        requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.GONE
 
         val page = arguments?.getString("page").toString()
-        val pageOut =  Gson().fromJson(page, Manga::class.java)
+        creativeWorkPage =  Gson().fromJson(page, Manga::class.java)
+
+        binding.apply {
+            loadConfig()
+            observeList()
+
+
+            initializeMenu()
+            menuListeners()
+        }
 
         //urlChapter = arguments?.getString("url").toString()
         //titleChapter = arguments?.getString("title").toString()
         //typeManga = arguments?.getInt("type")!!.toInt()
         //countChapters = arguments?.getString("count").toString()
         //urlPage = arguments?.getString("urlPage").toString()
-//
         //val str: String? = arguments?.getString("list")
-
         //chapterList = enums.toMutableList()
-
-        vm.getDataChapter(urlChapter)
-        observeList()
-        loadConfig()
-//        notifyDataSetChanged()
-        initUI()
+        //vm.getDataChapter(urlChapter)
+        //notifyDataSetChanged()
         //toggleMenu()
     }
 
-    private fun observeList() {
-        vm.chapterList.observe(viewLifecycleOwner, Observer { listPage ->
-            Log.d("ListT2d2", "Load 3 - $listPage")
-            loadChapterList(listPage)
-        })
+    private fun FragmentReaderBinding.observeList() {
+        //vm.chapterList.observe(viewLifecycleOwner, Observer { listPage ->
+        //    Log.d("ListT2d2", "Load 3 - $listPage")
+        //    loadChapterList(listPage)
+        //})
         vm.loadChapter.observe(viewLifecycleOwner, Observer { listPage ->
             Log.d("ListT2d2", "Load 0 - $listPage")
             loadPagesReader(listPage)
+            loadChapterList()
         })
         vm.preloadChapterPrev.observe(viewLifecycleOwner, Observer { listPage ->
             Log.d("ListT2d2", "Load 1 - $listPage")
@@ -141,16 +145,14 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
         })
     }
 
-    private fun loadChapterList(listPage: MutableList<Chapter>) {
-        isChapterReload = false
-        chapterList = listPage!!
-        chapterAdapter.setMain(listPage!!.toList())
+    private fun loadChapterList() {
+        chapterAdapter.setMain(creativeWorkPage.chapters!!.toMutableList())
         chapterAdapter.setSelect(chapter.idChapter)
         binding.progressLoadingChapterList.visibility = View.GONE
     }
 
     @SuppressLint("SetTextI18n")
-    private fun loadPagesReader(listPage: ReaderChapter,set:Int = 0) {
+    private fun loadPagesReader(listPage: ReaderChapter, set:Int = 0) {
         val isFirst = chapterAdapter.itemCount == 0
         chapter = (listPage as ReaderChapter)
         readerPagerAdapter.setChapters(chapter.pages!!)
@@ -166,7 +168,7 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
     }
 
     // todo rework
-    private fun loadConfig(){
+    private fun FragmentReaderBinding.loadConfig(){
         //val mConfig:SharedPreferences = getSharedPreferences("readerConfig", Context.MODE_PRIVATE)
         //
         //if(mConfig.contains("readerConfig")) {
@@ -179,11 +181,6 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
             isNavigateRevesed = true
     }
 
-    private fun initUI(){
-        initializeMenu()
-        menuListeners()
-    }
-
     private fun initializeMenu() {
         // Frame OverScrolling
         mOverScrollFrame = binding.overscrollFrameReader
@@ -192,18 +189,18 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
 
         // Init Chapters List
         initChaptersList()
-        if(chapterList.size != (countChapters.toInt()))
-            reLoadChapter()
+        //if(creativeWorkPage.chapters!!.size != (countChapters.toInt()))
+        //    reLoadChapter()
 
         // Set ReadMode Type
-        readModeType = when(typeManga){
+        readModeType = when(creativeWorkPage.type){
             MangaConst.MANGA_TYPE -> READ_MODE_RIGHT
             MangaConst.MANHVA_TYPE -> READ_MODE_RIGHT
             MangaConst.MANHUYA_TYPE -> READ_MODE_RIGHT
-            MangaConst.WEB_TYPE -> READ_MODE_RIGHT
+            MangaConst.OEL_MANGA_TYPE -> READ_MODE_RIGHT
             MangaConst.COMICS_TYPE -> READ_MODE_RIGHT
             MangaConst.OTHER_LOCAL_TYPE -> READ_MODE_RIGHT
-            else->{READ_MODE_RIGHT}
+            else-> READ_MODE_RIGHT
         }
         menuSelectReadModeChangeView()
         binding.readerMenu.visibility = View.GONE
@@ -246,7 +243,7 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
         }
 
         if (isChapterReload) {
-            chapterAdapter.setMain(chapterList)
+            chapterAdapter.setMain(creativeWorkPage.chapters!!)
             chapterAdapter.setSelect(chapter.idChapter)
             binding.rvChapterListReaderMenu.scrollToPosition(chapterAdapter.posLastChapter)
         }
@@ -502,10 +499,10 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
             })
     }
 
-    private fun reLoadChapter(){
-        isChapterReload = true
-        vm.reloadChapterList(urlChapter)
-    }
+    //private fun reLoadChapter(){
+    //    isChapterReload = true
+    //    vm.reloadChapterList(urlChapter)
+    //}
 
     private fun menuChapterList (){
         binding.readerChapterList.visibility =
@@ -679,20 +676,10 @@ class ReaderFragment : Fragment(), RecyclerViewClickListener {
         }
     }
 
-    private fun onBack() {
-        activity?.onBackPressedDispatcher?.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigateUp()
-                }
-            })
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
+        //requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
         _binding = null
     }
 

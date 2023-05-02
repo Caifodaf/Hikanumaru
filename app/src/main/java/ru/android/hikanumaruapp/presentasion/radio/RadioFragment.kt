@@ -32,7 +32,7 @@ class RadioFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupOnBackPressed()
+        //setupOnBackPressed()
     }
 
     override fun onDestroyView() {

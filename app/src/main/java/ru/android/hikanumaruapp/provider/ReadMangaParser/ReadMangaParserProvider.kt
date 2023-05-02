@@ -9,7 +9,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.provider.ReadMangaParser.Reader.ReaderRMP
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
 import java.io.IOException
 
 data class MangaPageInfoModel(

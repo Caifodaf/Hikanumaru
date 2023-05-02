@@ -204,7 +204,8 @@ class LoginFragment : BaseFragment() {
                     vm.apply {
                         requireActivity().loginFinish(vmUser,it.data)
                     }.let {
-                        findNavController().navigate(R.id.action_navigation_login_to_navigation_home)
+                        // TODO NAVIGATION EDIT
+                        findNavController().navigate(R.id.navigation_home)
                     }
                 }
             }
@@ -263,7 +264,9 @@ class LoginFragment : BaseFragment() {
             sp.edit().putBoolean("guest_mode", true).apply()
 
             Toast.makeText(requireContext(), "Вы вошли как гость", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_navigation_login_to_navigation_home, null)
+            // TODO NAVIGATION EDIT
+            requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
+            findNavController().navigate(R.id.homeNavDestination, null)
         }
 
         TVBtnRegistration.setOnClickListener {

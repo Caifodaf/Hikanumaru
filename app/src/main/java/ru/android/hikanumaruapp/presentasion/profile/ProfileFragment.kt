@@ -173,7 +173,8 @@ class ProfileFragment : BaseFragment(), RecyclerViewClickListener {
             R.id.CCMainLibraryItem ->{
                 val bundle = Bundle()
                 //bundle.putString("url", (list as Manga).urlManga)
-                findNavController().navigate(R.id.action_navigation_profile_to_navigation_mangapage, bundle)
+                // TODO NAVIGATION EDIT
+                //findNavController().navigate(R.id.action_navigation_profile_to_navigation_mangapage, bundle)
             }
         }
     }

@@ -3,14 +3,15 @@ package ru.android.hikanumaruapp.provider.ReadMangaParser.Reader
 import android.util.Log
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapterPage
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
 import java.io.IOException
 
 class ReaderChapterPagesRMP(
     private val document: Document,
     private val url:String,
-    private val chapter: ReaderChapter){
+    private val chapter: ReaderChapter
+){
 
     fun get() : MutableList<ReaderChapterPage> {
         try {

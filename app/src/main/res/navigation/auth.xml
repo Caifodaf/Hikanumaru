@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/authNavDestination"
+    app:startDestination="@id/navigation_start_page">
+
+    <fragment
+        android:id="@+id/navigation_start_page"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.startpage.StartPageFragment"
+        tools:layout="@layout/fragment_start_page"
+        android:label="@string/title_startpage">
+        <action
+            android:id="@+id/action_navigation_start_page_to_navigation_login"
+            app:destination="@id/navigation_login" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_registration_two"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.registration.state.two.RegistrationStateTwoFragment"
+        tools:layout="@layout/fragment_registration_state_two"
+        android:label="@string/title_registration_two">
+        <action
+            android:id="@+id/action_navigation_registration_two_to_navigation_login"
+            app:destination="@id/navigation_login" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_reset_password_stage_three"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.reset.password.ResetPasswordStageThreeFragment"
+        tools:layout="@layout/fragment_reset_password_stage_three"
+        android:label="@string/title_reset_password_stage_three" >
+        <action
+            android:id="@+id/action_navigation_reset_password_stage_three_to_navigation_login"
+            app:destination="@id/navigation_login" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.login.LoginFragment"
+        tools:layout="@layout/fragment_login"
+        android:label="@string/title_login">
+        <argument android:name="vm" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_registration"
+            app:destination="@id/navigation_registration" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_reset_password_stage_one"
+            app:destination="@id/navigation_reset_password_stage_one" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_reset_password_stage_two"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.reset.password.ResetPasswordStageTwoFragment"
+        tools:layout="@layout/fragment_reset_password_stage_two"
+        android:label="@string/title_reset_password_stage_two">
+        <action
+            android:id="@+id/action_navigation_reset_password_stage_two_to_navigation_reset_password_stage_three"
+            app:destination="@id/navigation_reset_password_stage_three" />
+        <action
+            android:id="@+id/action_navigation_reset_password_stage_two_to_navigation_login"
+            app:destination="@id/navigation_login" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_registration"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.registration.state.one.RegistrationFragment"
+        tools:layout="@layout/fragment_registration"
+        android:label="@string/title_registration">
+        <action
+            android:id="@+id/action_navigation_registration_to_navigation_registration_two"
+            app:destination="@id/navigation_registration_two" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_reset_password_stage_one"
+        android:name="ru.android.hikanumaruapp.presentasion.auth.reset.password.ResetPasswordStageOneFragment"
+        tools:layout="@layout/fragment_reset_password_stage_one"
+        android:label="@string/title_reset_password_stage_one">
+        <action
+            android:id="@+id/action_navigation_reset_password_stage_one_to_navigation_reset_password_stage_two"
+            app:destination="@id/navigation_reset_password_stage_two" />
+    </fragment>
+</navigation>

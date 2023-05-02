@@ -2,6 +2,7 @@ package ru.android.hikanumaruapp.presentasion.reader
 
 import android.annotation.SuppressLint
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.catch
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.provider.ReaderProvider
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
 import ru.android.hikanumaruapp.utilits.SaverImagePager
 import javax.inject.Inject
 
@@ -25,25 +26,17 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
     private lateinit var job: Job
     private var jobLoadChapterNext: Job? = null
     private var jobLoadChapterPrev: Job? = null
-    private var handlerImageSaver: Handler? = null
+    //private var handlerImageSaver: Handler? = null
 
     var lastDirSaveImage: String = ""
 
-    val loadChapter: MutableLiveData<ReaderChapter> by lazy {
-        MutableLiveData<ReaderChapter>()
-    }
+    val loadChapter: MutableLiveData<ReaderChapter> by lazy { MutableLiveData<ReaderChapter>() }
+    val preloadChapterNext: MutableLiveData<ReaderChapter> by lazy { MutableLiveData<ReaderChapter>() }
+    val preloadChapterPrev: MutableLiveData<ReaderChapter> by lazy { MutableLiveData<ReaderChapter>() }
 
-    val preloadChapterNext: MutableLiveData<ReaderChapter> by lazy {
-        MutableLiveData<ReaderChapter>()
-    }
-
-    val preloadChapterPrev: MutableLiveData<ReaderChapter> by lazy {
-        MutableLiveData<ReaderChapter>()
-    }
-
-    val chapterList: MutableLiveData<MutableList<Chapter>> by lazy {
-        MutableLiveData<MutableList<Chapter>>()
-    }
+    //val chapterList: MutableLiveData<MutableList<Chapter>> by lazy {
+    //    MutableLiveData<MutableList<Chapter>>()
+    //}
 
     fun getDataChapter(url: String) {
         job = viewModelScope.launch(Dispatchers.IO) {
@@ -98,20 +91,20 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
         }
     }
 
-    fun reloadChapterList(url: String) {
-        job = viewModelScope.launch(Dispatchers.IO) {
-            provider.downloadReaderPageChapters(url)
-                .catch { exception ->
-                    Log.e("ErrorApi", exception.message.toString())
-                    // Todo error add
-                    //loadNewChapter=true
-                    //loadChapterError=true
-                }
-                .collect {
-                    chapterList.postValue(it)
-                }
-        }
-    }
+    //fun reloadChapterList(url: String) {
+    //    job = viewModelScope.launch(Dispatchers.IO) {
+    //        provider.downloadReaderPageChapters(url)
+    //            .catch { exception ->
+    //                Log.e("ErrorApi", exception.message.toString())
+    //                // Todo error add
+    //                //loadNewChapter=true
+    //                //loadChapterError=true
+    //            }
+    //            .collect {
+    //                chapterList.postValue(it)
+    //            }
+    //    }
+    //}
 
 
 
@@ -142,7 +135,7 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
         currentItem: Int,
         view: ImageView,
     ) {
-        handlerImageSaver = Handler()
+        val handlerImageSaver = Handler(Looper.myLooper()!!)
 
         job = viewModelScope.launch(Dispatchers.IO) {
             when( SaverImagePager(
@@ -157,7 +150,7 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
                         view.setBackgroundResource(R.drawable.gradient_green)
                         view.backgroundTintList = context.resources.getColorStateList(R.color.green_old)
 
-                        handlerImageSaver!!.postDelayed(Runnable {
+                        handlerImageSaver.postDelayed(Runnable {
                             view.setImageDrawable(context.resources.getDrawable(R.drawable.ic_reader_image_download))
                             view.imageTintList =
                                 context.resources.getColorStateList(R.color.black_back_text)
@@ -179,9 +172,8 @@ class ReaderViewModel @Inject constructor(private val provider:ReaderProvider) :
 
     override fun onCleared() {
         super.onCleared()
-
-        if (handlerImageSaver != null)
-            handlerImageSaver!!.removeCallbacksAndMessages(null)
+        //if (handlerImageSaver != null)
+        //    handlerImageSaver!!.removeCallbacksAndMessages(null)
     }
 
 }

@@ -3,12 +3,12 @@ package ru.android.hikanumaruapp.provider.ReadMangaParser.Reader
 import android.util.Log
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
 import java.io.IOException
 
 class ReaderChapterRMP(val document: Document, val url:String){
 
-    fun get() : ReaderChapter{
+    fun get() : ReaderChapter {
         try {
             val element: Elements = document!!.select("script")
             val s: String = element.html();

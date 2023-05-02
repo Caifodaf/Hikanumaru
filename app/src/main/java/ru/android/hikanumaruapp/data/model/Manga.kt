@@ -6,18 +6,18 @@ import androidx.room.TypeConverters
 import com.squareup.moshi.Json
 import ru.android.hikanumaruapp.utilits.room.ConvertersRoom
 
-data class MangaInfo (
-    var scoreCount: String = "",
-    var viewCount: String = "",
-    var likesCount: String = "",
-    var commentCount: String = "",
-
-    var author: MutableList<String>,
-    var art: MutableList<String>?,
-    var publisher: MutableList<String>?     ,
-    var dateRelise: String = "",
-    var translators: MutableList<String>?,
-)
+//data class MangaInfo (
+//    var scoreCount: String = "",
+//    var viewCount: String = "",
+//    var likesCount: String = "",
+//    var commentCount: String = "",
+//
+//    var author: MutableList<String>,
+//    var art: MutableList<String>?,
+//    var publisher: MutableList<String>?     ,
+//    var dateRelise: String = "",
+//    var translators: MutableList<String>?,
+//)
 
 @Entity
 @TypeConverters

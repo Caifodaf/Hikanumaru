@@ -15,9 +15,9 @@ import com.github.chrisbanes.photoview.OnViewTapListener
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import ru.android.hikanumaruapp.databinding.ViewPageReaderItemBinding
 import ru.android.hikanumaruapp.presentasion.reader.ReaderFragment
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapterPage
-import ru.android.hikanumaruapp.presentasion.reader.model.TransItem
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
+import ru.android.hikanumaruapp.data.model.reader.TransItem
 
 
 class ViewPager2ReaderAdapterOld(

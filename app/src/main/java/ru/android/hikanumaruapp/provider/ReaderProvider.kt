@@ -7,7 +7,7 @@ import ru.android.hikanumaruapp.provider.SourceProvider.MANGALIB_SOURCE
 import ru.android.hikanumaruapp.provider.SourceProvider.RANOBELIB_SOURCE
 import ru.android.hikanumaruapp.provider.SourceProvider.READMANGA_SOURCE
 import ru.android.hikanumaruapp.provider.SourceProvider.SELECTED_SOURCE
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
 import javax.inject.Inject
 
 class ReaderProvider @Inject constructor(){

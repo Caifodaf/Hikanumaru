@@ -5,7 +5,7 @@ import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
 import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.data.model.GenresMainModel
-import ru.android.hikanumaruapp.data.model.MangaInfo
+//import ru.android.hikanumaruapp.data.model.MangaInfo
 import ru.android.hikanumaruapp.data.model.MangaListCoverLinks
 
 @ProvidedTypeConverter
@@ -77,22 +77,22 @@ class ConvertersRoom (
         ) ?: MangaListCoverLinks(null,null)
     }
 
-    @TypeConverter
-    fun toMangaInfoJson(mangaInfo: MangaInfo) : String? {
-        return jsonParser.toJson(
-            mangaInfo,
-            object : TypeToken<MangaInfo>(){}.type
-        ) ?: "[]"
-    }
-
-    @TypeConverter
-    fun fromMangaInfoJson(json: String): MangaInfo?{
-        return jsonParser.fromJson<MangaInfo>(
-            json,
-            object: TypeToken<MangaInfo>(){}.type
-        ) ?: MangaInfo(
-            "","","",
-            "", mutableListOf(),mutableListOf(),mutableListOf(),
-            "",mutableListOf(),)
-    }
+    //@TypeConverter
+    //fun toMangaInfoJson(mangaInfo: MangaInfo) : String? {
+    //    return jsonParser.toJson(
+    //        mangaInfo,
+    //        object : TypeToken<MangaInfo>(){}.type
+    //    ) ?: "[]"
+    //}
+//
+    //@TypeConverter
+    //fun fromMangaInfoJson(json: String): MangaInfo?{
+    //    return jsonParser.fromJson<MangaInfo>(
+    //        json,
+    //        object: TypeToken<MangaInfo>(){}.type
+    //    ) ?: MangaInfo(
+    //        "","","",
+    //        "", mutableListOf(),mutableListOf(),mutableListOf(),
+    //        "",mutableListOf(),)
+    //}
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/news"
+    app:startDestination="@id/navigation_news">
+
+    <fragment
+        android:id="@+id/navigation_news_page"
+        android:name="ru.android.hikanumaruapp.presentasion.news.page.NewsPageFragment"
+        tools:layout="@layout/fragment_news_page"
+        android:label="@string/title_news_page" />
+    <fragment
+        android:id="@+id/navigation_news"
+        android:name="ru.android.hikanumaruapp.presentasion.news.NewsFragment"
+        tools:layout="@layout/fragment_news"
+        android:label="@string/title_news">
+        <action
+            android:id="@+id/action_navigation_news_to_navigation_news_page"
+            app:destination="@id/navigation_news_page" />
+    </fragment>
+</navigation>

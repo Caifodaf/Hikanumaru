@@ -43,7 +43,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val vm by activityViewModels<HomeViewModel>()
+    private val vm by viewModels<HomeViewModel>()
 
     private val vmApi by viewModels<MainApiViewModel>()
     private val vmCache by viewModels<LocalCacheHomeViewModel>()
@@ -78,20 +78,15 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().findViewById<ConstraintLayout>(R.id.CCSearchTab).visibility = View.VISIBLE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupOnBackPressed()
         binding.apply {
+            //statePage(ConstPages.DEFAULT_PAGE_VIEW)
             initMainList()
             statePage(ConstPages.LOADING_PAGE_VIEW)
 
@@ -99,7 +94,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
             observeAllPageData()
             observeErrors()
 
-            getEndleesList()
+            //getEndleesList()
 
             initMoreBtn()
 
@@ -146,12 +141,6 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
             binding.RVManga,
             binding.RVManhva,
         )
-        mainEndlessBlocks = listOf(
-            "Popular"
-        )
-        mainEndlessRV = listOf(
-            binding.RVPopular
-        )
     }
 
     //private lateinit var historyAdapter : HomeHistoryMangaAdapter
@@ -160,12 +149,6 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
     private lateinit var mangaAdapter : HomeMangaAdapter
     private lateinit var manhvaAdapter : HomeMangaAdapter
     private lateinit var popularAdapter : HomePopularMangaAdapter
-
-    private fun FragmentHomeBinding.getEndleesList() {
-        mainEndlessBlocks.forEachIndexed { index, block ->
-            //todo
-        }
-    }
 
     private fun FragmentHomeBinding.observeErrors() {
         vm.error.observe(viewLifecycleOwner, Observer { error->
@@ -212,12 +195,14 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
                         genresAdapter = HomeGenresMangaAdapter(this@HomeFragment)
                         genres2Adapter = HomeGenresMangaAdapter(this@HomeFragment)
                         RVGenres.apply {
+                            setHasFixedSize(true)
                             addOnScrollListener(scrollListenersGenres[0]!!)
                             adapter = genresAdapter
                             addItemDecoration(SpaceItemDecoration())
                             genresAdapter.setMain(listTop)
                         }
                         RVGenres2.apply {
+                            setHasFixedSize(true)
                             addOnScrollListener(scrollListenersGenres[1]!!)
                             adapter = genres2Adapter
                             addItemDecoration(SpaceItemDecoration())
@@ -244,6 +229,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
                             val snapHelper = ItemSnapHelper()
                             snapHelper.attachToRecyclerView(this)
                             addItemDecoration(SpaceItemDecoration())
+                            setHasFixedSize(true)
                             adapter = mangaAdapter
                         }
                         mangaAdapter.setMain(list)
@@ -268,6 +254,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
                             val snapHelper:SnapHelper = ItemSnapHelper()
                             snapHelper.attachToRecyclerView(this)
                             addItemDecoration(SpaceItemDecoration())
+                            setHasFixedSize(true)
                             adapter = manhvaAdapter
                         }
                         manhvaAdapter.setMain(list)
@@ -285,20 +272,8 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
                 bundle.putString("id", (list as MangaList).id)
                 bundle.putString("url", (list as MangaList).sourceLink)
                 bundle.putString("source", (list as MangaList).sourceLink)
-
                 findNavController().navigate(R.id.action_navigation_home_to_navigation_mangapage, bundle)
             }
-            //R.id.rl_back_genres_item -> {
-            //    Log.d("testCrated", "rl_back_genres_item click $list")
-            //}
-            //R.id.rl_back_journal_item -> {
-            //    Log.d("testCrated", "rl_back_genres_item click")
-            //}
-            //R.id.CCMainLargeMangaBlock -> {
-            //    bundle.putString("url", (list as MangaPopularMainModel).linkPage)
-            //    //emitter.emitAndExecute(NavigationFragmentinViewModel.NavigationFrag(
-            //    //    R.id.action_navigation_home_to_navigation_mangapage, bundle))
-            //}
         }
     }
 
@@ -312,11 +287,11 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
                 !vm.mainManhvaList.value.isNullOrEmpty()
             ) {
                 vm.isLoadedPages = true
-                vmCache.apply { requireActivity().saveHomeCacheVM(HomeCacheModel(
-                    vm.mainGenresList.value!!,vm.mainMangaList.value!!,
-                    vm.mainManhvaList.value!!
-                ))
-                }
+                //vmCache.apply { requireActivity().saveHomeCacheVM(HomeCacheModel(
+                //    vm.mainGenresList.value!!,vm.mainMangaList.value!!,
+                //    vm.mainManhvaList.value!!
+                //))
+                //}
             }
             statePage(ConstPages.DEFAULT_PAGE_VIEW)
         }else{
@@ -326,11 +301,13 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
 
 
     private fun FragmentHomeBinding.initMoreBtn(){
-        TVSeeHistory
-        TVSeeGenres
-        TVSeeManga
-        TVSeeManhva
-        TVSeePopualar
+        TVSeeHistory.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_home_to_radioFragment)
+        }
+        //TVSeeGenres
+        //TVSeeManga
+        //TVSeeManhva
+        //TVSeePopualar
     }
 
         //initRecyclerView()
@@ -391,12 +368,9 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
-
+    //override fun onDestroyView() {
+    //    super.onDestroyView()
+    //    _binding = null
+    //}
 
 }

@@ -277,34 +277,39 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
     }
 
     private fun openReaderPageChapter(listHolder: Any?) {
-        val toInfoReader = Bundle()
+        //val toInfoReader = Bundle()
+//
+        //val listManga = listPage.value!!
+        //val list: Chapter = listHolder as Chapter
+//
+        //val urlChapter = list.url.toString()
+//
+        //toInfoReader.putString("url",urlChapter)
+        ////toInfoReader.putString("title",listManga.name)
+        //toInfoReader.putInt("type",listManga.type!!.toInt())
+        //if(!listManga.chapters.isNullOrEmpty()) {
+        //    if (isReversedList){
+        //        val str = Gson().toJson(listManga.chapters!!)
+        //        toInfoReader.putString("list", str)
+        //    }else{
+        //        var list = listManga.chapters!!
+        //        list = list.reversed() as MutableList<Chapter>
+        //        val str = Gson().toJson(list)
+        //        toInfoReader.putString("list", str)
+        //    }
+        //}
+        //toInfoReader.putString("urlPage", mangaId)
+        ////toInfoReader.putString("count", (listManga.chapterCount?.minus(1)).toString())
+//
+        //emitter.emitAndExecute(
+        //    NavigationFragmentinViewModel.NavigationFrag(
+        //        R.id.action_navigation_mangapage_to_navigation_reader, toInfoReader))
 
-        val listManga = listPage.value!!
-        val list: Chapter = listHolder as Chapter
-
-        val urlChapter = list.url.toString()
-
-        toInfoReader.putString("url",urlChapter)
-        //toInfoReader.putString("title",listManga.name)
-        toInfoReader.putInt("type",listManga.type!!.toInt())
-        if(!listManga.chapters.isNullOrEmpty()) {
-            if (isReversedList){
-                val str = Gson().toJson(listManga.chapters!!)
-                toInfoReader.putString("list", str)
-            }else{
-                var list = listManga.chapters!!
-                list = list.reversed() as MutableList<Chapter>
-                val str = Gson().toJson(list)
-                toInfoReader.putString("list", str)
-            }
-        }
-        toInfoReader.putString("urlPage", mangaId)
-        //toInfoReader.putString("count", (listManga.chapterCount?.minus(1)).toString())
-
+        val toChapterPage = Bundle()
+        toChapterPage.putString("page", Gson().toJson(listPage.value))
         emitter.emitAndExecute(
             NavigationFragmentinViewModel.NavigationFrag(
-                R.id.action_navigation_mangapage_to_navigation_reader, toInfoReader))
-
+                R.id.action_navigation_mangapage_to_navigation_reader,toChapterPage))
     }
 
     internal fun openChapterListFromGeneralPage() {
@@ -312,7 +317,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
         toChapterPage.putString("page", Gson().toJson(listPage.value))
         emitter.emitAndExecute(
             NavigationFragmentinViewModel.NavigationFrag(
-                R.id.action_navigation_mangapage_to_navigation_chapters_page))
+                R.id.action_navigation_mangapage_to_navigation_chapters_page,toChapterPage))
     }
 
     override fun onRecyclerViewItemClick(view: View, list: Any?) {

@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.jsoup.nodes.Document
 import ru.android.hikanumaruapp.data.model.Chapter
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
 
 class ReaderRMP
 {

@@ -58,13 +58,14 @@ class MangaPageFragment : BaseInnerFragment(), debugModels {
         }
     }
 
-    init { setupOnBackPressed() }
+    //init { setupOnBackPressed() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.GONE
         _binding = FragmentMangaPageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -311,6 +312,7 @@ class MangaPageFragment : BaseInnerFragment(), debugModels {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
         _binding = null
     }
 

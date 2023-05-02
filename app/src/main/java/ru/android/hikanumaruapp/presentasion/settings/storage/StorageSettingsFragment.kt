@@ -14,7 +14,7 @@ class StorageSettingsFragment : Fragment() {
 
     private var _binding: FragmentStorageSettingsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<StorageSettingsViewModel>()
+    private val vm by viewModels<StorageSettingsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +23,7 @@ class StorageSettingsFragment : Fragment() {
         _binding = FragmentStorageSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
+        vm.error.observe(viewLifecycleOwner, {})
 
         return root
     }

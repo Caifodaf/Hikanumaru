@@ -1,10 +1,10 @@
-package ru.android.hikanumaruapp.presentasion.reader.model
+package ru.android.hikanumaruapp.data.model.reader
 
-data class ViewerChapters(
-    var currChapter: MutableList<ReaderChapter>,
-    val prevChapter: MutableList<ReaderChapter>?,
-    val nextChapter: MutableList<ReaderChapter>?,
-)
+//data class ViewerChapters(
+//    var currChapter: MutableList<ReaderChapter>,
+//    val prevChapter: MutableList<ReaderChapter>?,
+//    val nextChapter: MutableList<ReaderChapter>?,
+//)
 
 data class ReaderChapter(
     /* selectChapterType

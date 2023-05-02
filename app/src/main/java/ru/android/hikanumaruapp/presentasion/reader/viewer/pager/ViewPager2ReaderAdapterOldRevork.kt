@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.android.hikanumaruapp.databinding.ViewPageReaderItemBinding
 import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapterPage
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
 
 
 class ViewPager2ReaderAdapter(

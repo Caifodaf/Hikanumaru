@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Environment
 import androidx.lifecycle.MutableLiveData
 import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
-import ru.android.hikanumaruapp.presentasion.reader.model.ReaderChapter
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL

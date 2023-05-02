@@ -2,27 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/homeNavDestination"
         android:icon="@drawable/ic_home"
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_radio"
+        android:id="@+id/market"
         android:icon="@drawable/ic_radio"
         android:title="@string/title_radio" />
 
     <item
-        android:id="@+id/navigation_news"
+        android:id="@+id/news"
         android:icon="@drawable/ic_news"
         android:title="@string/title_news" />
 
     <item
-        android:id="@+id/navigation_profile"
+        android:id="@+id/profile"
         android:icon="@drawable/ic_user"
         android:title="@string/title_profile" />
 
     <item
-        android:id="@+id/navigation_settings"
+        android:id="@+id/settingsNavDestination"
         android:icon="@drawable/ic_settings"
         android:title="@string/title_settings" />
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsNavDestination"
+    app:startDestination="@id/navigation_settings">
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.SettingsFragment"
+        tools:layout="@layout/fragment_settings"
+        android:label="@string/title_settings">
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_storage_settings"
+            app:destination="@id/navigation_storage_settings" />
+        <action
+            android:id="@+id/action_navigation_settings_to_aboutSettingsFragment"
+            app:destination="@id/aboutSettingsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_notification_settings"
+            app:destination="@id/navigation_notification_settings" />
+        <action
+            android:id="@+id/action_navigation_settings_to_supportSettingsFragment"
+            app:destination="@id/supportSettingsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_sourceSettingsFragment"
+            app:destination="@id/sourceSettingsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_themeSettingsFragment"
+            app:destination="@id/themeSettingsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_profile_settings"
+            app:destination="@id/navigation_profile_settings" />
+        <action
+            android:id="@+id/action_navigation_settings_to_statsSettingsFragment"
+            app:destination="@id/statsSettingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/statsSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.stats.StatsSettingsFragment"
+        tools:layout="@layout/stats_settings_fragment"
+        android:label="stats_settings_fragment" />
+    <fragment
+        android:id="@+id/navigation_storage_settings"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.storage.StorageSettingsFragment"
+        tools:layout="@layout/fragment_storage_settings"
+        android:label="@string/title_storage_settings" />
+    <fragment
+        android:id="@+id/sourceSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.source.SourceSettingsFragment"
+        tools:layout="@layout/source_settings_fragment"
+        android:label="source_settings_fragment" />
+    <fragment
+        android:id="@+id/navigation_notification_settings"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.notification.NotificationSettingsFragment"
+        tools:layout="@layout/fragment_notification_settings"
+        android:label="@string/title_notification_settings" />
+    <fragment
+        android:id="@+id/aboutSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.about.AboutSettingsFragment"
+        tools:layout="@layout/about_settings_fragment"
+        android:label="about_settings_fragment" />
+    <fragment
+        android:id="@+id/themeSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.theme.ThemeSettingsFragment"
+        tools:layout="@layout/theme_settings_fragment"
+        android:label="theme_settings_fragment" />
+    <fragment
+        android:id="@+id/navigation_profile_settings"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.profile.ProfileSettingsFragment"
+        tools:layout="@layout/fragment_profile_settings"
+        android:label="@string/title_profile_settings" />
+    <fragment
+        android:id="@+id/supportSettingsFragment"
+        android:name="ru.android.hikanumaruapp.presentasion.settings.supprot.SupportSettingsFragment"
+        tools:layout="@layout/support_settings_fragment"
+        android:label="support_settings_fragment" />
+</navigation>
