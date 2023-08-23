@@ -1,10 +1,7 @@
 # HikanumaruApp
 Hicanumaru app - it is an application for reading manga, ranobe, and much more. 
-Данное приложение находиться в этапе полного рефакторинга.
 
-[HikanumaruOLD Legacy code](https://github.com/Caifodaf/HikanumaruAppOLD)
-
-# Стек (использующийся на момент рефакторинга)
+# Стек
 ```
 – Kotlin
 – One Activity
