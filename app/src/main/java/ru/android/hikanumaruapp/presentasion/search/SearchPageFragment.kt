@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import dagger.hilt.android.AndroidEntryPoint
+import ru.android.hikanumaruapp.R
+import ru.android.hikanumaruapp.data.model.MangaList
 import ru.android.hikanumaruapp.databinding.SearchPageFragmentBinding
 import ru.android.hikanumaruapp.presentasion.search.adapter.LastedSearchAdapter
 import ru.android.hikanumaruapp.presentasion.search.adapter.SearchAdapter
@@ -32,7 +35,7 @@ class SearchPageFragment : Fragment(), UIUtils, RecyclerViewClickListener {
     }
 
     private lateinit var searchAdapter: SearchAdapter
-    private lateinit var lastedSearchAdapter: LastedSearchAdapter
+    //private lateinit var lastedSearchAdapter: LastedSearchAdapter Todo Skipped
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,10 +44,10 @@ class SearchPageFragment : Fragment(), UIUtils, RecyclerViewClickListener {
             ETSearchBar.setText(vm.searchText.value)
             initET()
 
-            initLastedSearch()
+            //initLastedSearch()
             initSearchList()
 
-            observeLastedList()
+            //observeLastedList()
             observeList()
 
             initSearchBtn()
@@ -60,23 +63,21 @@ class SearchPageFragment : Fragment(), UIUtils, RecyclerViewClickListener {
         }
     }
 
-    private fun SearchPageFragmentBinding.initLastedSearch() {
-        CCBlockLastedSearch.visibility = View.GONE
-    }
+    //private fun SearchPageFragmentBinding.initLastedSearch() {
+    //    CCBlockLastedSearch.visibility = View.GONE
+    //}
 
     private fun SearchPageFragmentBinding.initSearchList() {
-        searchAdapter
+        searchAdapter = SearchAdapter(requireActivity(), this@SearchPageFragment)
 
-        val snapHelper = LinearSnapHelper()
         RVSearchList.apply{
-            snapHelper.attachToRecyclerView(this)
             adapter = searchAdapter
         }
     }
 
-    private fun SearchPageFragmentBinding.observeLastedList() {
-       //vm.searchText.observe(viewLifecycleOwner) {}
-    }
+    //private fun SearchPageFragmentBinding.observeLastedList() {
+    //   //vm.searchText.observe(viewLifecycleOwner) {}
+    //}
 
     private fun SearchPageFragmentBinding.observeList() {
        //vm.searchText.observe(viewLifecycleOwner) {}
@@ -92,7 +93,16 @@ class SearchPageFragment : Fragment(), UIUtils, RecyclerViewClickListener {
     }
 
     override fun onRecyclerViewItemClick(view: View, list: Any?) {
-        TODO("Not yet implemented")
+        when (view.id) {
+            R.id.CCSearchItem -> {
+                val bundle = Bundle()
+//                bundle.putString("id", (list as MangaList).id)
+//                bundle.putString("url", (list as MangaList).sourceLink)
+//                bundle.putString("source", (list as MangaList).sourceLink)
+                // TODO ADD
+                findNavController().navigate(R.id.action_searchPageFragment_to_navigation_mangapage, bundle)
+            }
+        }
     }
 
 }

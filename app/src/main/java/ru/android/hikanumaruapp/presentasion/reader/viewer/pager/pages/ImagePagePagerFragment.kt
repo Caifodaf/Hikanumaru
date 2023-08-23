@@ -17,8 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.android.hikanumaruapp.databinding.ViewPageReaderItemBinding
-import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
 import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
+import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
 import ru.android.hikanumaruapp.utilits.ProgressListener
 
 

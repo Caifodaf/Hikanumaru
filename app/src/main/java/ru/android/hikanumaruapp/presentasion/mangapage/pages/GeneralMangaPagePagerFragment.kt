@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import ru.android.hikanumaruapp.presentasion.ConstPages
@@ -14,6 +15,8 @@ import ru.android.hikanumaruapp.databinding.GeneralTabMangaPageBinding
 import ru.android.hikanumaruapp.data.model.Chapter
 import ru.android.hikanumaruapp.presentasion.mangapage.MangaPageViewModel
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageChapterAdapter
+import ru.android.hikanumaruapp.presentasion.reader.data.NetworkResponse
+import ru.android.hikanumaruapp.presentasion.reader.data.ParserViewModel
 import ru.android.hikanumaruapp.utilits.UIUtils
 
 @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
@@ -35,15 +38,18 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
     private var isDescriptionOpen = false
     private var isChapterReverse = false
 
+    private val vmParser by viewModels<ParserViewModel>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             updateDataUI()
             stateChapterList(ConstPages.LOADING_PAGE_VIEW)
             observeChapterList()
+            observeError()
             initBtn()
         }
-        vm.getDataChapter()
+        vm.getDataChapter(vmParser)
     }
 
     private fun GeneralTabMangaPageBinding.initBtn() {
@@ -87,7 +93,7 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
                 vm.listPage.value!!.chapters = null
 
                 vm.isErrorLoadChapters = false
-                vm.getDataChapter()
+                vm.getDataChapter(vmParser)
                 stateChapterList(ConstPages.LOADING_PAGE_VIEW)
             }
         }
@@ -119,6 +125,23 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
     }
 
     private fun GeneralTabMangaPageBinding.observeChapterList(){
+        vmParser.creativeworkChaptersList.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResponse.Failure -> {
+                    Log.d("vmApi", "mangaPageResponse12 Error - $it")
+                }
+                is NetworkResponse.Loading -> {
+                    Log.d("vmApi", "mangaPageResponse12 Loading")
+                }
+                is NetworkResponse.Success -> {
+                    vm.apply {
+                        listChapters.value = it.data
+                        initBDLibrary(requireActivity())
+                    }
+                }
+            }
+        }
+
         vm.listChapters.observe(viewLifecycleOwner, Observer { listChapters ->
             if (listChapters == null)
                 stateChapterList(ConstPages.ERROR_PAGE_VIEW)
@@ -128,6 +151,12 @@ class GeneralMangaPagePagerFragment(private val vm: MangaPageViewModel) : Fragme
                 updateChapters()
             }
         })
+    }
+
+    private fun observeError(){
+        vm.error.observe(viewLifecycleOwner){
+            Log.d("vmApi", "mangaPageResponse12 Error1")
+        }
     }
 
     private fun GeneralTabMangaPageBinding.initRecyclerView(){

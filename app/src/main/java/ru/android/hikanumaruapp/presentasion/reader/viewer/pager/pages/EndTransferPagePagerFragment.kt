@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import com.github.chrisbanes.photoview.OnViewTapListener
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import ru.android.hikanumaruapp.databinding.TrasitorPageReaderItemBinding
-import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
 import ru.android.hikanumaruapp.data.model.reader.TransItem
+import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
 
 class EndTransferPagePagerFragment(
     val type: Int,

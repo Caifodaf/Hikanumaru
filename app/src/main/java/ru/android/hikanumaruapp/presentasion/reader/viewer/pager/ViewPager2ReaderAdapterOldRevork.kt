@@ -5,30 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
 import com.github.chrisbanes.photoview.OnViewTapListener
 import com.github.chrisbanes.photoview.PhotoViewAttacher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.android.hikanumaruapp.databinding.ViewPageReaderItemBinding
-import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
 import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
 
 
 class ViewPager2ReaderAdapter(
-    val context: FragmentActivity,
-    val vm: ReaderViewModel,
-    fragmentManager: FragmentManager,
-    lifecycle: Lifecycle,
     private val onPageTapListener: OnViewTapListener,
-) : RecyclerView.Adapter<ViewPager2ReaderAdapter.ViewHolder>(){
+) : RecyclerView.Adapter<ViewPager2ReaderAdapter.ViewHolderPager>(){
 
     companion object {
         private const val TYPE_CHAPTER = 0
@@ -41,46 +33,46 @@ class ViewPager2ReaderAdapter(
 
     var dataSetPage = mutableListOf<ReaderChapterPage>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPager{
         val binding = ViewPageReaderItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolderPager(binding)
     }
 
     override fun getItemViewType(position: Int): Int {
         return TYPE_CHAPTER
     }
 
-    override fun getItemCount(): Int = dataSetPage.size
+    override fun getItemCount(): Int = if(dataSetPage.size == 0) 1 else dataSetPage.size
+    //override fun getItemCount() = dataSetPage.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("ListT2d2", "Load in createFragment - ${dataSetPage[position]}")
-        holder.bind()
+    override fun onBindViewHolder(holder: ViewHolderPager, position: Int) {
+        if (dataSetPage.size != 0) {
+            holder.bind(dataSetPage[position])
+        }else{
+            holder.binding.viewPageImage.load(null)
+            holder.binding.rlLoaderChapterPageItem.visibility = View.VISIBLE
+        }
     }
 
-    fun onPageSelected(page: Any?, position: Int) {
-    }
+    fun onPageSelected(page: Any?, position: Int) {}
 
     fun setChapters(curr:  MutableList<ReaderChapterPage>, reload:Boolean = false) {
-        //if (reload)
         dataSetPage.clear()
-        dataSetPage = curr as MutableList<ReaderChapterPage>
-        Log.d("ListT2d2", "Load in bind holder history - $dataSetPage")
+        dataSetPage = curr
         notifyDataSetChanged()
     }
 
     fun reversePages() {
         dataSetPage = dataSetPage.reversed().toMutableList()
-        Log.d("ListT2d2", "Load in bind holder history - $dataSetPage")
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder (val binding: ViewPageReaderItemBinding) :
+    inner class ViewHolderPager (val binding: ViewPageReaderItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("CheckResult")
-        fun bind() {
-            Log.d("ListT", "Load in bind holder history - ${dataSetPage[absoluteAdapterPosition]}")
+        fun bind(data: ReaderChapterPage) {
+            Log.d("ListT2d2sdfghjk", "Load in bind holder history - ${data}")
 
             val attacher = PhotoViewAttacher(binding.viewPageImage)
             attacher.setOnViewTapListener(onPageTapListener)
@@ -91,24 +83,24 @@ class ViewPager2ReaderAdapter(
                 binding.rlLoaderChapterPageItem.visibility = View.VISIBLE
             }
 
-            vm.viewModelScope.launch(Dispatchers.Default) {
-                imageLoad(dataSetPage[absoluteAdapterPosition].linkImage)
+            CoroutineScope(Dispatchers.IO).launch {
+                imageLoad(data.linkImage)
             }
         }
 
         private fun imageLoad(any: Any) {
             try {
-                val imageLoader = ImageLoader(context)
-                val request = ImageRequest.Builder(context)
+                val imageLoader = ImageLoader(itemView.context)
+                val request = ImageRequest.Builder(itemView.context)
                     .data(any)
                     .target { drawable ->
-                        Log.d("ListT2d2", "Load in imga - $drawable")
+                        Log.d("ListT2d21221", "Load in imga - $drawable")
                         when (drawable) {
                             null -> {
                                 binding.tvTopChapterPageItem.text = "Ошибка загрузки."
                                 binding.circleBarReaderPageItem.visibility = View.GONE
                                 binding.tvBottomChapterPageItem.visibility = View.VISIBLE
-                                onClickErrorBtn()
+                                onClickErrorBtn(any)
                             }
                             else -> {
                                 binding.viewPageImage.load(drawable)
@@ -125,14 +117,14 @@ class ViewPager2ReaderAdapter(
             }
         }
 
-        private fun onClickErrorBtn() {
+        private fun onClickErrorBtn(any: Any) {
             binding.tvBottomChapterPageItem.setOnClickListener() {
                 binding.tvTopChapterPageItem.text = "Загрузка"
                 binding.tvBottomChapterPageItem.visibility = View.GONE
                 binding.circleBarReaderPageItem.visibility = View.VISIBLE
 
-                vm.viewModelScope.launch(Dispatchers.IO) {
-                    imageLoad(dataSetPage[absoluteAdapterPosition].linkImage)
+                CoroutineScope(Dispatchers.IO).launch {
+                    imageLoad(any)
                 }
             }
         }

@@ -6,48 +6,46 @@ import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.widget.*
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.children
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.github.chrisbanes.photoview.OnViewTapListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import me.everything.android.ui.overscroll.IOverScrollDecor
-import me.everything.android.ui.overscroll.IOverScrollState
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
 import ru.android.hikanumaruapp.R
-import ru.android.hikanumaruapp.databinding.FragmentReaderBinding
 import ru.android.hikanumaruapp.data.model.Chapter
+import ru.android.hikanumaruapp.databinding.FragmentReaderBinding
 import ru.android.hikanumaruapp.data.model.Manga
-import ru.android.hikanumaruapp.presentasion.reader.ViewTapConst.LEFT_REGION
-import ru.android.hikanumaruapp.presentasion.reader.ViewTapConst.RIGHT_REGION
-import ru.android.hikanumaruapp.presentasion.reader.chapterList.ChapterListAdapter
 import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
-import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
 import ru.android.hikanumaruapp.presentasion.BaseInnerFragment
-import ru.android.hikanumaruapp.presentasion.reader.viewer.SimpleSeekBarListener
-import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerConst
+import ru.android.hikanumaruapp.presentasion.reader.chapterList.ChapterListAdapter
+import ru.android.hikanumaruapp.presentasion.reader.data.ApplicationSettingsProvider
+import ru.android.hikanumaruapp.presentasion.reader.data.NetworkResponse
+import ru.android.hikanumaruapp.presentasion.reader.data.ParserViewModel
+import ru.android.hikanumaruapp.presentasion.reader.viewer.init.BaseViewer
+import ru.android.hikanumaruapp.presentasion.reader.viewer.init.ReaderCallback
+import ru.android.hikanumaruapp.presentasion.reader.viewer.init.ReaderConfigViewModel
 import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerConst.Companion.READ_MODE_BOTTOM
 import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerConst.Companion.READ_MODE_LEFT
 import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerConst.Companion.READ_MODE_RIGHT
-import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ViewPager2ReaderAdapter
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
-import kotlin.math.abs
 
 
 @AndroidEntryPoint
 class ReaderFragment : BaseInnerFragment(), RecyclerViewClickListener {
 
+    data class mOverScrollBinding(
+        var ltFrame: FrameLayout,
+        val imArrow: ImageView,
+        val tvText: TextView,
+    )
+
     private var _binding: FragmentReaderBinding? = null
     private val binding get() = _binding!!
     private val vm by viewModels<ReaderViewModel>()
+    private val vmConfig by activityViewModels<ReaderConfigViewModel>()
+    private val vmParser by viewModels<ParserViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,362 +55,76 @@ class ReaderFragment : BaseInnerFragment(), RecyclerViewClickListener {
         return binding.root
     }
 
-    //private var urlChapter: String = ""
-    //private var titleChapter: String = ""
-    //private var typeManga = 0
-    //private var countChapters = ""
-    //private var isReversedList = false
-    //private var urlPage = ""
-    //private lateinit var chapterList: MutableList<Chapter>
-
-    private var readModeType = 0
-    private var  isNavigateRevesed = false
-
-    private var  isChapterReload = false
-
-    lateinit var mOverScrollFrame: FrameLayout
-    lateinit var mOverScrollArrow: ImageView
-    lateinit var mOverScrollText: TextView
-
-    private lateinit var readerPager: ViewPager2
-    private lateinit var readerPagerAdapter: ViewPager2ReaderAdapter
-
-    private var chapterAdapter = ChapterListAdapter(this)
-
-    private lateinit var chapter: ReaderChapter
-    private var loadNewChapter: Boolean = false
-    private var isTypeLoadPagesReader: Boolean = false
-
-    private lateinit var pageSeekBar: SeekBar
-    private var currentPage: Int? = 0
-    private var maxCountSeekBar: Int = 1
-
     init { setupOnBackPressed() }
 
-    private lateinit var creativeWorkPage: Manga
+    private lateinit var settingsProvider: ApplicationSettingsProvider
+
+    private lateinit var chapterData: ReaderChapter
+    private lateinit var chapterAdapter: ChapterListAdapter
+
+    private lateinit var mOverScroll: mOverScrollBinding
+
+    private lateinit var viewer: BaseViewer
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.GONE
+        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.GONE
 
+        settingsProvider = ApplicationSettingsProvider(requireContext())
+
+        // Получение данных
         val page = arguments?.getString("page").toString()
-        creativeWorkPage =  Gson().fromJson(page, Manga::class.java)
+        vm.currentChapterID = arguments?.getString("chapterID").toString()
+        vm.creativeWorkPage =  Gson().fromJson(page, Manga::class.java)
 
         binding.apply {
-            loadConfig()
-            observeList()
+            // Frame OverScrolling
+            mOverScroll = mOverScrollBinding(overscrollFrameReader,ivArrowReader,textViewTitleReader)
 
+            vmConfig.loadConfig() // ReadMode observe
+            getChaptersPager()
+
+            initPager()
+
+            observeList()
+            observeError()
 
             initializeMenu()
-            menuListeners()
-        }
-
-        //urlChapter = arguments?.getString("url").toString()
-        //titleChapter = arguments?.getString("title").toString()
-        //typeManga = arguments?.getInt("type")!!.toInt()
-        //countChapters = arguments?.getString("count").toString()
-        //urlPage = arguments?.getString("urlPage").toString()
-        //val str: String? = arguments?.getString("list")
-        //chapterList = enums.toMutableList()
-        //vm.getDataChapter(urlChapter)
-        //notifyDataSetChanged()
-        //toggleMenu()
-    }
-
-    private fun FragmentReaderBinding.observeList() {
-        //vm.chapterList.observe(viewLifecycleOwner, Observer { listPage ->
-        //    Log.d("ListT2d2", "Load 3 - $listPage")
-        //    loadChapterList(listPage)
-        //})
-        vm.loadChapter.observe(viewLifecycleOwner, Observer { listPage ->
-            Log.d("ListT2d2", "Load 0 - $listPage")
-            loadPagesReader(listPage)
-            loadChapterList()
-        })
-        vm.preloadChapterPrev.observe(viewLifecycleOwner, Observer { listPage ->
-            Log.d("ListT2d2", "Load 1 - $listPage")
-            when (!isNavigateRevesed) {
-                ReaderPagerConst.IS_REVERSE_TRUE -> loadPagesReader(listPage,listPage.pages!!.lastIndex)
-                ReaderPagerConst.IS_REVERSE_FALSE -> loadPagesReader(listPage)
-            }
-        })
-        vm.preloadChapterNext.observe(viewLifecycleOwner, Observer { listPage ->
-            Log.d("ListT2d2", "Load 2 - $listPage")
-            when (!isNavigateRevesed) {
-                ReaderPagerConst.IS_REVERSE_TRUE -> loadPagesReader(listPage)
-                ReaderPagerConst.IS_REVERSE_FALSE -> loadPagesReader(listPage,listPage.pages!!.lastIndex)
-            }
-        })
-    }
-
-    private fun loadChapterList() {
-        chapterAdapter.setMain(creativeWorkPage.chapters!!.toMutableList())
-        chapterAdapter.setSelect(chapter.idChapter)
-        binding.progressLoadingChapterList.visibility = View.GONE
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun loadPagesReader(listPage: ReaderChapter, set:Int = 0) {
-        val isFirst = chapterAdapter.itemCount == 0
-        chapter = (listPage as ReaderChapter)
-        readerPagerAdapter.setChapters(chapter.pages!!)
-        readerPager.currentItem = set
-
-        if (!isFirst)
-            chapterAdapter.setSelect(chapter.idChapter)
-
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-
-        binding.tvTitleChapterNumber.text =  ("${getString(R.string.chapter_number)} ${chapter.number}")
-        binding.ivBackLoaderReader.visibility = GONE
-    }
-
-    // todo rework
-    private fun FragmentReaderBinding.loadConfig(){
-        //val mConfig:SharedPreferences = getSharedPreferences("readerConfig", Context.MODE_PRIVATE)
-        //
-        //if(mConfig.contains("readerConfig")) {
-        //    readModeType = mConfig.getInt("viewpager_read_mode", 0).toInt() ?: 0
-        //}
-
-        readModeType = 0
-
-        if(readModeType == 1)
-            isNavigateRevesed = true
-    }
-
-    private fun initializeMenu() {
-        // Frame OverScrolling
-        mOverScrollFrame = binding.overscrollFrameReader
-        mOverScrollArrow = binding.ivArrowReader
-        mOverScrollText = binding.textViewTitleReader
-
-        // Init Chapters List
-        initChaptersList()
-        //if(creativeWorkPage.chapters!!.size != (countChapters.toInt()))
-        //    reLoadChapter()
-
-        // Set ReadMode Type
-        readModeType = when(creativeWorkPage.type){
-            MangaConst.MANGA_TYPE -> READ_MODE_RIGHT
-            MangaConst.MANHVA_TYPE -> READ_MODE_RIGHT
-            MangaConst.MANHUYA_TYPE -> READ_MODE_RIGHT
-            MangaConst.OEL_MANGA_TYPE -> READ_MODE_RIGHT
-            MangaConst.COMICS_TYPE -> READ_MODE_RIGHT
-            MangaConst.OTHER_LOCAL_TYPE -> READ_MODE_RIGHT
-            else-> READ_MODE_RIGHT
-        }
-        menuSelectReadModeChangeView()
-        binding.readerMenu.visibility = View.GONE
-
-        initViewPagerReader()
-    }
-
-    private fun initViewPagerReader(){
-        //ViewPager2
-        readerPager = binding.viewPagerReader
-        readerPagerAdapter = ViewPager2ReaderAdapter(
-            context = requireActivity(),
-            vm = vm,
-            fragmentManager = parentFragmentManager,
-            lifecycle = lifecycle,
-            onPageTapListener = onPageTapListener())
-
-        readerPager.apply {
-            orientation = ViewPager2.ORIENTATION_HORIZONTAL
-            //offscreenPageLimit = 2
-            adapter = readerPagerAdapter
-        }
-
-        viewPager2SetRegisterOnPageChangeCallback(readerPager)
-        // WARN: we use knowledge of internal structure of ViewPager2 to setup overscroll behavior
-        val decor : IOverScrollDecor? = readerPager.children.filterIsInstance<RecyclerView>().firstOrNull()?.let {
-            OverScrollDecoratorHelper.setUpOverScroll(it, ORIENTATION_HORIZONTAL)
-        }
-        decorSetOverScrollStateListener(decor)
-
-        initSeekBar()
-    }
-
-    private fun initChaptersList(){
-        binding.readerChapterList.setOnClickListener(){}
-
-        val rvChapters = binding.rvChapterListReaderMenu
-        rvChapters.apply {
-            adapter = chapterAdapter
-        }
-
-        if (isChapterReload) {
-            chapterAdapter.setMain(creativeWorkPage.chapters!!)
-            chapterAdapter.setSelect(chapter.idChapter)
-            binding.rvChapterListReaderMenu.scrollToPosition(chapterAdapter.posLastChapter)
-        }
-
-        binding.tvBtnCloseChapterListReader.setOnClickListener{
-            binding.readerChapterList.visibility = GONE
-        }
-        binding.llBntSortChapterListReader.setOnClickListener{
-            chapterAdapter.reversePages()
-            binding.rvChapterListReaderMenu.scrollToPosition(chapterAdapter.posLastChapter)
         }
     }
 
-    // todo rework
-    private fun initSeekBar() {
-        pageSeekBar = binding.readerSeekBar
-        maxCountSeekBar = readerPagerAdapter.dataSetPage.size
-        currentPage = readerPager.currentItem.toInt()
-
-        currentProgressSeekBar()
-        pageSeekBar.setOnSeekBarChangeListener(
-            object : SimpleSeekBarListener() {
-                @SuppressLint("SetTextI18n")
-                override fun onProgressChanged(seekBar: SeekBar, value: Int, fromUser: Boolean) {
-                    if (readerPager != null && fromUser) {
-                        binding.tvCurrentPageSeekbar.text = (1 + value).toString()
-                        readerPager.currentItem = value
-                    }
-                }
-            }
-        )
-    }
-
-    private fun currentProgressSeekBar() {
-        val count = readerPagerAdapter.dataSetPage.size
-        val curr = readerPager.currentItem+1
-        pageSeekBar.max = count-1
-        pageSeekBar.progress = curr ?: 1
-        binding.tvCurrentPageSeekbar.text = curr.toString()
-        binding.tvMaxPageSeekbar.text = count.toString()
-    }
-
-    private fun decorSetOverScrollStateListener(decor: IOverScrollDecor?) {
-        decor!!.setOverScrollStateListener(object :
-            ru.android.hikanumaruapp.presentasion.reader.viewer.oversscrool.IOverScrollStateListener,
-            me.everything.android.ui.overscroll.IOverScrollStateListener {
-
-            override fun onOverScrollStateChange(
-                decor: ru.android.hikanumaruapp.presentasion.reader.viewer.oversscrool.IOverScrollDecor?,
-                oldState: Int,
-                newState: Int,
-            ) {}
-
-            override fun onOverScrollStateChange(
-                decor: IOverScrollDecor?,
-                oldState: Int,
-                newState: Int,
-            ) {
-                when (newState) {
-                    IOverScrollState.STATE_IDLE -> mOverScrollFrame.visibility = GONE
-                    IOverScrollState.STATE_DRAG_START_SIDE -> {
-                        when (!isNavigateRevesed) {
-                            ReaderPagerConst.IS_REVERSE_TRUE -> onFrameOverScrollTransform(
-                                ReaderPagerConst.PREV)
-                            ReaderPagerConst.IS_REVERSE_FALSE -> onFrameOverScrollTransform(
-                                ReaderPagerConst.NEXT)
-                        }
-                    }
-                    IOverScrollState.STATE_DRAG_END_SIDE -> {
-                        when (!isNavigateRevesed) {
-                            ReaderPagerConst.IS_REVERSE_TRUE -> onFrameOverScrollTransform(
-                                ReaderPagerConst.PREV)
-                            ReaderPagerConst.IS_REVERSE_FALSE -> onFrameOverScrollTransform(
-                                ReaderPagerConst.NEXT)
-                        }
-                    }
-                    IOverScrollState.STATE_BOUNCE_BACK -> if (oldState == IOverScrollState.STATE_DRAG_START_SIDE) {
-                        when (!isNavigateRevesed) {
-                            ReaderPagerConst.IS_REVERSE_TRUE -> preloadPrevOver()
-                            ReaderPagerConst.IS_REVERSE_FALSE -> preloadNextOver()
-                        }
-                        mOverScrollFrame.visibility = GONE
-                        // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
-                    }
-                    else {
-                        when (!isNavigateRevesed) {
-                            ReaderPagerConst.IS_REVERSE_TRUE -> preloadNextOver()
-                            ReaderPagerConst.IS_REVERSE_FALSE -> preloadPrevOver()
-                        }
-                        mOverScrollFrame.visibility = GONE
-                        // i.e. (oldState == STATE_DRAG_END_SIDE)
-                        // View is starting to bounce back from the *right-end*.
-                    }
-                }
-            }
-        })
-
-        decor!!.setOverScrollUpdateListener { decor, state, offset ->
-            var view = decor!!.view;
-            // \|/ onOverScrollFlying(0,offset)
-            mOverScrollFrame.alpha = abs(offset / 50f)
-        }
-    }
-
-    // todo rework
-    @SuppressLint("SetTextI18n")
-    private fun onFrameOverScrollTransform(type: Int) {
-        mOverScrollFrame.alpha = 0f
-        mOverScrollFrame.visibility = VISIBLE
-
-        when (type) {
-            ReaderPagerConst.PREV -> {
-                if (chapter.linkPagePrev == MangaConst.START_CHAPTER) {
-                    mOverScrollFrame.visibility = GONE
-                } else {
-                    val tom:String = chapter.pageNextId!!.substringBefore(' ')
-                    val num:String = chapter.pageNextId!!.substringAfter(' ')
-                    mOverScrollText.text = getString(R.string.prev_chapter_reader_trans,
-                        tom,num,chapter.pagePrevTitle.toString())
-                    mOverScrollArrow.rotation = when(readModeType){
-                            READ_MODE_RIGHT ->  180f
-                            READ_MODE_LEFT ->  0f
-                            READ_MODE_BOTTOM ->  90f
-                        else -> 0f
-                    }
-                }
-            }
-            ReaderPagerConst.NEXT -> {
-                if (chapter.linkPageNext == MangaConst.FINISH_CHAPTER) {
-                    mOverScrollFrame.visibility = GONE
-                } else {
-                    val tom:String = chapter.pageNextId!!.substringBefore(' ')
-                    val num:String = chapter.pageNextId!!.substringAfter(' ')
-                    mOverScrollText.text = getString(R.string.next_chapter_reader_trans,
-                        tom,num,chapter.pageNextTitle.toString())
-                    mOverScrollArrow.rotation = when(readModeType){
-                        READ_MODE_RIGHT ->  0f
-                        READ_MODE_LEFT ->  180f
-                        READ_MODE_BOTTOM ->  90f
-                        else -> 0f
-                    }
-                }
-            }
-        }
+    private fun FragmentReaderBinding.initPager() {
+        viewer = BaseViewer.builder(requireContext())
+            .setView(view = viewPagerReader)
+            .setSeekBarView(view = readerSeekBar, text = TVPagesSeekBar)
+            .setOverScrollView(mOverScroll = mOverScroll)
+            //.setChapterData(chapter = chapterData)
+            .setConfig(readMode = vmConfig.readMode)
+            .setReaderCallback(object : ReaderCallback() {
+                override fun onToggleMenu() { toggleMenu() }
+                override fun preloadPrev() { preloadPrevOver() }
+                override fun preloadNext() { preloadNextOver()}
+            })
+            .build()
     }
 
     private fun preloadPrevOver() {
-        when (chapter.linkPagePrev) {
+        when (chapterData.linkPagePrev) {
             MangaConst.START_CHAPTER -> {
-                // Todo toast
-                Toast.makeText(
-                    requireActivity(), getString(R.string.toast_reader_start_page),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), requireContext().getString(R.string.toast_reader_start_page), Toast.LENGTH_SHORT)
+                    .show()
             }
             null -> {
-                // Todo toast
-                Toast.makeText(
-                    requireActivity(), getString(R.string.toast_reader_start_page),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), requireContext().getString(R.string.toast_reader_start_page), Toast.LENGTH_SHORT)
+                    .show()
             }
             else -> {
                 if (vm.checkLoadChapterPrev) {
-                    vm.getDataChapterPrev(chapter.linkPagePrev!!)
+                    vm.preloadDataChapterPrev(vmParser,chapterData.linkPagePrev!!,settingsProvider.source()!!)
 
                     requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                     // Затенение при переходе
-                    binding.ivBackLoaderReader.visibility = VISIBLE
+                    binding.ivBackLoaderReader.visibility = View.VISIBLE
                     //lrLoader.visibility = VISIBLE
                     //lrErrorLoader.visibility = GONE
                 }
@@ -421,31 +133,25 @@ class ReaderFragment : BaseInnerFragment(), RecyclerViewClickListener {
     }
 
     private fun preloadNextOver() {
-        if (chapter.linkPageNext?.substringAfterLast('/') ?: "" == "finish")
-            chapter.linkPageNext = "finish"
+        if (chapterData.linkPageNext?.substringAfterLast('/') ?: "" == MangaConst.FINISH_CHAPTER)
+            chapterData.linkPageNext = MangaConst.FINISH_CHAPTER
 
-        when (chapter.linkPageNext) {
+        when (chapterData.linkPageNext) {
             MangaConst.FINISH_CHAPTER -> {
-                // Todo toast
-                Toast.makeText(
-                    requireActivity(), getString(R.string.toast_reader_last_page),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), requireContext().getString(R.string.toast_reader_last_page), Toast.LENGTH_SHORT)
+                    .show()
             }
             null -> {
-                // Todo toast
-                Toast.makeText(
-                    requireActivity(), getString(R.string.toast_reader_last_page),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), requireContext().getString(R.string.toast_reader_last_page), Toast.LENGTH_SHORT)
+                    .show()
             }
             else -> {
                 if (vm.checkLoadChapterNext) {
-                    vm.getDataChapterNext(chapter.linkPageNext!!)
+                    vm.preloadDataChapterNext(vmParser,chapterData.linkPageNext!!,settingsProvider.source()!!)
 
                     requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                     // Затенение при переходе
-                    binding.ivBackLoaderReader.visibility = VISIBLE
+                    binding.ivBackLoaderReader.visibility = View.VISIBLE
                     //lrLoader.visibility = VISIBLE
                     //lrErrorLoader.visibility = GONE
                 }
@@ -453,227 +159,221 @@ class ReaderFragment : BaseInnerFragment(), RecyclerViewClickListener {
         }
     }
 
-    // todo rework
-    private fun onPageTapListener(): OnViewTapListener {
-        return OnViewTapListener { view, x, y ->
-            when {
-                x < readerPager.width * LEFT_REGION -> {
-                    readerPager.currentItem = readerPager.currentItem - 1
-
-                }
-                x > readerPager.width * RIGHT_REGION -> {
-                    readerPager.currentItem = readerPager.currentItem + 1
-                    //readerPager.currentItem = when (!isNavigateRevesed) {
-                    //    ReaderPagerConst.IS_REVERSE_TRUE -> readerPager.currentItem + 1
-                    //    ReaderPagerConst.IS_REVERSE_FALSE -> readerPager.currentItem - 1
-                    //    else -> readerPager.currentItem
-                    //}
-                }
-                x > readerPager.width * LEFT_REGION &&
-                        x < readerPager.width * RIGHT_REGION -> {
-                    toggleMenu()
-                }
-                else -> {
-                    //Todo: Error
-                }
-            }
-        }
-    }
-
-    private fun viewPager2SetRegisterOnPageChangeCallback(viewPager2: ViewPager2) {
-        viewPager2.registerOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    currentProgressSeekBar()
-                    val page = readerPagerAdapter.dataSetPage.getOrNull(position)
-                    if (page != null) {
-                        readerPagerAdapter.onPageSelected(page, position)
-                    }
-                }
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int,
-                ) {}
-                override fun onPageScrollStateChanged(state: Int) {}
-            })
-    }
-
-    //private fun reLoadChapter(){
-    //    isChapterReload = true
-    //    vm.reloadChapterList(urlChapter)
-    //}
-
-    private fun menuChapterList (){
-        binding.readerChapterList.visibility =
-            when(binding.readerChapterList.visibility){
-                VISIBLE -> GONE
-                GONE -> VISIBLE
-                else -> GONE
-            }
-    }
-
     private fun toggleMenu() {
-        val menu = binding.readerMenu
-        val readerView = binding.readerContainerView
+        binding.readerMenu.visibility = when(binding.readerMenu.visibility) {
+            VISIBLE -> GONE
+            GONE -> VISIBLE
+            else -> GONE
+        }
+        closeAllInsideMenu()
+    }
 
-        // todo add anim select item menu
-        //ShowAnim().collapse(rl_read_mode_menu_layout)
-        //ShowAnim().collapse(rl_translators_menu_layout)
+    private fun FragmentReaderBinding.initializeMenu() {
+        menuListeners()
+        // Init Chapters List
+        initChaptersList()
+        // Открытие меню при запуске
+        readerMenu.visibility = View.VISIBLE
 
-        when (menu.visibility) {
-            VISIBLE ->{
-                menu.visibility = GONE
-                closeAllInsideMenu()
 
-               //val params = readerView.layoutParams
-               //params.width = FrameLayout.LayoutParams.MATCH_PARENT
-               //params.height = FrameLayout.LayoutParams.MATCH_PARENT
-               //readerView.setPadding(0)
-               //readerView.layoutParams = params
+    }
+
+    // Изменение кнопки для режима чтения
+    // Добавить проверку для чтения
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun FragmentReaderBinding.menuSelectReadModeView(modeType: Int) {
+        changeReadModeReader(modeType)
+        ivBtnRightNav.setImageResource(
+            if (modeType == READ_MODE_RIGHT) R.drawable.ic_reader_mode_right_reader_menu_active
+            else R.drawable.ic_reader_mode_right_reader_menu
+        )
+        ivBtnLeftNav.setImageResource(
+            if (modeType == READ_MODE_LEFT) R.drawable.ic_reader_mode_left_reader_menu_active
+            else R.drawable.ic_reader_mode_left_reader_menu
+        )
+        ivBtnBottomNav.setImageResource(
+            if (modeType == READ_MODE_BOTTOM) R.drawable.ic_reader_mode_vertical_reader_menu_active
+            else R.drawable.ic_reader_mode_vertical_reader_menu
+        )
+    }
+
+    private fun changeReadModeReader(type:Int) {
+        vmConfig.readMode = type
+            when (type) {
+            READ_MODE_RIGHT -> {
+                if (type == READ_MODE_RIGHT) return
+                chapterData.pages!!.reverse()
+                viewer.reversePages()
             }
-            GONE ->{
-                menu.visibility = VISIBLE
-                closeAllInsideMenu()
-
-                //val lp = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, 0)
-                //lp.setMargins(40,0,40,0)
-                //readerView.setPadding(10)
-                //readerView.layoutParams = lp
+            READ_MODE_LEFT -> {
+                if (type == READ_MODE_LEFT) return
+                chapterData.pages!!.reverse()
+                viewer.reversePages()
             }
-            INVISIBLE -> {
-                menu.visibility = VISIBLE
-                closeAllInsideMenu()
+            READ_MODE_BOTTOM -> {
+                if (type == READ_MODE_BOTTOM) return
+                // todo toast
+                false
             }
         }
     }
 
-    private fun closeAllInsideMenu(){
-        binding.llTranslatorsMenuLayout.visibility = GONE
-        binding.llReadModeMenuLayout.visibility = GONE
-        binding.readerChapterList.visibility = GONE
-        binding.scrollLlReaderMenuSettings.visibility = GONE
-    }
-
-    private fun menuListeners(){
-        // Top
-        // ImageBack
-        binding.ivArrowBackMenu.setOnClickListener{
-           parentFragmentManager.popBackStack()
-        }
-        // ChaptersList
-        binding.ivMoreChapterMenu.setOnClickListener{
+    private fun FragmentReaderBinding.menuListeners(){
+        // Top | ImageBack
+        ivArrowBackMenu.setOnClickListener{ findNavController().navigateUp() }
+        // Top | ChaptersList
+        ivMoreChapterMenu.setOnClickListener{
             closeAllInsideMenu()
-            menuChapterList()
+            readerChapterList.menuVisibilitySwitch()
         }
-
-        // Bottom
-        // Settings
-        binding.ivBtnSettingsMenu.setOnClickListener{
-            if(binding.scrollLlReaderMenuSettings.visibility == GONE)
-                closeAllInsideMenu()
-            menuVisibilitySwitch(binding.scrollLlReaderMenuSettings)
+        // Bottom | Settings
+        ivBtnSettingsMenu.setOnClickListener{
+            if(LLSeattingsMenu.visibility == GONE) closeAllInsideMenu()
+            LLSeattingsMenu.menuVisibilitySwitch()
         }
-        // Downloader
-        binding.ivBtnDownloaderMenu.setOnClickListener{
+        // Bottom | Downloader
+        ivBtnDownloaderMenu.setOnClickListener{
             closeAllInsideMenu()
-            menuDownloadImage()
+            //menuDownloadImage()
         }
-        // Translaters
-        binding.ivBtnTranslateMenu.setOnClickListener{
-            if(binding.llTranslatorsMenuLayout.visibility == GONE)
-                closeAllInsideMenu()
-            menuVisibilitySwitch(binding.llTranslatorsMenuLayout)
+        // Bottom | Translaters
+        ivBtnTranslateMenu.setOnClickListener{
+            if(llTranslatorsMenuLayout.visibility == GONE) closeAllInsideMenu()
+            llTranslatorsMenuLayout.menuVisibilitySwitch()
         }
-        // Read Mode
-        binding.ivBtnChangeModeMenu.setOnClickListener{
-            if(binding.llReadModeMenuLayout.visibility == GONE)
-                closeAllInsideMenu()
-            menuVisibilitySwitch(binding.llReadModeMenuLayout)
+        // Bottom | Read Mode
+        ivBtnChangeModeMenu.setOnClickListener{
+            if(llReadModeMenuLayout.visibility == GONE) closeAllInsideMenu()
+            llReadModeMenuLayout.menuVisibilitySwitch()
         }
-        binding.ivBtnRightNav.setOnClickListener{
-            changeModeReader(READ_MODE_RIGHT)
+        ivBtnRightNav.setOnClickListener{ menuSelectReadModeView(READ_MODE_RIGHT) }
+        ivBtnLeftNav.setOnClickListener{ menuSelectReadModeView(READ_MODE_LEFT) }
+        ivBtnBottomNav.setOnClickListener{
+            TODO("Add error")
+            //menuSelectReadModeView(READ_MODE_BOTTOM)
         }
-        binding.ivBtnLeftNav.setOnClickListener{
-            changeModeReader(READ_MODE_LEFT)
-        }
-        binding.ivBtnBottomNav.setOnClickListener{
-            changeModeReader(READ_MODE_BOTTOM)
-        }
-        // AutoPlay
-        binding.ivBtnAutoplayMenu.setOnClickListener{
+        // Bottom | AutoPlay
+        ivBtnAutoplayMenu.setOnClickListener{
             closeAllInsideMenu()
             // todo autoplay
         }
     }
 
-    private fun changeModeReader(type:Int) {
-        isNavigateRevesed = when (type) {
-            READ_MODE_RIGHT -> {
-                if (isNavigateRevesed) {
-                    chapter.pages!!.reverse()
-                    readerPagerAdapter.reversePages()
-                    readModeType = READ_MODE_RIGHT
-                    menuSelectReadModeChangeView()
-                    false
-                } else true
-            }
-            READ_MODE_LEFT -> {
-                if (!isNavigateRevesed) {
-                    chapter.pages!!.reverse()
-                    readerPagerAdapter.reversePages()
-                    readModeType = READ_MODE_LEFT
-                    menuSelectReadModeChangeView()
-                    true
-                } else false
-            }
-            READ_MODE_BOTTOM -> {
-                // todo toast
-                false
-            }
-            else -> false
+    private fun View.menuVisibilitySwitch(){
+        this.visibility = if (this.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
+
+    // Top | ChaptersList
+    // Bottom | Translaters | Read Mode | Settings | TODO Autoplay
+    private fun closeAllInsideMenu() {
+        binding.apply {
+            val views = arrayOf(readerChapterList,
+                llTranslatorsMenuLayout, llReadModeMenuLayout, LLSeattingsMenu)
+            views.forEach { it.visibility = View.GONE }
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun menuSelectReadModeChangeView (){
-        menuSelectReadModeClearView()
-        when(readModeType){
-            READ_MODE_RIGHT->
-                binding.ivBtnRightNav.setImageDrawable(
-                    resources.getDrawable(R.drawable.ic_reader_mode_right_reader_menu_active))
-            READ_MODE_LEFT->
-                binding.ivBtnLeftNav.setImageDrawable(
-                    resources.getDrawable(R.drawable.ic_reader_mode_left_reader_menu_active))
-            READ_MODE_BOTTOM->
-                binding.ivBtnBottomNav.setImageDrawable(
-                    resources.getDrawable(R.drawable.ic_reader_mode_vertical_reader_menu_active))
+
+    private fun FragmentReaderBinding.initChaptersList(){
+        binding.readerChapterList.setOnClickListener(){}
+        chapterAdapter = ChapterListAdapter(this@ReaderFragment)
+
+        RVChapterList.adapter = chapterAdapter
+        chapterAdapter.setMain(vm.creativeWorkPage.chapters!!)
+        chapterAdapter.setSelect(vm.currentChapterID)
+        RVChapterList.scrollToPosition(chapterAdapter.posLastChapter)
+
+        // Настройка кнопок для chapterList меню
+        TVBtnChapterListClose.setOnClickListener{ readerChapterList.visibility = GONE }
+        LLBtnSortChapterList.setOnClickListener{
+            chapterAdapter.reversePages()
+            RVChapterList.scrollToPosition(chapterAdapter.posLastChapter)
+        }
+
+        // Скрыть прогрессбар после создания
+        progressLoadingChapterList.visibility = View.GONE
+    }
+
+    private fun observeError() {
+        vm.error.observe(viewLifecycleOwner, Observer { error ->
+            Log.e("ErrorNetwork", "Reader observeError rdf ${error.code}: ${error.message}")
+            when(error.code){
+                -1 -> {}
+                else -> {}
+            }
+        })
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun observeList() {
+        // ------------ CHAPTER ------------
+        vmParser.chapterReader.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResponse.Failure -> {}
+                is NetworkResponse.Loading -> {}
+                is NetworkResponse.Success -> vm.loadChapter.value = it.data
+            }
+        }
+        vm.loadChapter.observe(viewLifecycleOwner) { list ->
+            chapterData = list
+            setLoadedChapterData(list)
+        }
+        // ------------ NEXT ------------
+        vmParser.chapterReaderNext.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResponse.Failure -> {}
+                is NetworkResponse.Loading -> {}
+                is NetworkResponse.Success -> vm.preloadChapterNext.value = it.data
+            }
+        }
+        vm.preloadChapterNext.observe(viewLifecycleOwner) { list ->
+            setLoadedChapterData(list)
+            when (vmConfig.readMode) {
+                READ_MODE_RIGHT -> viewer.setCurrentItem(0)
+                READ_MODE_LEFT -> viewer.setCurrentItem(list.pages!!.lastIndex)
+                READ_MODE_BOTTOM -> viewer.setCurrentItem(0)
+            }
+        }
+        // ------------ PREV ------------
+        vmParser.chapterReaderPrev.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResponse.Failure -> {}
+                is NetworkResponse.Loading -> {}
+                is NetworkResponse.Success -> vm.preloadChapterPrev.value = it.data
+            }
+        }
+        vm.preloadChapterPrev.observe(viewLifecycleOwner) { list ->
+            setLoadedChapterData(list)
+            when (vmConfig.readMode) {
+                READ_MODE_RIGHT -> viewer.setCurrentItem(list.pages!!.lastIndex)
+                READ_MODE_LEFT -> viewer.setCurrentItem(0)
+                READ_MODE_BOTTOM -> viewer.setCurrentItem(list.pages!!.lastIndex)
+            }
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun menuSelectReadModeClearView() {
-        binding.ivBtnRightNav.setImageDrawable(
-            resources.getDrawable(R.drawable.ic_reader_mode_right_reader_menu))
-        binding.ivBtnLeftNav.setImageDrawable(
-            resources.getDrawable(R.drawable.ic_reader_mode_left_reader_menu))
-        binding.ivBtnBottomNav.setImageDrawable(
-            resources.getDrawable(R.drawable.ic_reader_mode_vertical_reader_menu))
+    @SuppressLint("SetTextI18n")
+    private fun setLoadedChapterData(list: ReaderChapter) {
+        //loadPagesReader(listPage)
+        if (chapterAdapter.itemCount != 0)
+            chapterAdapter.setSelect(list.idChapter)
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+        binding.tvTitleChapterNumber.text = ("${requireContext().getString(R.string.chapter_number)} ${list.number}")
+        binding.ivBackLoaderReader.visibility = View.GONE
+
+        viewer.setPages(list)
     }
 
-    private fun menuDownloadImage () {
-        val url: ReaderChapterPage? = readerPagerAdapter.dataSetPage.getOrNull(readerPager.currentItem)
-        vm.saveImageChapterInLocal(requireActivity(),
-            url!!.linkImage, readerPager.currentItem,binding.ivBtnDownloaderMenu)
-    }
-
-    private fun menuVisibilitySwitch(layout:LinearLayout){
-        layout.visibility =
-            when(layout.visibility){
-            VISIBLE -> GONE
-            GONE -> VISIBLE
-            else -> GONE
+    // Получения текущей главы для начала
+    private fun getChaptersPager() {
+        var indexID:Int = 0
+        vm.creativeWorkPage.chapters!!.onEachIndexed { index, chapter -> if (chapter.id == vm.currentChapterID) indexID = index }
+        vm.creativeWorkPage.chapters!![indexID]
+            .url?.let {
+            vm.getDataChapter(vmParser, url = it, source = settingsProvider.source()!!)
         }
+
     }
 
     override fun onDestroyView() {
@@ -687,13 +387,12 @@ class ReaderFragment : BaseInnerFragment(), RecyclerViewClickListener {
         when(view.id){
             R.id.cc_main_block_chapter_reader ->{
                 val chapter = list as Chapter
-                    if (!chapter.url.isNullOrEmpty()) {
+                    if (!chapter.url.isNullOrBlank()) {
                         closeAllInsideMenu()
-                        loadNewChapter = true
                         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                         // Затенение при переходе
                         binding.ivBackLoaderReader.visibility = VISIBLE
-                        vm.getDataChapter(chapter.url)
+                        vm.getDataChapter(vmParser, url = chapter.url, source = settingsProvider.source()!!)
                     }else{
                         Toast.makeText(requireActivity(),"Ссылка не найдена",Toast.LENGTH_SHORT).show()
                     }

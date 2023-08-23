@@ -5,8 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import androidx.lifecycle.MutableLiveData
-import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
 import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
+import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -38,7 +38,7 @@ class SaverImagePager(
             out.flush()
             out.close()
 
-            vm.lastDirSaveImage = file.absolutePath
+            //vm.lastDirSaveImage = file.absolutePath
             return true
         } catch (e: Exception) {
             return false

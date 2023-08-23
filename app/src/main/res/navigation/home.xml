@@ -16,15 +16,16 @@
         <action
             android:id="@+id/action_navigation_home_to_searchPageFragment"
             app:destination="@id/searchPageFragment" />
-        <action
-            android:id="@+id/action_navigation_home_to_radioFragment"
-            app:destination="@id/radioFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchPageFragment"
         android:name="ru.android.hikanumaruapp.presentasion.search.SearchPageFragment"
         tools:layout="@layout/search_page_fragment"
-        android:label="search_page_fragment" />
+        android:label="search_page_fragment" >
+        <action
+            android:id="@+id/action_searchPageFragment_to_navigation_mangapage"
+            app:destination="@id/navigation_mangapage" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_mangapage"
         android:name="ru.android.hikanumaruapp.presentasion.mangapage.MangaPageFragment"
@@ -32,7 +33,8 @@
         android:label="@string/title_mangapage">
         <action
             android:id="@+id/action_navigation_mangapage_to_navigation_reader"
-            app:destination="@id/navigation_reader" />
+            app:destination="@id/navigation_reader"
+            app:popUpTo="@id/navigation_mangapage" />
         <action
             android:id="@+id/action_navigation_mangapage_to_navigation_chapters_page"
             app:destination="@id/navigation_chapters_page" />
@@ -47,9 +49,4 @@
         android:name="ru.android.hikanumaruapp.presentasion.reader.ReaderFragment"
         tools:layout="@layout/fragment_reader"
         android:label="@string/navigation_reader_fragment" />
-    <fragment
-        android:id="@+id/radioFragment"
-        android:name="ru.android.hikanumaruapp.presentasion.radio.RadioFragment"
-        android:label="fragment_radio"
-        tools:layout="@layout/fragment_radio" />
 </navigation>

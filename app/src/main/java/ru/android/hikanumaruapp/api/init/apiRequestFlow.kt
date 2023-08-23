@@ -17,7 +17,6 @@ fun<T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = f
         val response = call()
 
         try {
-            Log.d("apiRequestFlow", "body - ${response.body()}") //todo
             if (response.isSuccessful) {
                 response.body()?.let { data ->
                     emit(ApiResponse.Success(data))
@@ -30,7 +29,6 @@ fun<T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = f
                 }
             }
         } catch (e: Exception) {
-            Log.d("apiRequestFlow", "apiRequestFlow catch body - ${response}")
             emit(ApiResponse.Failure(e.message ?: e.toString(), 400))
         }
     } ?: emit(ApiResponse.Failure("Timeout! Please try again.", 408))

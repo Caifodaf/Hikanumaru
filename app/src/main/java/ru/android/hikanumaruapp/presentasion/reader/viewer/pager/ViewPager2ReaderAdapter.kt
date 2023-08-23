@@ -6,9 +6,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.github.chrisbanes.photoview.OnViewTapListener
+import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
 import ru.android.hikanumaruapp.presentasion.reader.ReaderFragment
 import ru.android.hikanumaruapp.presentasion.reader.ReaderViewModel
-import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
 import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.pages.ImagePagePagerFragment
 
 

@@ -50,21 +50,19 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
     private val vmAuth by viewModels<AuthViewModel>()
     private val vmSearch by viewModels<SearchTabViewModel>()
 
-    //// Сохраняем данные в Bundle
+    // Сохраняем данные в Bundle
     //override fun onSaveInstanceState(outState: Bundle) {
     //    super.onSaveInstanceState(outState)
-//
     //    outState.putStringArrayList("mainBlocks", ArrayList(mainBlocks))
     //    // Сохраняем состояние RecyclerView
     //    val layoutManager = RVGenres.layoutManager as LinearLayoutManager
     //    val position = layoutManager.findFirstVisibleItemPosition()
     //    outState.putInt("rvGenresPosition", position)
     //}
-//
-    //// Восстанавливаем данные из Bundle
+
+    // Восстанавливаем данные из Bundle
     //override fun onViewStateRestored(savedInstanceState: Bundle?) {
     //    super.onViewStateRestored(savedInstanceState)
-//
     //    if (savedInstanceState != null) {
     //        mainBlocks = savedInstanceState.getStringArrayList("mainBlocks")!!
     //        // Восстанавливаем состояние RecyclerView
@@ -84,6 +82,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
         setupOnBackPressed()
         binding.apply {
             //statePage(ConstPages.DEFAULT_PAGE_VIEW)
@@ -94,8 +93,6 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
             observeAllPageData()
             observeErrors()
 
-            //getEndleesList()
-
             initMoreBtn()
 
             dbInit()
@@ -103,10 +100,9 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
     }
 
     private fun FragmentHomeBinding.dbInit() {
-        vm.mainMangaList.value = home().toMutableList()
-        binding.root.postDelayed({
-            statePage(ConstPages.DEFAULT_PAGE_VIEW)
-        }, 1000L)
+        vm.mainMangaList.value = homeManga().toMutableList()
+        vm.mainGenresList.value = homeGenres().toMutableList()
+        vm.mainManhvaList.value = homeManga().toMutableList()
     }
 
     private fun  FragmentHomeBinding.loadPage() {
@@ -154,12 +150,23 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
         vm.error.observe(viewLifecycleOwner, Observer { error->
             val pop = PopAlertDialog(requireActivity(),lifecycleScope)
             when(error.code){
-                502 -> pop.setDataDialog("Ошибка сервера")
-                504 -> pop.setDataDialog("Время ожидания первышенно")
-                -1 -> pop.setDataDialog("Нестабильная работа сети")
-                else -> pop.setDataDialog("Неверная почта или пароль")
+                502 -> {
+                    pop.setDataDialog("Ошибка сервера")
+                    dbInit()
+                }
+                504 -> {
+                    pop.setDataDialog("Время ожидания первышенно")
+                    statePage(ConstPages.ERROR_PAGE_VIEW)
+                }
+                -1 -> {
+                    pop.setDataDialog("Нестабильная работа сети")
+                    statePage(ConstPages.ERROR_PAGE_VIEW)
+                }
+                else -> {
+                    pop.setDataDialog("Неверная почта или пароль")
+                    statePage(ConstPages.ERROR_PAGE_VIEW)
+                }
             }
-            statePage(ConstPages.ERROR_PAGE_VIEW)
         })
     }
 
@@ -302,7 +309,7 @@ class HomeFragment : BaseFragment(), RecyclerViewClickListener,debugModels {
 
     private fun FragmentHomeBinding.initMoreBtn(){
         TVSeeHistory.setOnClickListener{
-            findNavController().navigate(R.id.action_navigation_home_to_radioFragment)
+            //findNavController().navigate(R.id.action_navigation_home_to_radioFragment) TODO Add
         }
         //TVSeeGenres
         //TVSeeManga

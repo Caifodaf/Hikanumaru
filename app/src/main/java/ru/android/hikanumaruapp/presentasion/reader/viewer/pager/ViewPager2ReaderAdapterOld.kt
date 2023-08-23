@@ -14,10 +14,10 @@ import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.OnViewTapListener
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import ru.android.hikanumaruapp.databinding.ViewPageReaderItemBinding
-import ru.android.hikanumaruapp.presentasion.reader.ReaderFragment
 import ru.android.hikanumaruapp.data.model.reader.ReaderChapter
 import ru.android.hikanumaruapp.data.model.reader.ReaderChapterPage
 import ru.android.hikanumaruapp.data.model.reader.TransItem
+import ru.android.hikanumaruapp.presentasion.reader.ReaderFragment
 
 
 class ViewPager2ReaderAdapterOld(

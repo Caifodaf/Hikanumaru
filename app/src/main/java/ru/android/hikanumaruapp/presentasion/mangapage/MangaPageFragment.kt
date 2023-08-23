@@ -36,6 +36,8 @@ import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageFlexTags
 import ru.android.hikanumaruapp.data.model.mangapage.TagsMangaPageId
 import ru.android.hikanumaruapp.data.model.mangapage.TagsMangaPageModel
 import ru.android.hikanumaruapp.presentasion.mangapage.pages.MangaPageViewPagerAdapter
+import ru.android.hikanumaruapp.presentasion.reader.data.NetworkResponse
+import ru.android.hikanumaruapp.presentasion.reader.data.ParserViewModel
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
 
@@ -48,6 +50,7 @@ class MangaPageFragment : BaseInnerFragment(), debugModels {
     private val vm by viewModels<MangaPageViewModel>()
     private val vmApi by viewModels<MainApiViewModel>()
     private val vmUser by viewModels<UserDataViewModel>()
+    private val vmParser by viewModels<ParserViewModel>()
 
     private lateinit var vpAdapter : MangaPageViewPagerAdapter
     private lateinit var tagsAdapter: MangaPageFlexTagsAdapter
@@ -78,7 +81,7 @@ class MangaPageFragment : BaseInnerFragment(), debugModels {
             stateMangaPage(LOADING_PAGE_VIEW)
 
             getMangaPage()
-            vm.getDataChapter()
+            vm.getDataChapter(vmParser)
 
             observeListPage()
 
@@ -312,7 +315,7 @@ class MangaPageFragment : BaseInnerFragment(), debugModels {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
+        //requireActivity().findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
         _binding = null
     }
 

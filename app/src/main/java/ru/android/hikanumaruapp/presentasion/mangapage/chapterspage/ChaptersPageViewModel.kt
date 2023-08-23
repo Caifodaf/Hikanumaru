@@ -13,7 +13,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import ru.android.hikanumaruapp.R
 import ru.android.hikanumaruapp.data.model.Chapter
-import ru.android.hikanumaruapp.provider.Provider
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageChapterAdapter
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.recyclerviews.RecyclerViewClickListener
@@ -24,7 +23,6 @@ import javax.inject.Inject
 class ChaptersPageViewModel @Inject constructor() : ViewModel(), RecyclerViewClickListener {
 
     private lateinit var job: Job
-    private val provider = Provider()
     val emitter = Events.Emitter()
 
     private var isReversedList = false

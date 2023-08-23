@@ -24,7 +24,8 @@ import ru.android.hikanumaruapp.api.models.ErrorResponse
 import ru.android.hikanumaruapp.data.local.storage.library.LibraryBase
 import ru.android.hikanumaruapp.presentasion.mangapage.adapter.MangaPageTextAdapter
 import ru.android.hikanumaruapp.data.model.*
-import ru.android.hikanumaruapp.provider.Provider
+import ru.android.hikanumaruapp.presentasion.reader.data.ParserViewModel
+import ru.android.hikanumaruapp.presentasion.reader.viewer.pager.ReaderPagerConst
 import ru.android.hikanumaruapp.utilits.*
 import ru.android.hikanumaruapp.utilits.navigation.Events
 import ru.android.hikanumaruapp.utilits.navigation.NavigationFragmentinViewModel
@@ -35,7 +36,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class MangaPageViewModel @Inject constructor(private val provider:Provider) : ViewModel(),
+class MangaPageViewModel @Inject constructor() : ViewModel(),
     RecyclerViewClickListener, UIUtils {
 
     val error: MutableLiveData<ErrorResponse> by lazy { MutableLiveData<ErrorResponse>() }
@@ -170,21 +171,28 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
             })
     }
 
-    fun getDataChapter() {
+    fun getDataChapter(vmParser: ParserViewModel) {
         isLoadingChapterList = true
         isErrorLoadChapters = false
 
-        job = viewModelScope.launch(Dispatchers.IO) {
-            provider.downloadMangaPageChapters(mangaSource, mangaLink)
-                .catch { exception ->
-                    Log.e("ErrorApi", exception.message.toString())
+        vmParser.getChaptersList(mangaSource, mangaLink,
+            object : CoroutinesErrorHandler {
+                override fun onError(cause: Throwable?, message: String) {
                     isErrorLoadChapters = true
                     listChapters.postValue(null)
+                    errorHandler(cause, message)
                 }
-                .collect {
-                    isLoadingChapterList = false
-                    listChapters.postValue(it.requireNoNulls())
-                }
+            })
+    }
+
+    private fun errorHandler(cause: Throwable?, message: String){
+        Log.e("ErrorNetwork", "Reader getDataChapter $message")
+        when (cause.toString().substringBefore(':')) {
+            "java.net.SocketTimeoutException" -> error.postValue(ErrorResponse(504,
+                message.toString()))
+            "java.net.UnknownHostException" -> error.postValue(ErrorResponse(-1,
+                message.toString()))
+            else -> error.postValue(ErrorResponse(502, message.toString()))
         }
     }
 
@@ -276,7 +284,7 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
 
     }
 
-    private fun openReaderPageChapter(listHolder: Any?) {
+    private fun openReaderPageChapter(list: Chapter) {
         //val toInfoReader = Bundle()
 //
         //val listManga = listPage.value!!
@@ -307,24 +315,26 @@ class MangaPageViewModel @Inject constructor(private val provider:Provider) : Vi
 
         val toChapterPage = Bundle()
         toChapterPage.putString("page", Gson().toJson(listPage.value))
+        toChapterPage.putString("chapterID", Gson().toJson(list.id))
         emitter.emitAndExecute(
             NavigationFragmentinViewModel.NavigationFrag(
                 R.id.action_navigation_mangapage_to_navigation_reader,toChapterPage))
     }
 
     internal fun openChapterListFromGeneralPage() {
-        val toChapterPage = Bundle()
-        toChapterPage.putString("page", Gson().toJson(listPage.value))
-        emitter.emitAndExecute(
-            NavigationFragmentinViewModel.NavigationFrag(
-                R.id.action_navigation_mangapage_to_navigation_chapters_page,toChapterPage))
+        //val toChapterPage = Bundle()
+        //toChapterPage.putString("page", Gson().toJson(listPage.value))
+        //toChapterPage.putString("chapterID", Gson().toJson(listPage.value))
+        //emitter.emitAndExecute(
+        //    NavigationFragmentinViewModel.NavigationFrag(
+        //        R.id.action_navigation_mangapage_to_navigation_chapters_page,toChapterPage))
     }
 
     override fun onRecyclerViewItemClick(view: View, list: Any?) {
         when (view.id) {
             R.id.CCMainBlockChapter -> {
                 (view as ConstraintLayout).timerDoubleButton()
-                openReaderPageChapter(list)
+                openReaderPageChapter(list as Chapter)
             }
 //            R.id.rl_block_manga_main_item -> {
 //                //bundle.putString("url", (list as MangaMainModel).linkPage)

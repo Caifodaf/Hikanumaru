@@ -170,6 +170,7 @@
             android:layout_height="match_parent"
             android:elevation="100dp"
             android:visibility="gone"
+            tools:visibility="visible"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -276,6 +277,7 @@
                     android:layout_height="0dp"
                     android:orientation="vertical"
                     android:visibility="gone"
+                    tools:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/reader_menu_bottom"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -299,7 +301,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <LinearLayout
-                            android:id="@+id/ll_bnt_sort_chapter_list_reader"
+                            android:id="@+id/LLBtnSortChapterList"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
@@ -332,12 +334,12 @@
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_chapter_list_reader_menu"
+                            android:id="@+id/RVChapterList"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="22dp"
-                            app:layout_constraintBottom_toTopOf="@+id/tv_btn_close_chapter_list_reader"
+                            app:layout_constraintBottom_toTopOf="@+id/TVBtnChapterListClose"
                             app:layout_constraintTop_toBottomOf="@+id/tv_title_chapter_list"
                             tools:itemCount="10"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -345,7 +347,7 @@
 
                         <TextView
                             style="@style/Text.Headline_5"
-                            android:id="@+id/tv_btn_close_chapter_list_reader"
+                            android:id="@+id/TVBtnChapterListClose"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -379,8 +381,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:id="@+id/scroll_ll_reader_menu_settings"
+                    android:id="@+id/LLSeattingsMenu"
                     android:visibility="gone"
+                    tools:visibility="gone"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_top_horizontal_rm_bottom_menu"
                     app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal_rm_bottom"
@@ -906,26 +909,11 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/tv_current_page_seekbar"
+                                android:id="@+id/TVPagesSeekBar"
                                 style="@style/Text.Callout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textColor="@color/white" />
-
-                            <TextView
-                                style="@style/Text.Callout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="/"
-                                android:textColor="@color/white" />
-
-                            <TextView
-                                android:id="@+id/tv_max_page_seekbar"
-                                style="@style/Text.Callout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0"
+                                android:text="~/~"
                                 android:textColor="@color/white" />
                         </LinearLayout>
 
@@ -967,17 +955,18 @@
             android:id="@+id/reader_container_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="@id/guideline_top_reader_pager"
-            app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_reader_pager"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:elevation="2dp">
+            android:elevation="3dp">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager_reader"
-                android:elevation="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:elevation="3dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </FrameLayout>
 
         <!-- OverScrool -->

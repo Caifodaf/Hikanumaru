@@ -205,7 +205,7 @@
                         android:layout_marginTop="12dp"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/manga_main_item"/>
+                        tools:listitem="@layout/search_manga_item"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
